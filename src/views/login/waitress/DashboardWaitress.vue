@@ -11,235 +11,27 @@
                 </h3>
               </b-col>
             </b-row>
-            
-          <div class="partone">
-            <div style="margin:20px;width:50px;">              
-                <center>
-                  <router-link
-                    :to="'menuwaitress'"
-                    style="text-decoration: none; color: #333"
-                  >
-                  <div style="display:flex; justify-content:center; align-item:center; width:50px; height:50px; background-color:rgb(40, 40, 40);">
-                      <h5 class="m-t-15 m-b-0" style="color:white; text-align:center; padding:10px"><strong>1</strong></h5>
-                  </div>
-                  </router-link>
-                </center>              
-            </div>
-
-            <div  style="margin:20px; width:50px;">              
-                <center>
-                  <router-link
-                    :to="'menuwaitress'"
-                    style="text-decoration: none; color: #333"
-                  >
-                  <div style="display:flex; justify-content:center; align-item:center; width:50px; height:50px; background-color:rgb(40, 40, 40);">
-                      <h5 class="m-t-15 m-b-0" style="color:white; text-align:center; padding:10px"><strong>2</strong></h5>
-                  </div>
-                  </router-link>
-                </center>              
-            </div>
-
-            <div  style="margin:20px;">              
-                <center>
-                  <router-link
-                    :to="'menuwaitress'"
-                    style="text-decoration: none; color: #333"
-                  >
-                  <div style="display:flex; justify-content:center; align-item:center; width:50px; height:50px; background-color:rgb(40, 40, 40);">
-                      <h5 class="m-t-15 m-b-0" style="color:white; text-align:center; padding:10px"><strong>3</strong></h5>
-                  </div>
-                  </router-link>
-                </center>              
-            </div>
-
-            <div  style="margin:20px;">              
-                <center>
-                  <router-link
-                    :to="'menuwaitress'"
-                    style="text-decoration: none; color: #333"
-                  >
-                  <div style="display:flex; justify-content:center; align-item:center; width:50px; height:50px; background-color:rgb(40, 40, 40);">
-                      <h5 class="m-t-15 m-b-0" style="color:white; text-align:center; padding:10px"><strong>4</strong></h5>
-                  </div>
-                  </router-link>
-                </center>              
-            </div>
-
-            <div  style="margin:20px;">              
-                <center>
-                  <router-link
-                    :to="'menuwaitress'"
-                    style="text-decoration: none; color: #333"
-                  >
-                  <div style="display:flex; justify-content:center; align-item:center; width:50px; height:50px; background-color:rgb(40, 40, 40);">
-                      <h5 class="m-t-15 m-b-0" style="color:white; text-align:center; padding:10px"><strong>5</strong></h5>
-                  </div>
-                  </router-link>
-                </center>              
-            </div>
-
-            <div  style="margin:20px;">              
-                <center>
-                  <router-link
-                    :to="'menuwaitress'"
-                    style="text-decoration: none; color: #333"
-                  >
-                  <div style="display:flex; justify-content:center; align-item:center; width:50px; height:50px; background-color:rgb(40, 40, 40);">
-                      <h5 class="m-t-15 m-b-0" style="color:white; text-align:center; padding:10px"><strong>6</strong></h5>
-                  </div>
-                  </router-link>
-                </center>              
-            </div>
-
-            <div  style="margin:20px;">              
-                <center>
-                  <router-link
-                    :to="'menuwaitress'"
-                    style="text-decoration: none; color: #333"
-                  >
-                  <div style="display:flex; justify-content:center; align-item:center; width:50px; height:50px; background-color:rgb(40, 40, 40);">
-                      <h5 class="m-t-15 m-b-0" style="color:white; text-align:center; padding:10px"><strong>7</strong></h5>
-                  </div>
-                  </router-link>
-                </center>              
-            </div>
-
-            <div  style="margin:20px;">              
-                <center>
-                  <router-link
-                    :to="'menuwaitress'"
-                    style="text-decoration: none; color: #333"
-                  >
-                  <div style="display:flex; justify-content:center; align-item:center; width:50px; height:50px; background-color:rgb(40, 40, 40);">
-                      <h5 class="m-t-15 m-b-0" style="color:white; text-align:center; padding:10px"><strong>8</strong></h5>
-                  </div>
-                  </router-link>
-                </center>              
-            </div>
-
-            <div  style="margin:20px;">              
-                <center>
-                  <router-link
-                    :to="'menuwaitress'"
-                    style="text-decoration: none; color: #333"
-                  >
-                  <div style="display:flex; justify-content:center; align-item:center; width:50px; height:50px; background-color:rgb(40, 40, 40);">
-                      <h5 class="m-t-15 m-b-0" style="color:white; text-align:center; padding:10px"><strong>9</strong></h5>
-                  </div>
-                  </router-link>
-                </center>              
-            </div>
-
-            <div  style="margin:20px;">              
-                <center>
-                  <router-link
-                    :to="'menuwaitress'"
-                    style="text-decoration: none; color: #333"
-                  >
-                  <div style="display:flex; justify-content:center; align-item:center; width:50px; height:50px; background-color:rgb(40, 40, 40);">
-                      <h5 class="m-t-15 m-b-0" style="color:white; text-align:center; padding:10px"><strong>10</strong></h5>
-                  </div>
-                  </router-link>
-                </center>              
-            </div>
-
-            <div  style="margin:20px;">              
-                <center>
-                  <router-link
-                    :to="'menuwaitress'"
-                    style="text-decoration: none; color: #333"
-                  >
-                  <div style="display:flex; justify-content:center; align-item:center; width:50px; height:50px; background-color:rgb(40, 40, 40);">
-                      <h5 class="m-t-15 m-b-0" style="color:white; text-align:center; padding:10px"><strong>11</strong></h5>
-                  </div>
-                  </router-link>
-                </center>              
-            </div>
-            <div  style="margin:20px;">              
-                <center>
-                  <router-link
-                    :to="'menuwaitress'"
-                    style="text-decoration: none; color: #333"
-                  >
-                  <div style="display:flex; justify-content:center; align-item:center; width:50px; height:50px; background-color:rgb(40, 40, 40);">
-                      <h5 class="m-t-15 m-b-0" style="color:white; text-align:center; padding:10px"><strong>12</strong></h5>
-                  </div>
-                  </router-link>
-                </center>              
-            </div>
-            <div  style="margin:20px;">              
-                <center>
-                  <router-link
-                    :to="'menuwaitress'"
-                    style="text-decoration: none; color: #333"
-                  >
-                  <div style="display:flex; justify-content:center; align-item:center; width:50px; height:50px; background-color:rgb(40, 40, 40);">
-                      <h5 class="m-t-15 m-b-0" style="color:white; text-align:center; padding:10px"><strong>13</strong></h5>
-                  </div>
-                  </router-link>
-                </center>              
-            </div>
-            <div  style="margin:20px;">              
-                <center>
-                  <router-link
-                    :to="'menuwaitress'"
-                    style="text-decoration: none; color: #333"
-                  >
-                  <div style="display:flex; justify-content:center; align-item:center; width:50px; height:50px; background-color:rgb(40, 40, 40);">
-                      <h5 class="m-t-15 m-b-0" style="color:white; text-align:center; padding:10px"><strong>14</strong></h5>
-                  </div>
-                  </router-link>
-                </center>              
-            </div>
-            <div  style="margin:20px;">              
-                <center>
-                  <router-link
-                    :to="'menuwaitress'"
-                    style="text-decoration: none; color: #333"
-                  >
-                  <div style="display:flex; justify-content:center; align-item:center; width:50px; height:50px; background-color:rgb(40, 40, 40);">
-                      <h5 class="m-t-15 m-b-0" style="color:white; text-align:center; padding:10px"><strong>15</strong></h5>
-                  </div>
-                  </router-link>
-                </center>              
-            </div>
-            <div  style="margin:20px;">              
-                <center>
-                  <router-link
-                    :to="'menuwaitress'"
-                    style="text-decoration: none; color: #333"
-                  >
-                  <div style="display:flex; justify-content:center; align-item:center; width:50px; height:50px; background-color:rgb(40, 40, 40);">
-                      <h5 class="m-t-15 m-b-0" style="color:white; text-align:center; padding:10px"><strong>16</strong></h5>
-                  </div>
-                  </router-link>
-                </center>              
-            </div>
-            <div  style="margin:20px;">              
-                <center>
-                  <router-link
-                    :to="'menuwaitress'"
-                    style="text-decoration: none; color: #333"
-                  >
-                  <div style="display:flex; justify-content:center; align-item:center; width:50px; height:50px; background-color:rgb(40, 40, 40);">
-                      <h5 class="m-t-15 m-b-0" style="color:white; text-align:center; padding:10px"><strong>17</strong></h5>
-                  </div>
-                  </router-link>
-                </center>              
-            </div>
-            <div  style="margin:20px;">              
-                <center>
-                  <router-link
-                    :to="'menuwaitress'"
-                    style="text-decoration: none; color: #333"
-                  >
-                  <div style="display:flex; justify-content:center; align-item:center; width:50px; height:50px; background-color:rgb(40, 40, 40);">
-                      <h5 class="m-t-15 m-b-0" style="color:white; text-align:center; padding:10px"><strong>18</strong></h5>
-                  </div>
-                  </router-link>
-                </center>              
-            </div>
-          </div>
+            <b-table
+              show-empty
+              borderless
+              hover
+              ref="table"
+              :items="items"
+              :fields="fields"
+              responsive
+              style="width:600px; text-align:center;"
+            >
+              <template v-slot:cell(actions)="row">
+                <b-button
+                  size="sm"
+                  variant="success"
+                  @click="goMenu(row.item)"
+                  class="mr-1"
+                >
+                  Add to Order
+                </b-button>
+              </template>
+            </b-table>
         </b-col>
       </b-row>
     </b-container>
@@ -249,11 +41,51 @@
 
 <script>
 import myheader from "../../../components/Header"
+import axios from 'axios';
+import { ipBackend } from "@/config.js";
 export default {
     name:"dashboardwaitress",
     components: {
     myheader,
   },
+  data() {
+    return {
+      items:[],
+      // menu: {
+      //     idMeja: "menu",
+      //     title: "",
+      //     content: "",
+      //   },
+      fields:[
+        {
+          key: 'nomorMeja',
+          label:'Nomor Meja',
+        },
+        { key: "actions", label: "Actions" },
+      ]
+    }
+  },
+  mounted() {
+      axios.get(ipBackend + "/meja/all", {
+      headers: {
+        accesstoken: localStorage.getItem("token"),
+      },
+      })
+      .then((res) => {
+        this.items = res.data.respon;
+      })
+      .catch((err) => {
+        console.log(err);
+    });
+  },
+  methods: {
+    goMenu(item) {
+            let idMeja = item.id;
+            localStorage.setItem('idMeja', idMeja);
+            this.$router.push({ path: "/menuwaitress" });
+            console.log(idMeja);
+    },
+  }
 }
 </script>
 

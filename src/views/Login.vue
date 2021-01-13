@@ -60,11 +60,22 @@ export default {
                 
             })
             .then(res => {
-              console.log(res.data[0], res.data[1])
-              localStorage.setItem('token',res.data[0])
-              if(res.data.length){  
+              console.log(res.data[0], res.data[2])
+              localStorage.setItem('token',res.data[0].token)
+              localStorage.setItem('idKaryawan',res.data[1].id)
+              // console.log(localStorage)
+              if(res.data.length){
+                if(res.data[2].role == "admin"){
+                  vm.$router.push({ path: "/dashboardadmin" });
+                }
+                else if(res.data[2].role == "waitress"){
+                  vm.$router.push({ path: "/dashboardwaitress" });
+                }
+                else if(res.data[2].role == "kasir"){
+                  vm.$router.push({ path: "/dashboardkasir" });
+                }
                 alert("Selamat anda telah login");
-                vm.$router.push({ path: "/dashboardadmin" });
+                
               }
               else{
                 alert(res.data.message)

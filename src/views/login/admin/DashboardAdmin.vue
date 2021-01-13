@@ -73,6 +73,12 @@ export default {
     components: {
     myheader,
   },
+  data(){
+    return {
+
+    }
+  },
+
 }
 </script>
 
@@ -120,6 +126,8 @@ export default {
   height: 300px;
   display: flex;
   justify-content: center;
+  justify-content: center;
+  align-items: center;
   align-items: center;
 }
 

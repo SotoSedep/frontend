@@ -24,7 +24,7 @@
                     <img src="../assets/user.png" style="height: 6vh" />
                   </div>
                 </template>
-                <b-dropdown-item
+                <b-dropdown-item v-on:click="signout()"
                   >Logout</b-dropdown-item
                 >
               </b-dropdown>
@@ -44,6 +44,14 @@ export default {
   data() {
     return {};
   },
+  methods:{  
+    signout(){
+      localStorage.setItem('token', '')
+      localStorage.setItem('idKaryawan', '')
+      localStorage.setItem('idMeja', '')
+      this.$router.push({ name: "login"})
+    },
+  }
 };
 </script>
 

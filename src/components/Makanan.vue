@@ -4,50 +4,49 @@
               show-empty
               borderless
               hover
-              ref="table"
-              :items="items"
+              ref="tablee"
+              :items="cart"
               :fields="fields"
               responsive
               style="width:600px;"
             >
-              <template v-slot:cell(actions)="row">
+              <template v-slot:cell(actions)="roww">
                 <b-button
                   size="sm"
                   variant="success"
-                  @click="infoQs(row.item, row.index, $event.target)"
+                  @click="toCart(roww, $event.target)"
                   class="mr-1"
                 >
                   Add to Order
                 </b-button>
+
+                <b-input-group style="width:50px; display:flex;">
+                        <b-input-group-prepend>
+                        <b-btn variant="outline-info" @click="roww.item.jumlah--">-</b-btn>
+                        </b-input-group-prepend>
+
+                        <b-form-input style="width:10px;" v-model="roww.item.jumlah"></b-form-input>
+
+                        <b-input-group-append>
+                        <b-btn variant="outline-secondary" @click="roww.item.jumlah++">+</b-btn>
+                        </b-input-group-append>
+                    </b-input-group>
               </template>
             </b-table>
   </div>
 </template>
 
 <script>
+import { ipBackend } from "@/config.js";
+import axios from 'axios';
 export default {
     name:'makanan',
-    data() {
+    data: function (){
         return {
-            nomor:'',
-            nama_menu:'',
-            harga:'',
-            jenis:'',
-            items:[
-                { nomor: '1', nama_menu: 'Nasi Goreng Ayam', jenis: 'makanan', harga: 12000},
-                { nomor: '2', nama_menu: 'Nasi Goreng Kambing', jenis: 'makanan', harga: 13000},
-                { nomor: '3', nama_menu: 'Nasi Goreng Iga', jenis: 'makanan', harga: 15000},
-                { nomor: '4', nama_menu: 'Nasi Goreng Seafood', jenis: 'makanan', harga: 16000},
-            ],
+            items:[],
             fields:[
                 {
-                key: "nomor",
-                label: "No",
-                sortable: true,
-                sortDirection: "desc",
-                },
-                {
-                    key: 'nama_menu',
+                    key: 'namaMenu',
                     label:'Nama Menu',
                     sortable: true
                 },
@@ -58,9 +57,42 @@ export default {
                 },
                 { key: "actions", label: "Actions" },
             ],
+            cart:[],
 
         }
-    }
+    },
+    mounted() {
+        axios.get(ipBackend + "/menu/listByJenis/makanan", {
+        headers: {
+          accesstoken: localStorage.getItem("token"),
+        },
+      })
+      .then((res) => {
+        
+        res.data.respon.forEach((element, index) => {
+          res.data.respon[index].jumlah = 0
+        });
+        this.cart = res.data.respon;
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+    },
+    methods: {
+      toCart(item) {
+        // this.cart.push(item.item)
+        let dt = item.item
+      
+        this.$emit('kirimCart', dt)
+        // axios.post(ipBackend + "temporary/register", {
+        //   menuId:this.item.id,
+        //   karyawanId: this.localStorage.getItem("idKaryawan"),
+        //   mejaId: this.localStorage.getItem("idMeja"),
+        //   harga: this.item.harga,
+        //   jenis: this.item.jenis
+        // })
+      }
+    },
 }
 </script>
 

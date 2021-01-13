@@ -47,8 +47,7 @@ const routes = [
     name: 'dashboardadmin',
     component: DashboardAdmin,
     meta: {
-      requiresAuth: true,
-      roles: true,
+      requiresAuth: true
     }
   },
   {
@@ -80,8 +79,7 @@ const routes = [
     name: 'dashboardwaitress',
     component: DashboardWaitress,
     meta: {
-      requiresAuth: true,
-      roles:true,
+      requiresAuth: true
     }
   },
   {
@@ -97,8 +95,7 @@ const routes = [
     name: 'dashboardkasir',
     component: DashboardKasir,
     meta: {
-      requiresAuth: true,
-      roles:true,
+      requiresAuth: true
     }
   },
   {
@@ -126,8 +123,7 @@ const routes = [
     }
   },
 ]
-// import axios from "axios";
-// import { ipBackend } from "@/config.js";
+
 const router = new VueRouter({
   mode: "history",
   base: process.env.BASE_URL,
@@ -135,56 +131,23 @@ const router = new VueRouter({
 })
 
 
-// router.beforeEach((to, from, next) => {
-//   if(to.matched.some(record => record.meta.requiresAuth)) {
-//       if (!localStorage.getItem('token') || localStorage.getItem('token')  == "undefined" || localStorage.getItem('token') == '' ) {
-//           next({
-//               path: '/login',
-//               query: { redirect: to.fullPath }
-//           })
-//       } else {
-//         let dataUser = axios.get(ipBackend + '/karyawan/profile/6', {
-//           headers: {
-//             'accessToken': localStorage.getItem('token')
-//           }
-          
-//         })
-//         if (to.matched.some(record => record.meta.roles)) {
-//           if (dataUser.role == 'waitress') {
-//             next({
-//               path: '/dashboardwaitress',
-//               query: { redirect: to.fullPath }
-//           })
-//           }
-//           else if(dataUser.role == 'kasir'){
-//             next({
-//               path: '/dashboardkasir',
-//               query: { redirect: to.fullPath }
-//           })
-//           }
-//           else {
-//             next({
-//               path: '/login',
-//               query: { tujuan: to.fullPath }
-//             })
-//           }
-//         } else {
-//           if (dataUser.role == 'admin') {
-//             next()
-//           }
-//           else {
-//             next({
-//               path: '/login',
-//               query: { tujuan: to.fullPath }
-//             })
-//           }
-  
-//         }
-//       }
-//   } else if (to.matched.some(record => record.meta.guest)) {
-//     next()
-//     } else {
-//       next()
-//     }  
-// })
+router.beforeEach(async (to, from, next) => {
+  if(to.matched.some(record => record.meta.requiresAuth)) {
+    // console.log(localStorage.getItem('token'))
+      if (!localStorage.getItem('token') || localStorage.getItem('token')  == "undefined" || localStorage.getItem('token') == '' ) {
+          next({
+              path: '/login',
+              query: { redirect: to.fullPath }
+          })
+      } else {
+        next()
+ 
+       
+      }
+  } else if (to.matched.some(record => record.meta.guest)) {
+    next()
+    } else {
+      next()
+    }  
+})
 export default router

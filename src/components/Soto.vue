@@ -14,7 +14,7 @@
                 <b-button
                   size="sm"
                   variant="success"
-                  @click="infoQs(row.item, row.index, $event.target)"
+                  @click="toCart(row.item, $event.target)"
                   class="mr-1"
                 >
                   Add to Order
@@ -25,29 +25,16 @@
 </template>
 
 <script>
+import { ipBackend } from "@/config.js";
+import axios from 'axios';
 export default {
     name:'soto',
     data() {
         return {
-            nomor:'',
-            nama_menu:'',
-            harga:'',
-            jenis:'',
-            items:[
-                { nomor: '1', nama_menu: 'Soto Ayam', jenis: 'soto', harga: 12000},
-                { nomor: '2', nama_menu: 'Soto Daging', jenis: 'soto', harga: 13000},
-                { nomor: '3', nama_menu: 'Soto Ayam Pisah', jenis: 'soto', harga: 15000},
-                { nomor: '4', nama_menu: 'Soto Daging Pisah', jenis: 'soto', harga: 16000},
-            ],
+            items:[],
             fields:[
                 {
-                key: "nomor",
-                label: "No",
-                sortable: true,
-                sortDirection: "desc",
-                },
-                {
-                    key: 'nama_menu',
+                    key: 'namaMenu',
                     label:'Nama Menu',
                     sortable: true
                 },
@@ -58,9 +45,28 @@ export default {
                 },
                 { key: "actions", label: "Actions" },
             ],
-
+            cart:[],
         }
-    }
+    },
+    mounted() {
+        axios.get(ipBackend + "/menu/listByJenis/soto", {
+        headers: {
+          accesstoken: localStorage.getItem("token"),
+        },
+      })
+      .then((res) => {
+        this.items = res.data.respon;
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+    },
+    methods: {
+      toCart(item) {
+        this.cart.push(item)
+        console.log(this.cart);
+      }
+    },
 }
 </script>
 

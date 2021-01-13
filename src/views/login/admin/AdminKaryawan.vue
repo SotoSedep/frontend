@@ -49,21 +49,13 @@
               ref="table"
               :items="items"
               :fields="fields"
-              :current-page="currentPage"
-              :per-page="perPage"
-              :filter="filter"
-              :filter-included-fields="filterOn"
-              :sort-by.sync="sortBy"
-              :sort-desc.sync="sortDesc"
-              :sort-direction="sortDirection"
-              @filtered="onFiltered"
               responsive
             >
               <template v-slot:cell(actions)="row">
                 <b-button
                   size="sm"
                   variant="warning"
-                  @click="infoQs(row.item, row.index, $event.target)"
+                  @click="editModal(row.item, row.index, $event.target)"
                   class="mr-1"
                 >
                   Edit
@@ -71,31 +63,20 @@
                 <b-button
                   size="sm"
                   variant="danger"
-                  @click="deleteQs(row.item.id)"
+                  @click="deleteItem(row.item.id)"
                   class="mr-1"
                 >
                   Hapus
                 </b-button>
               </template>
             </b-table>
-            <b-row>
-              <b-col sm="7" md="6" class="my-1">
-                <b-pagination
-                  v-model="currentPage"
-                  :total-rows="totalRows"
-                  :per-page="perPage"
-                  align="fill"
-                  size="sm"
-                  class="my-0"
-                ></b-pagination>
-              </b-col>
-            </b-row>
           </div> 
         </b-col>
       </b-row>
     </b-container>
 
     <!-- MODAL -->
+    <!-- insert -->
     <b-modal
       id="modal-1"
       ref="modal"
@@ -134,7 +115,6 @@
         >
         <b-form-input
             v-model="nama"
-            required
             placeholder="Silahkan Isi Nama"
         ></b-form-input>
         </b-form-group>
@@ -144,7 +124,6 @@
         >
         <b-form-input
             v-model="alamat"
-            required
             placeholder="Silahkan Isi Alamat"
         ></b-form-input>
         </b-form-group>
@@ -155,11 +134,53 @@
         >
         <b-form-input
             v-model="handphone"
-            required
             placeholder="Silahkan Isi No. Handphone"
         ></b-form-input>
         </b-form-group>
         <b-button @click="signup()" variant="primary" class="m-t-15">Register</b-button>
+    </b-modal>
+    <!-- edit -->
+    <b-modal
+      :id="editModals.id"
+      ref="modal"
+      hide-footer
+      hide-header
+    
+    >
+    <h2 class="text-center" style="margin-bottom:10px;">Edit Data Karyawan</h2>
+        <b-form-group label="Pilih Role :" v-slot="{ ariaDescribedby }">
+          <b-form-radio v-model="editModals.content.role" :aria-describedby="ariaDescribedby" name="some-radios" value="waitress">Waitress</b-form-radio>
+          <b-form-radio v-model="editModals.content.role" :aria-describedby="ariaDescribedby" name="some-radios" value="kasir">Kasir</b-form-radio>
+        </b-form-group>
+  
+        <b-form-group 
+            label="Nama" 
+        >
+        <b-form-input
+            v-model="editModals.content.nama"
+            placeholder="Silahkan Isi Nama"
+        ></b-form-input>
+        </b-form-group>
+
+        <b-form-group 
+            label="Alamat" 
+        >
+        <b-form-input
+            v-model="editModals.content.alamat"
+            placeholder="Silahkan Isi Alamat"
+        ></b-form-input>
+        </b-form-group>
+
+
+        <b-form-group 
+            label="No Handphone" 
+        >
+        <b-form-input
+            v-model="editModals.content.handphone"
+            placeholder="Silahkan Isi No. Handphone"
+        ></b-form-input>
+        </b-form-group>
+        <b-button @click="editData()" variant="primary" class="m-t-15">Simpan</b-button>
     </b-modal>
   </div>
 </template>
@@ -175,7 +196,6 @@ import { ipBackend } from "@/config.js";
         },
     data() {
       return {
-        nomor:'',
         username: '',
         password: '',
         nama: '',
@@ -183,14 +203,20 @@ import { ipBackend } from "@/config.js";
         role: null,
         roleop: [{ text: 'Silahkan Pilih', value: null }, 'Waitress', 'Kasir'],
         handphone: '',
-        items: [
-          { nomor: '1', username: 'puka', nama: 'Satrio Purbo W', alamat: 'durian utara', handphone: '0821321321', role: 'Waitress'},
-          { nomor: '2', username: 'adhit', nama: 'Adhitya T', alamat: 'durian utara', handphone: '0821321321', role: 'Waitress'},
-          { nomor: '3', username: 'gembel', nama: 'Bhagas', alamat: 'durian utara', handphone: '0821321321', role: 'Kasir'},
-        ],
+        // editnama:'',
+        // editalamat:'',
+        // editrole:'',
+        // edithandphone:'',
+        idEdit: '',
+        items: [],
+        editModals: {
+          id: "editModal",
+          title: "",
+          content: "",
+        },
         fields: [
           {
-          key: "nomor",
+          key: "id",
           label: "No",
           sortable: true,
           sortDirection: "desc",
@@ -222,16 +248,20 @@ import { ipBackend } from "@/config.js";
           },
           { key: "actions", label: "Actions" },
           ],
-        totalRows: 1,
-        currentPage: 1,
-        perPage: 5,
-        pageOptions: [5, 10, 15, 50, 100],
-        sortBy: "",
-        sortDesc: false,
-        sortDirection: "asc",
-        filter: null,
-        filterOn: [],
       }
+    },
+    mounted() {
+        axios.get(ipBackend + "/karyawan/all", {
+        headers: {
+          accesstoken: localStorage.getItem("token"),
+        },
+      })
+      .then((res) => {
+        this.items = res.data.respon;
+      })
+      .catch((err) => {
+        console.log(err);
+      });
     },
     methods: {
 
@@ -252,19 +282,77 @@ import { ipBackend } from "@/config.js";
                 nama:vm.nama,
                 alamat:vm.alamat,
                 role:vm.role,
-                handphone:vm.handphone
-            })
+                handphone:vm.handphone,
+            },
+            {
+              headers: {
+              accesstoken: localStorage.getItem("token"),
+            },
+            },
+            )
             .then(res => {
                 console.log(res.data)
-                alert("Berhasil Mengisi Jawaban");
+                alert("Sukses Karyawan Telah Terdaftar");
                 vm.$nextTick(() => {
-                vm.$bvModal.hide('modal-prevent-closing')
+                vm.$bvModal.hide('modal-1')
               })
             })
             .catch(err => {
                 console.log(err)
             })
-        }
+        },
+      editModal(item, index, button) {
+            this.editModals.content = item;
+            this.idEdit = item.id;
+            this.nama = item.nama;
+            this.alamat = item.alamat;
+            this.role = item.role;
+            this.handphone = item.handphone;
+            this.$root.$emit("bv::show::modal", this.editModals.id, button);
+            console.log(this.idEdit);
+      },
+      editData() {
+            let vm = this;
+            axios.post(ipBackend + "/karyawan/update/" + this.idEdit, {
+                  nama: this.editModals.content.nama,
+                  alamat: this.editModals.content.alamat,
+                  role: this.editModals.content.role,
+                  handphone: this.editModals.content.handphone,
+                },
+                {
+                  headers: {
+                    accesstoken: localStorage.getItem("token"),
+                  },
+                }
+              )
+              .then((res) => {
+                console.log(res.data, 'ini responyaaaaaaaaaaaaaaaa');
+                alert("Berhasil Mengedit Data");
+                let idNew = this.items.findIndex((o) => o.id === this.idEdit);
+                vm.items[idNew] = vm.editModals.content;
+                this.$root.$emit("bv::hide::modal", "editModal");
+              })
+              .catch((err) => {
+                console.log(err);
+              });
+      },
+      deleteItem(idData) {
+              axios.delete(ipBackend + "/karyawan/delete/" + idData, {
+                  headers: {
+                    accesstoken: localStorage.getItem("token"),
+                  },
+                })
+                .then((res) => {
+                  console.log(res.data);
+                  alert("berhasil");
+                  let idDelete = this.items.findIndex((o) => o.id === idData);
+                  this.items.splice(idDelete, 1);
+                  this.$root.$emit("bv::hide::modal");
+                })
+                .catch(function (error) {
+                  console.log(error);
+                });
+    },
     }
   }
 </script>

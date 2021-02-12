@@ -1,37 +1,20 @@
 <template>
-  <div id="dashboardadmin">
-    <myheader></myheader>
-    <b-container class="bv-example-row">
-      <b-row class="d-none d-sm-block">
-        <b-col xs="12" sm="12" md="10" lg="10" offset-md="1" offset-lg="1">
-            <b-row>
-              <b-col md="12">
-                <h3 class="text-center m-t-0 m-b-0" style="margin-top:30px;">
-                  <strong>Pilih Nomor Meja</strong>
-                </h3>
-              </b-col>
-            </b-row>
-            <b-table
-              show-empty
-              borderless
-              hover
-              ref="table"
-              :items="items"
-              :fields="fields"
-              responsive
-              style="width:600px; text-align:center;"
-            >
-              <template v-slot:cell(actions)="row">
-                <b-button
-                  size="sm"
-                  variant="success"
-                  @click="goMenu(row.item)"
-                  class="mr-1"
-                >
-                  Add to Order
-                </b-button>
-              </template>
-            </b-table>
+  <div id="dashboardwaitress">
+    <headerwaitress></headerwaitress>
+    <b-container fluid>
+      <b-row>
+        <b-col>
+            <div class="tabs" style="display:flex;align-items:center;justify-content:center">
+                    <b-button variant="primary" style="margin:10px;" :class="isActive === 0? 'is-active': ''" @click="isActive = 0">Lantai 1</b-button>
+                    <b-button variant="primary" style="margin:10px;" :class="isActive === 1? 'is-active': ''" @click="isActive = 1">Lantai 2</b-button>
+      
+                
+            </div>
+            <div class="content">
+                <div class="wrapper">
+                    <component :is="lantai[isActive]"></component>
+                </div>                      
+            </div>
         </b-col>
       </b-row>
     </b-container>
@@ -40,22 +23,24 @@
 </template>
 
 <script>
-import myheader from "../../../components/Header"
+import headerwaitress from "../../../components/HeaderWaitress"
+import lantai1 from "../../../components/Lantai1"
+import lantai2 from "../../../components/Lantai2"
 import axios from 'axios';
 import { ipBackend } from "@/config.js";
 export default {
     name:"dashboardwaitress",
     components: {
-    myheader,
-  },
+    headerwaitress,
+    },
   data() {
     return {
       items:[],
-      // menu: {
-      //     idMeja: "menu",
-      //     title: "",
-      //     content: "",
-      //   },
+      lantai: [
+              lantai1,
+              lantai2
+            ],
+            isActive: 0,
       fields:[
         {
           key: 'nomorMeja',

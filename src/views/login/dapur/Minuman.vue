@@ -1,7 +1,7 @@
 <template>
   <div id="dapurminuman">
       <headerdapur></headerdapur>
-      <b-container>
+      <b-container fluid>
           <b-row>
         <b-col md="12" style="margin-top: 60px; margin-bottom: 60px">
           <div class="box">
@@ -13,59 +13,32 @@
               </b-col>
             </b-row>
 
-            <b-row class="m-t-15">
-              <b-col md="12">
-                <b-breadcrumb>
-                  <b-breadcrumb-item>
-                    <router-link :to="'dashboardadmin'">
-                      <b-icon
-                        icon="house-fill"
-                        scale="1.25"
-                        shift-v="1.25"
-                        aria-hidden="true"
-                      ></b-icon>
-                      Dashboard
-                    </router-link>
-                  </b-breadcrumb-item>
-                  <b-breadcrumb-item active
-                    >Pesanan Soto Sedeep</b-breadcrumb-item
-                  >
-                </b-breadcrumb>
-              </b-col>
-            </b-row>
-
-            <b-table
-              show-empty
-              bordered
-              hover
-              ref="table"
-              :items="items"
-              :fields="fields"
-              responsive
-            >
-              <template v-slot:cell(actions)="row">
-                <b-button
-                  size="sm"
-                  variant="primary"
-                  @click="infoQs(row.item, row.index, $event.target)"
-                  class="mr-1"
-                >
-                  Done
-                </b-button>                
-              </template>
-            </b-table>
             <b-row>
-              <b-col sm="7" md="6" class="my-1">
-                <b-pagination
-                  v-model="currentPage"
-                  :total-rows="totalRows"
-                  :per-page="perPage"
-                  align="fill"
-                  size="sm"
-                  class="my-0"
-                ></b-pagination>
+              <b-col md="12">
+                <b-table
+                  show-empty
+                  borderless
+                  hover
+                  ref="table"
+                  :items="items"
+                  :fields="fields"
+                  
+                  style='font-size:25px; width:100%; text-align:center;'
+                >
+                  <template v-slot:cell(actions)="row">
+                    <b-button
+                      size="lg"
+                      variant="primary"
+                      @click="kirimKasir(row.item, row.index, $event.target)"
+                      class="mr-1"
+                    >
+                      Done
+                    </b-button>                
+                  </template>
+                </b-table>
               </b-col>
             </b-row>
+            
           </div> 
         </b-col>
       </b-row>
@@ -75,6 +48,8 @@
 
 <script>
 import headerdapur from "../../../components/Headerdapur";
+import { ipBackend } from "@/config.js";
+import axios from 'axios';
 export default {
     name: "dapurminuman",
     components: {
@@ -82,39 +57,82 @@ export default {
     },
     data(){
         return {
-            nomor:'',
-            nomorMeja:'',
-            nama_menu:'',
-            jumlah:'',
             fields: [
                 {
-                    key: "nomor",
-                    label: "No",
-                    sortable: true,
-                    sortDirection: "desc",
-                },
-                {
-                    key: 'nomorMeja',
+                    key: 'mejaId',
                     label:'Nomor Meja',
-                    sortable: true
+                    
                 },
                 {
-                    key: 'nama_menu',
+                    key: 'menu.namaMenu',
                     label:'Nama Menu',
-                    sortable: true
+                   
                 },
                 {
                     key: 'jumlah',
                     label:'Jumlah',
-                    sortable: true
+                   
+                },
+                {
+                    key: 'keterangan',
+                    label:'Keterangan',
+                    
                 },
                 { key: "actions", label: "Actions" },
             ],
-            items: [
-                { nomor: '1', nomorMeja: '1', nama_menu: 'Es Teh', jumlah: '2'},
-                { nomor: '2', nomorMeja: '1', nama_menu: 'Es Jeruk', jumlah: '3'}, 
-            ],
+            items: [],
         }
+    },
+    mounted() {
+        this.loadData()
+    },
+    sockets: {
+      connect: function(){
+        console.log('ada yg connect')
+      },
+      refresh: function(){
+         this.loadData()
+        
+      }
+    },
+    methods: {
+      loadData(){
+        let vm = this;
+        axios.get(ipBackend + "/temporary/listByJenis/minuman")
+      .then((res) => {
+        if(res.data.respon.length>0){
+          res.data.respon.forEach((element, index) => {
+          if(res.data.respon[index].status == 0){
+            this.items = res.data.respon
+          }
+        });
+        }else{
+          vm.items=[]
+        }
+        
+        console.log(this.items,"itemnya")
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+      },
+      kirimKasir(a,b){
+        let menu = a
+        let vm = this;
+       
+        axios.post(ipBackend + "/temporary/update/" + menu.id, {
+          status:1,
+          mejaId:vm.items[b].mejaId
+        })
+          .then(res => {
+           
+            vm.items.splice(b, 1);
+              console.log(res)  
+          })
+          .catch(err => {
+              console.log(err)
+          })
+      }
     }
 }
 </script>

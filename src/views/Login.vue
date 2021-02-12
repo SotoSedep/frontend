@@ -60,11 +60,10 @@ export default {
                 
             })
             .then(res => {
-              console.log(res.data[0], res.data[2])
-              localStorage.setItem('token',res.data[0].token)
-              localStorage.setItem('idKaryawan',res.data[1].id)
-              // console.log(localStorage)
               if(res.data.length){
+                localStorage.setItem('token',res.data[0].token)
+                localStorage.setItem('role',res.data[2].role)
+                localStorage.setItem('idKaryawan',res.data[1].id)
                 if(res.data[2].role == "admin"){
                   vm.$router.push({ path: "/dashboardadmin" });
                 }
@@ -74,12 +73,14 @@ export default {
                 else if(res.data[2].role == "kasir"){
                   vm.$router.push({ path: "/dashboardkasir" });
                 }
-                alert("Selamat anda telah login");
+                
+                this.$swal('Selamat Anda Telah Login');
                 
               }
               else{
-                alert(res.data.message)
+                this.$swal(res.data.message);
               }
+              
             })
             .catch(err => {
                 console.log(err, 'ini eror')

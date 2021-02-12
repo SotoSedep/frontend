@@ -1,38 +1,72 @@
 <template>
   <div id="makanan">
-      <b-table
+    <b-container>
+      <b-row>
+        <b-col md="12" class="my-1">
+        <b-form-group
+          label="Filter"
+          label-for="filter-input"
+          label-cols-sm="3"
+          label-align-sm="right"
+          label-size="sm"
+          class="mb-0"
+        >
+          <b-input-group size="sm">
+            <b-form-input
+              id="filter-input"
+              v-model="filter"
+              type="search"
+              placeholder="Type to Search"
+            ></b-form-input>
+
+            <b-input-group-append>
+              <b-button :disabled="!filter" @click="filter = ''">Clear</b-button>
+            </b-input-group-append>
+          </b-input-group>
+        </b-form-group>
+      </b-col>
+      </b-row>
+      <b-row>
+        <b-col md="12">
+          <b-table
               show-empty
               borderless
               hover
-              ref="tablee"
               :items="cart"
               :fields="fields"
               responsive
-              style="width:600px;"
+              :filter="filter"
+              :filter-included-fields="filterOn"
+              @filtered="onFiltered"
+              style="width:100%;"
             >
               <template v-slot:cell(actions)="roww">
+                <b-input-group style="width:100px">
+                        <b-input-group-prepend>
+                        <b-btn variant="outline-info" @click="roww.item.jumlah--">-</b-btn>
+                        </b-input-group-prepend>
+
+                        <b-form-input style="width:5px;" v-model="roww.item.jumlah"></b-form-input>
+
+                        <b-input-group-append>
+                        <b-btn variant="outline-secondary" @click="roww.item.jumlah++">+</b-btn>
+                        </b-input-group-append>
+                </b-input-group>
+
                 <b-button
                   size="sm"
                   variant="success"
                   @click="toCart(roww, $event.target)"
                   class="mr-1"
+                  style="margin:10px; justify-content:center; align-items:center; display:flex;"
                 >
                   Add to Order
                 </b-button>
-
-                <b-input-group style="width:50px; display:flex;">
-                        <b-input-group-prepend>
-                        <b-btn variant="outline-info" @click="roww.item.jumlah--">-</b-btn>
-                        </b-input-group-prepend>
-
-                        <b-form-input style="width:10px;" v-model="roww.item.jumlah"></b-form-input>
-
-                        <b-input-group-append>
-                        <b-btn variant="outline-secondary" @click="roww.item.jumlah++">+</b-btn>
-                        </b-input-group-append>
-                    </b-input-group>
               </template>
-            </b-table>
+          </b-table>
+        </b-col>
+      </b-row>
+    </b-container>
   </div>
 </template>
 
@@ -58,7 +92,8 @@ export default {
                 { key: "actions", label: "Actions" },
             ],
             cart:[],
-
+            filter: null,
+            filterOn: [],
         }
     },
     mounted() {
@@ -81,9 +116,20 @@ export default {
     methods: {
       toCart(item) {
         // this.cart.push(item.item)
-        let dt = item.item
-      
-        this.$emit('kirimCart', dt)
+
+              let x ={}
+        x.id = item.item.id
+        x.harga = item.item.harga
+        x.jenis = item.item.jenis
+        x.jumlah = item.item.jumlah
+        x.namaMenu = item.item.namaMenu
+        x.keterangan = ''
+        if(x.jumlah !== 0){
+          this.$emit('kirimCart', x)
+        }
+        else{
+          alert('Jumlah order minimal 1')
+        }
         // axios.post(ipBackend + "temporary/register", {
         //   menuId:this.item.id,
         //   karyawanId: this.localStorage.getItem("idKaryawan"),
@@ -91,6 +137,11 @@ export default {
         //   harga: this.item.harga,
         //   jenis: this.item.jenis
         // })
+      },
+      onFiltered(filteredItems) {
+        // Trigger pagination to update the number of buttons/pages due to filtering
+        this.totalRows = filteredItems.length
+        
       }
     },
 }

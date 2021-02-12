@@ -1,6 +1,6 @@
 <template>
   <div id="adminkaryawan">
-    <myheader></myheader>
+    <headeradmin></headeradmin>
     <b-container>
       <b-row>
         <b-col md="12" style="margin-top: 60px; margin-bottom: 60px">
@@ -63,7 +63,7 @@
                 <b-button
                   size="sm"
                   variant="danger"
-                  @click="deleteItem(row.item.id)"
+                  @click="handleClick(row.item.id)"
                   class="mr-1"
                 >
                   Hapus
@@ -186,13 +186,13 @@
 </template>
 
 <script>
-import myheader from "../../../components/Header";
+import headeradmin from "../../../components/HeaderAdmin";
 import axios from 'axios';
 import { ipBackend } from "@/config.js";
  export default {
      name: "adminkaryawan",
         components: {
-          myheader,
+          headeradmin,
         },
     data() {
       return {
@@ -292,7 +292,7 @@ import { ipBackend } from "@/config.js";
             )
             .then(res => {
                 console.log(res.data)
-                alert("Sukses Karyawan Telah Terdaftar");
+                this.$swal("Sukses Karyawan Telah Terdaftar");
                 vm.$nextTick(() => {
                 vm.$bvModal.hide('modal-1')
               })
@@ -327,7 +327,7 @@ import { ipBackend } from "@/config.js";
               )
               .then((res) => {
                 console.log(res.data, 'ini responyaaaaaaaaaaaaaaaa');
-                alert("Berhasil Mengedit Data");
+                this.$swal("Berhasil Mengedit Data");
                 let idNew = this.items.findIndex((o) => o.id === this.idEdit);
                 vm.items[idNew] = vm.editModals.content;
                 this.$root.$emit("bv::hide::modal", "editModal");
@@ -344,7 +344,7 @@ import { ipBackend } from "@/config.js";
                 })
                 .then((res) => {
                   console.log(res.data);
-                  alert("berhasil");
+                  this.$swal("berhasil");
                   let idDelete = this.items.findIndex((o) => o.id === idData);
                   this.items.splice(idDelete, 1);
                   this.$root.$emit("bv::hide::modal");
@@ -353,6 +353,26 @@ import { ipBackend } from "@/config.js";
                   console.log(error);
                 });
     },
+    handleClick(idData){
+                this.$confirm(
+                    {
+                    message: `Yakin ingin menghapus?`,
+                    button: {
+                        no: 'Tidak',
+                        yes: 'Ya'
+                    },
+                    /**
+                     * Callback Function
+                     * @param {Boolean} confirm 
+                     */
+                    callback: confirm => {
+                        if (confirm) {
+                        this.deleteItem(idData)
+                        }
+                    }
+                    }
+                )
+            }
     }
   }
 </script>

@@ -10,6 +10,7 @@
           </b-col>
           <b-col md="12" xs="12"> 
             <img src="../assets/soto3.jpeg" width="100%">
+            
           </b-col>
         </b-row>
       </b-container>
@@ -30,10 +31,9 @@ export default {
 </script>
 
 <style scoped>
-  #home{
+  #home {
+  
   background-color: #282828;
-  display: flex;
-  flex-wrap: wrap;
-  /* background-position: 100% ; */
+
 }
 </style>

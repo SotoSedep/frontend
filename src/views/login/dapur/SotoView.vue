@@ -1,8 +1,8 @@
 <template>
-  <div id="dapurmakanan">
+  <div id="sotoview">
       <headerdapur></headerdapur>
-      <b-container fluid>
-          <b-row>
+      <b-container>
+        <b-row>
         <b-col md="12" style="margin-top: 60px; margin-bottom: 60px">
           <div class="box">
             <b-row>
@@ -14,29 +14,27 @@
             </b-row>
             <b-row>
               <b-col md="12">
-                <b-table
-                  show-empty
-                  borderless
-                  hover
-                  ref="table"
-                  :items="items"
-                  :fields="fields"
-                  
-                  style='font-size:25px; width:100%; text-align:center;'
-                >
-                  <template v-slot:cell(actions)="row">
-                    <b-button
-                      size="lg"
-                      variant="primary"
-                      @click="kirimKasir(row.item, row.index, $event.target)"
-                      class="mr-1"
-                    >
-                      Done
-                    </b-button>                
-                  </template>
-                </b-table>
+                <table class="table">
+                  <thead>
+                    <tr>
+                      <th >Nomor Meja</th>
+                      <th >Nama Menu</th>
+                      <th >Jumlah</th>
+                      <th >Keterangan</th>
+                    </tr>
+                  </thead>
+                  <tbody >
+                    <tr v-for="(item,i) in items" :key="i">
+                      <td >{{ item.mejaId }}</td> 
+                      <td >{{ item.menu.namaMenu}}</td>
+                      <td >{{ item.jumlah}}</td> 
+                      <td >{{ item.keterangan}}</td> 
+                    </tr>
+                  </tbody>
+                </table>
               </b-col>
             </b-row>
+            
             
           </div> 
         </b-col>
@@ -50,7 +48,7 @@ import headerdapur from "../../../components/Headerdapur";
 import { ipBackend } from "@/config.js";
 import axios from 'axios';
 export default {
-    name: "dapurmakanan",
+    name: "sotoview",
     components: {
     headerdapur,
     },
@@ -60,22 +58,22 @@ export default {
                 {
                     key: 'mejaId',
                     label:'Nomor Meja',
-                    
+                    sortable: true
                 },
                 {
                     key: 'menu.namaMenu',
                     label:'Nama Menu',
-                    
+                    sortable: true
                 },
                 {
                     key: 'jumlah',
                     label:'Jumlah',
-                    
+                    sortable: true
                 },
                 {
                     key: 'keterangan',
                     label:'Keterangan',
-                    
+                    sortable: true
                 },
                 { key: "actions", label: "Actions" },
             ],
@@ -90,53 +88,42 @@ export default {
         console.log('ada yg connect')
       },
       refresh: function(){
-         this.loadData() 
-      },
-
+         this.loadData()
+        
+      }
     },
     methods: {
       loadData(){
-        let vm = this;
-        axios.get(ipBackend + "/temporary/listByJenis/makanan")
+        axios.get(ipBackend + "/temporary/listByJenis/soto")
       .then((res) => {
-        if(res.data.respon.length>0){
-          res.data.respon.forEach((element, index) => {
+        res.data.respon.forEach((element, index) => {
           if(res.data.respon[index].status == 0){
             this.items = res.data.respon
           }
         });
-        }else{
-          vm.items=[]
-        }
-        
         console.log(this.items,"itemnya")
       })
       .catch((err) => {
         console.log(err);
       });
       },
-      kirimKasir(a,b){
-        let menu = a
-        let vm = this;
-       
-        axios.post(ipBackend + "/temporary/update/" + menu.id, {
-          status:1,
-          mejaId:vm.items[b].mejaId
-        })
-          .then(res => {
-           
-            vm.items.splice(b, 1);
-              console.log(res) 
-              this.$socket.emit('refresh') 
-          })
-          .catch(err => {
-              console.log(err)
-          })
-      }
+      
     }
 }
 </script>
 
-<style>
+<style scoped>
+
+  table thead tr th{
+    /* width: 100%; */
+    text-align: center;
+    font-size:30px;
+  }
+  table tbody tr td{
+    /* width: 100%; */
+    text-align: center;
+    font-size:30px;
+  }
+  
 
 </style>

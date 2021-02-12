@@ -1,80 +1,52 @@
 <template>
   <div id="dashboardkasir">
-      <myheader></myheader>
-      <b-container>
-          <b-row>
-        <b-col md="12" style="margin-top: 60px; margin-bottom: 60px">
+      <headerkasir></headerkasir>
+      <b-container style="display:flex">
+        
+      <b-row>
+        <b-col md=12>
+          <div class="tabs" style="display:flex;align-items:center;justify-content:center">
+            <b-button variant="primary" style="margin:10px;" :class="isActive === 0? 'is-active': ''" @click="isActive = 0">Lantai 1</b-button>
+            <b-button variant="primary" style="margin:10px;" :class="isActive === 1? 'is-active': ''" @click="isActive = 1">Lantai 2</b-button>  
+          </div>
+          <div class="content">
+            <div class="wrapper">
+                <component :is="lantai[isActive]"></component>
+            </div>                      
+          </div>
+        </b-col>
+      </b-row>
+      <b-row style="margin-left:20px">
+        <b-col md="12" style="margin-top: 20px; margin-bottom: 20px">
           <div class="box">
             <b-row>
-              <b-col md="12">
+              <b-col>
                 <h3 class="text-center m-t-0 m-b-0">
                   <strong>DATA MEJA SOTO SEDEEP</strong>
                 </h3>
               </b-col>
             </b-row>
-
-            <b-row class="m-t-15">
-              <b-col md="12">
-                <b-breadcrumb>
-                  <b-breadcrumb-item>
-                    <router-link :to="'dashboardadmin'">
-                      <b-icon
-                        icon="house-fill"
-                        scale="1.25"
-                        shift-v="1.25"
-                        aria-hidden="true"
-                      ></b-icon>
-                      Dashboard
-                    </router-link>
-                  </b-breadcrumb-item>
-                  <b-breadcrumb-item active
-                    >Data Meja Soto Sedeep</b-breadcrumb-item
-                  >
-                </b-breadcrumb>
-              </b-col>
-            </b-row>
-
             <b-table
               show-empty
-              bordered
+              borderless
               hover
               ref="table"
-              :items="items"
+              :items="itemsData"
               :fields="fields"
-              @filtered="onFiltered"
               responsive
+              style=" text-align:center;"
             >
               <template v-slot:cell(actions)="row">
                 <b-button
                   size="sm"
                   variant="primary"
-                  @click="infoQs(row.item, row.index, $event.target)"
+                  @click="detailItem(row.item, row.index, $event.target)"
                   class="mr-1"
                 >
                   Detail
                 </b-button>
-                <b-button
-                  size="sm"
-                  variant="success"
-                  @click="deleteQs(row.item.id)"
-                  class="mr-1"
-                >
-                  Print
-                </b-button>
               </template>
             </b-table>
-            <b-row>
-              <b-col sm="7" md="6" class="my-1">
-                <b-pagination
-                  v-model="currentPage"
-                  :total-rows="totalRows"
-                  :per-page="perPage"
-                  align="fill"
-                  size="sm"
-                  class="my-0"
-                ></b-pagination>
-              </b-col>
-            </b-row>
           </div> 
         </b-col>
       </b-row>
@@ -83,39 +55,103 @@
 </template>
 
 <script>
-import myheader from "../../../components/Header";
+import headerkasir from "../../../components/HeaderKasir";
+import lantai1 from "../../../components/Lantai1"
+import lantai2 from "../../../components/Lantai2"
+import axios from 'axios';
+import { ipBackend } from "@/config.js";
 export default {
     name: "dashboardkasir",
     components: {
-    myheader,
+    headerkasir,
     },
     data(){
         return {
-            nomor:'',
-            nomorMeja:'',
-            fields: [
+            items:[],
+            itemsData:[],
+            fields:[
                 {
-                    key: "nomor",
-                    label: "No",
-                    sortable: true,
-                    sortDirection: "desc",
-                },
-                {
-                    key: 'nomorMeja',
+                    key: 'DISTINCT',
                     label:'Nomor Meja',
-                    sortable: true
+
                 },
                 { key: "actions", label: "Actions" },
             ],
-            items: [
-                { nomor: '1', nomorMeja: 'Meja 1'},
-                { nomor: '2', nomorMeja: 'Meja 2'},
+            abang:'abang',
+            kuning:'kuning',
+            lantai: [
+              lantai1,
+              lantai2
             ],
+            isActive: 0,
         }
+    },
+    mounted() {
+        this.loadData()
+    },
+  sockets: {
+      connect: function(){
+        console.log('ada yg connect')
+      },
+      refresh: function(){
+        this.loadData()
+      }
+    },
+    methods: {
+      loadData(){
+        axios.get(ipBackend + "/temporary/dashboardkasir", {
+        headers: {
+          accesstoken: localStorage.getItem("token"),
+        },
+      })
+      .then((res) => {       
+        console.log(res, "ini resnyaa")
+        this.itemsData = res.data.respon;
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+      },
+      detailItem(item) {
+            let mejaId = item.DISTINCT;
+            localStorage.setItem('mejaId', mejaId);
+            this.$router.push({ path: "/detailkasir" });
+            console.log(mejaId);
+      },
     }
 }
 </script>
 
-<style>
-
+<style scoped>
+  .avatar1 {
+        margin:20px;
+        font-size:30px;
+        font-weight: bold;
+        background-color:green;
+    }
+    .kuning {
+        margin:20px;
+        font-size:30px;
+        font-weight: bold;
+        color:black;
+        background-color:yellow !important;
+    }
+    .abang {
+        margin:20px;
+        font-size:30px;
+        font-weight: bold;
+        background-color:red;
+    }
+    .avatar2 {
+        margin:20px;
+        font-size:30px;
+        font-weight: bold;
+        background-color:green;
+    }
+    .avatar3 {
+        margin:20px;
+        width:200px;height:60px;
+        font-size:30px;
+        font-weight: bold;
+    }
 </style>

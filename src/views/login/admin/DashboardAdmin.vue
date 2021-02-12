@@ -1,6 +1,6 @@
 <template>
   <div id="dashboardadmin">
-    <myheader></myheader>
+    <headeradmin></headeradmin>
     <b-container class="bv-example-row">
       <b-row class="d-none d-sm-block">
         <b-col xs="12" sm="12" md="10" lg="10" offset-md="1" offset-lg="1">
@@ -67,11 +67,11 @@
 </template>
 
 <script>
-import myheader from "../../../components/Header"
+import headeradmin from "../../../components/HeaderAdmin"
 export default {
     name:"dashboardadmin",
     components: {
-    myheader,
+    headeradmin,
   },
   data(){
     return {

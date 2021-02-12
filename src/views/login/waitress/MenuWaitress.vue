@@ -1,6 +1,6 @@
 <template>
   <div id="menuwaitress">
-      <myheader></myheader>
+      <headerwaitress></headerwaitress>
       <b-container>
             <b-row>
                 <b-col md="12" style="margin-top: 60px; margin-bottom: 60px">
@@ -15,50 +15,78 @@
                 </div>
                 </b-col>    
             </b-row>
-
-            <div class="tabs" style="width:500px; display:flex;">
-                    <b-button variant="primary" style="margin:10px;" :class="isActive === 0? 'is-active': ''" @click="isActive = 0">Soto</b-button>
-                    <b-button variant="primary" style="margin:10px;" :class="isActive === 1? 'is-active': ''" @click="isActive = 1">Makanan</b-button>
-                    <b-button variant="primary" style="margin:10px;" :class="isActive === 2? 'is-active': ''" @click="isActive = 2">Minuman</b-button>
-                
-            </div>
-            
-            <div class="content">
-                <div class="wrapper">
-                    <component :is="menu[isActive]" @kirimCart="tambahkanKecart"></component>
-                </div>
-
+            <b-row>
+                <b-col cols lg="12">
+                    <b-form-group 
+                label="Nama Pemesan" 
+                >
+                  <b-form-input
+                    v-model="pemesan"
+                    required
+                    placeholder="Silahkan isi Nama"
+                    
+                  ></b-form-input>
+                </b-form-group>
                 <div class="cart">
-                    <table>
-                        <tr v-for="(itm, idx) in itemCart" :key="idx">
-                            <td>{{itm.namaMenu}}</td>
-                            
-                        </tr>
-                         <tr v-for="(itm, idx) in jumlahh" :key="idx">
-                            
-                            <td>{{itm.jumlah}}</td>
-                        </tr>
-                    </table>
-                
-                <b-button @click="signup()" variant="primary" class="m-t-15">Order</b-button>
-                </div>
-            </div>    
+                            <b-table
+                            show-empty
+                            bordered
+                            hover
+                            :items="itemCart"
+                            :fields="fields"
+                            responsive
+                            style=" text-align:center; width:100%;"
+                            >
+                        
+                        <template v-slot:cell(actions)="row">
+                            <b-input-group>
+                                <b-form-input style=" margin-bottom:10px;" type="text" placeholder="Silahkan Isi Keterangan" v-model="row.item.keterangan"></b-form-input>
+                            </b-input-group>
+                            <b-button
+                                size="sm"
+                                variant="danger"
+                                @click="handleClick(row.item.id)"
+                                class="mr-1"
+                                >
+                                Hapus
+                            </b-button>
+                        </template>
+                        
+                        </b-table>
+                        <b-button @click="goDapur()" variant="primary" class="m-t-15" style="width:100px;">Order</b-button>
+                    </div>
+                    <div class="tabs">
+                            <b-button variant="primary" style="margin:10px;" :class="isActive === 0? 'is-active': ''" @click="isActive = 0">Soto</b-button>
+                            <b-button variant="primary" style="margin:10px;" :class="isActive === 1? 'is-active': ''" @click="isActive = 1">Makanan</b-button>
+                            <b-button variant="primary" style="margin:10px;" :class="isActive === 2? 'is-active': ''" @click="isActive = 2">Minuman</b-button>
+                        
+                    </div>
+                    <div class="content">
+                        <div class="wrapper">
+                            <component :is="menu[isActive]" @kirimCart="tambahkanKecart"></component>
+                        </div>                      
+                    </div>  
+                </b-col> 
+            </b-row>
+            
+              
       </b-container>
   </div>
 </template>
 
 <script>
-import myheader from "../../../components/Header";
+import headerwaitress from "../../../components/HeaderWaitress";
 import soto from "../../../components/Soto";
 import makanan from "../../../components/Makanan";
 import minuman from "../../../components/Minuman";
-
+import { ipBackend } from "@/config.js";
+import axios from 'axios';
 export default {
     name:'menuwaitress',
     components: {
-          myheader,
+          headerwaitress,
         },
-    data: function () {
+    data() {
         return {
             menu: [
                 soto,
@@ -66,7 +94,8 @@ export default {
                 minuman
             ],
             isActive: 0,
-            jumlahh:[],
+            pemesan:'',
+            keterangan:'',
             itemCart:[],
             fields:[
                 {
@@ -92,10 +121,73 @@ export default {
     },
     methods: {
             tambahkanKecart(e){
-                console.log(e)
-                this.jumlahh.push(e.jumlah)
-                this.itemCart.push(e)     
-                    
+                // console.log(e, "ini E")
+                this.itemCart.push(e) 
+                console.log(this.itemCart, "ini item")        
+            },
+            deleteItem(idData){
+                let idDelete = this.itemCart.findIndex((o) => o.id === idData);
+                  this.itemCart.splice(idDelete, 1);
+            },
+            goDapur(){
+                let vm = this
+                let items = []
+                // console.log(this.itemCart, 'ini itemcart')
+                vm.itemCart.forEach((item) => {
+                    let menu = {
+                    menuId:item.id,
+                    karyawanId: localStorage.getItem("idKaryawan"),
+                    mejaId: localStorage.getItem("idMeja"),
+                    harga: item.harga,
+                    jenis: item.jenis,
+                    jumlah: item.jumlah,
+                    atasNama: vm.pemesan,
+                    keterangan: item.keterangan
+                }
+                    items.push(menu)  
+                })
+                console.log(items, "ini itemssssss")
+                if(items.length == 0){
+                    this.$swal('Silahkan Isi Orderan')
+                }
+                else{
+                    axios.post(ipBackend + '/temporary/screening', items,
+                {
+                    headers: {
+                        accesstoken: localStorage.getItem("token"),
+                    },
+                })
+                .then(res => {
+                    console.log(res)
+                    this.$swal("Pesanan Diterima");
+                    // this.$socket.emit('refresh')
+                    vm.$router.push({ path: "/dashboardwaitress" });
+                })
+                .catch(err => {
+                    console.log(err)
+                })
+                }
+                
+            },
+            handleClick(idData){
+                this.$confirm(
+                    {
+                    message: `Yakin ingin menghapus?`,
+                    button: {
+                        no: 'Tidak',
+                        yes: 'Ya'
+                    },
+                    /**
+                     * Callback Function
+                     * @param {Boolean} confirm 
+                     */
+                    callback: confirm => {
+                        if (confirm) {
+                        this.deleteItem(idData)
+                        }
+                    }
+                    }
+                )
             }
     }
     
@@ -108,21 +200,10 @@ export default {
         flex-wrap: wrap;
         flex-direction: column;
     }
-    .tabs {
-        display: flex;
-
-        
-    }
-    .content {
-        display: flex;
-        flex-wrap: wrap;
-        flex-direction: row;
+    .cart {
+        margin-bottom: 20px;
     }
     .wrapper {
         padding-top: 10px;
-    }
-    .cart {
-        width: 500px;
-        
     }
 </style>

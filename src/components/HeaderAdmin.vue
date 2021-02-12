@@ -1,5 +1,5 @@
 <template>
-  <div id="myheader">
+  <div id="headeradmin">
     <section class="bgheader">
       <b-container>
         <b-row>
@@ -27,7 +27,9 @@
                 <b-dropdown-item v-on:click="signout()"
                   >Logout</b-dropdown-item
                 >
-                
+                <b-dropdown-item v-on:click="rekap()"
+                  >Lihat Rekap</b-dropdown-item
+                >
               </b-dropdown>
               
             </div>
@@ -42,7 +44,7 @@
 
 
 export default {
-  name: "myheader",
+  name: "headeradmin",
   data() {
     return {};
   },
@@ -53,61 +55,65 @@ export default {
       localStorage.setItem('idMeja', '')
       this.$router.push({ name: "login"})
     },
+    rekap(){
+      
+      this.$router.push({ name: "adminrekap"})
+    },
   }
 };
 </script>
 
 <style scoped>
-#myheader .bgheader {
+#headeradmin .bgheader {
   background-color:rgb(251, 162, 57);
   box-shadow: 0 7px 20px 0 rgba(0, 0, 0, 0.2);
 }
 
-#myheader .bgheader .partone {
+#headeradmin .bgheader .partone {
   display: flex;
   align-items: center;
   height: 10vh;
   width: 100%;
 }
 
-#myheader .bgheader .parttwo {
+#headeradmin .bgheader .parttwo {
   width: 100%;
   height: 10vh;
   display: flex;
   justify-content: flex-end;
   align-items: center;
 }
-#myheader .bgheader .parttwo img {
+#headeradmin .bgheader .parttwo img {
   border-radius: 100%;
 }
-#myheader .bgheader .parttwo .account {
+#headeradmin .bgheader .parttwo .account {
   display: flex;
   height: 8vh;
   align-items: center;
-  padding-bottom: 60px;
+  
   /* background-color: red; */
 }
-#myheader .bgheader .parttwo .accountname {
+#headeradmin .bgheader .parttwo .accountname {
   display: flex;
   flex-direction: column;
   margin-right: 10px;
 }
 
-#myheader .bgheader .parttwo .account :nth-child(1) {
+#headeradmin .bgheader .parttwo .account :nth-child(1) {
   order: 2;
 }
-#myheader .bgheader .parttwo .account :nth-child(2) {
+#headeradmin .bgheader .parttwo .account :nth-child(2) {
   order: 1;
 }
 
-#myheader .bgheader .parttwo .accountname :nth-child(1) {
+#headeradmin .bgheader .parttwo .accountname :nth-child(1) {
   order: 1;
 }
-#myheader .bgheader .parttwo .accountname :nth-child(2) {
+#headeradmin .bgheader .parttwo .accountname :nth-child(2) {
   order: 2;
 }
 
-#myheader .bgheader .parttwo .account h5,
+#headeradmin .bgheader .parttwo .account h5,
 h6 {
   text-align: right;
   color: #2c3e50;

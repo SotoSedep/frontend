@@ -54,7 +54,7 @@ export default {
   display: flex;
   height: 8vh;
   align-items: center;
-  padding-bottom: 60px;
+  
   /* background-color: red; */
 }
 #headerdapur .bgheader .parttwo .accountname {

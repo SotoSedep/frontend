@@ -1,5 +1,5 @@
 <template>
-  <div id="myheader">
+  <div id="headerwaitress">
     <section class="bgheader">
       <b-container>
         <b-row>
@@ -42,7 +42,7 @@
 
 
 export default {
-  name: "myheader",
+  name: "headerwaitress",
   data() {
     return {};
   },
@@ -58,56 +58,56 @@ export default {
 </script>
 
 <style scoped>
-#myheader .bgheader {
+#headerwaitress .bgheader {
   background-color:rgb(251, 162, 57);
   box-shadow: 0 7px 20px 0 rgba(0, 0, 0, 0.2);
 }
 
-#myheader .bgheader .partone {
+#headerwaitress .bgheader .partone {
   display: flex;
   align-items: center;
   height: 10vh;
   width: 100%;
 }
 
-#myheader .bgheader .parttwo {
+#headerwaitress .bgheader .parttwo {
   width: 100%;
   height: 10vh;
   display: flex;
   justify-content: flex-end;
   align-items: center;
 }
-#myheader .bgheader .parttwo img {
+#headerwaitress .bgheader .parttwo img {
   border-radius: 100%;
 }
-#myheader .bgheader .parttwo .account {
+#headerwaitress .bgheader .parttwo .account {
   display: flex;
   height: 8vh;
   align-items: center;
-  padding-bottom: 60px;
+  
   /* background-color: red; */
 }
-#myheader .bgheader .parttwo .accountname {
+#headerwaitress .bgheader .parttwo .accountname {
   display: flex;
   flex-direction: column;
   margin-right: 10px;
 }
 
-#myheader .bgheader .parttwo .account :nth-child(1) {
+#headerwaitress .bgheader .parttwo .account :nth-child(1) {
   order: 2;
 }
-#myheader .bgheader .parttwo .account :nth-child(2) {
+#headerwaitress .bgheader .parttwo .account :nth-child(2) {
   order: 1;
 }
 
-#myheader .bgheader .parttwo .accountname :nth-child(1) {
+#headerwaitress .bgheader .parttwo .accountname :nth-child(1) {
   order: 1;
 }
-#myheader .bgheader .parttwo .accountname :nth-child(2) {
+#headerwaitress .bgheader .parttwo .accountname :nth-child(2) {
   order: 2;
 }
 
-#myheader .bgheader .parttwo .account h5,
+#headerwaitress .bgheader .parttwo .account h5,
 h6 {
   text-align: right;
   color: #2c3e50;

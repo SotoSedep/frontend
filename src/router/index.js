@@ -7,12 +7,17 @@ import DashboardAdmin from '../views/login/admin/DashboardAdmin.vue'
 import AdminKaryawan from '../views/login/admin/AdminKaryawan.vue'
 import AdminMeja from '../views/login/admin/AdminMeja.vue'
 import AdminMenu from '../views/login/admin/AdminMenu.vue'
+import AdminRekap from '../views/login/admin/AdminRekap.vue'
 import DashboardWaitress from '../views/login/waitress/DashboardWaitress.vue'
+import MejaWaitress from '../views/login/waitress/MejaWaitress.vue'
 import MenuWaitress from '../views/login/waitress/MenuWaitress.vue'
 import DashboardKasir from '../views/login/kasir/DashboardKasir.vue'
+import DetailKasir from '../views/login/kasir/DetailKasir.vue'
+import RekapKasir from '../views/login/kasir/RekapKasir.vue'
 import DapurSoto from '../views/login/dapur/Soto.vue'
 import DapurMakanan from '../views/login/dapur/Makanan.vue'
 import DapurMinuman from '../views/login/dapur/Minuman.vue'
+import SotoView from '../views/login/dapur/SotoView.vue'
 
 
 Vue.use(VueRouter)
@@ -40,6 +45,7 @@ const routes = [
     component: Register,
     meta: {
       requiresAuth: true,
+      role : 'admin'
     }
   },
   {
@@ -47,7 +53,8 @@ const routes = [
     name: 'dashboardadmin',
     component: DashboardAdmin,
     meta: {
-      requiresAuth: true
+      requiresAuth: true,
+      role : 'admin'
     }
   },
   {
@@ -56,6 +63,7 @@ const routes = [
     component: AdminKaryawan,
     meta: {
       requiresAuth: true,
+      role : 'admin'
     }
   },
   {
@@ -64,6 +72,7 @@ const routes = [
     component: AdminMeja,
     meta: {
       requiresAuth: true,
+      role : 'admin'
     }
   },
   {
@@ -72,6 +81,16 @@ const routes = [
     component: AdminMenu,
     meta: {
       requiresAuth: true,
+      role : 'admin'
+    }
+  },
+  {
+    path: '/adminrekap',
+    name: 'adminrekap',
+    component: AdminRekap,
+    meta: {
+      requiresAuth: true,
+      role : 'admin'
     }
   },
   {
@@ -79,7 +98,8 @@ const routes = [
     name: 'dashboardwaitress',
     component: DashboardWaitress,
     meta: {
-      requiresAuth: true
+      requiresAuth: true,
+      role: 'waitress'
     }
   },
   {
@@ -88,14 +108,40 @@ const routes = [
     component: MenuWaitress,
     meta: {
       requiresAuth: true,
+      role: 'waitress'
     }
+  },
+  {
+    path: '/mejawaitress',
+    name: 'mejawaitress',
+    component: MejaWaitress,
+    
   },
   {
     path: '/dashboardkasir',
     name: 'dashboardkasir',
     component: DashboardKasir,
     meta: {
-      requiresAuth: true
+      requiresAuth: true,
+      role: 'kasir'
+    }
+  },
+  {
+    path: '/detailkasir',
+    name: 'detailkasir',
+    component: DetailKasir,
+    meta: {
+      requiresAuth: true,
+      role: 'kasir'
+    }
+  },
+  {
+    path: '/rekapkasir',
+    name: 'rekapkasir',
+    component: RekapKasir,
+    meta: {
+      requiresAuth: true,
+      role : 'kasir'
     }
   },
   {
@@ -122,6 +168,14 @@ const routes = [
       guest: true,
     }
   },
+  {
+    path: '/sotoview',
+    name: 'sotoview',
+    component: SotoView,
+    meta: {
+      guest: true,
+    }
+  },
 ]
 
 const router = new VueRouter({
@@ -132,16 +186,26 @@ const router = new VueRouter({
 
 
 router.beforeEach(async (to, from, next) => {
+
   if(to.matched.some(record => record.meta.requiresAuth)) {
     // console.log(localStorage.getItem('token'))
+    console.log( to.meta.role, 'aaa')
       if (!localStorage.getItem('token') || localStorage.getItem('token')  == "undefined" || localStorage.getItem('token') == '' ) {
           next({
               path: '/login',
               query: { redirect: to.fullPath }
           })
       } else {
-        next()
- 
+        if(to.meta.role==localStorage.getItem('role')){
+          next()
+        }else{
+          next({
+            path: '/login',
+            query: { redirect: to.fullPath }
+        })
+        }
+     
+       
        
       }
   } else if (to.matched.some(record => record.meta.guest)) {

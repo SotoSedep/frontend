@@ -5,15 +5,13 @@
       <b-row>
         <b-col>
             <div class="tabs" style="display:flex;align-items:center;justify-content:center">
-                    <b-button variant="primary" style="margin:10px;" :class="isActive === 0? 'is-active': ''" @click="isActive = 0">Lantai 1</b-button>
-                    <b-button variant="primary" style="margin:10px;" :class="isActive === 1? 'is-active': ''" @click="isActive = 1">Lantai 2</b-button>
-      
-                
+              <b-button variant="primary" style="margin:10px;" :class="isActive === 0? 'is-active': ''" @click="isActive = 0">Lantai 1</b-button>
+              <b-button variant="primary" style="margin:10px;" :class="isActive === 1? 'is-active': ''" @click="isActive = 1">Lantai 2</b-button>  
             </div>
             <div class="content">
-                <div class="wrapper">
-                    <component :is="lantai[isActive]"></component>
-                </div>                      
+              <div class="wrapper">
+                  <component :is="lantai[isActive]"></component>
+              </div>                      
             </div>
         </b-col>
       </b-row>

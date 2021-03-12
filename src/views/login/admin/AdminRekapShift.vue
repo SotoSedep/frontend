@@ -1,6 +1,6 @@
 <template>
-  <div id="rekapkasir">
-    <headerkasir></headerkasir>
+  <div id="adminshift">
+    <headeradmin></headeradmin>
     <b-container>
       <b-row>
         <b-col md="12" style="margin-top: 60px; margin-bottom: 60px">
@@ -17,7 +17,7 @@
               <b-col md="12">
                 <b-breadcrumb>
                   <b-breadcrumb-item>
-                    <router-link :to="'dashboardkasir'">
+                    <router-link :to="'dashboardadmin'">
                       <b-icon
                         icon="house-fill"
                         scale="1.25"
@@ -79,7 +79,22 @@
                     
                 </b-col>
             </b-row>
-            <b-row>
+            <b-row v-if="items1.length">
+                <b-col>
+                    <b-table
+                    show-empty
+                    bordered
+                    hover
+                    ref="table"
+                    :items="items1"
+                    :fields="fields1"
+                    responsive
+                    style="text-align:center;"
+                    >
+                    </b-table>
+                </b-col>
+            </b-row>
+            <b-row v-if="items.length">
                 <b-col>
                     <b-table
                     show-empty
@@ -96,7 +111,7 @@
             </b-row>
             <b-row v-if="items.length">
               <b-col md="6">
-                <h4 style="padding-left:10px">Total</h4>
+                <h4 style="padding-left:10px">Total Pemasukan</h4>
               </b-col>
               <b-col md="6">
                 <h4 style="padding-right:80px; text-align:right;">{{total}}</h4>
@@ -110,14 +125,13 @@
 </template>
 
 <script>
-import headerkasir from "../../../components/HeaderKasir";
-import moment from 'moment';
+import headeradmin from "../../../components/HeaderAdmin";
 import axios from 'axios';
 import { ipBackend } from "@/config.js";
 export default {
-    name: "rekapkasir",
+    name: "adminshift",
     components: {
-    headerkasir,
+    headeradmin,
   },
   data() {
       return {
@@ -128,13 +142,8 @@ export default {
                 sortable: true
             },
             {
-                key: 'waktuPesan',
-                label:'Jam Pemesanan',
-                sortable: true
-            },
-            {
-                key: 'createdAt',
-                label:'Jam Pembayaran',
+                key: 'totalHarga',
+                label:'Total Harga',
                 sortable: true
             },
             {
@@ -142,16 +151,27 @@ export default {
                 label:'Jumlah',
                 sortable: true
             },
-            
             {
-                key: 'totalHarga',
-                label:'Total Harga',
+                key: 'createdAt',
+                label:'Jam Pembayaran',
                 sortable: true
             },
             
-            
+        ],
+        fields1: [
+            {
+                key: 'karyawan.nama',
+                label:'Nama Karyawan',
+                sortable: true
+            },
+            {
+                key: 'jumlahPelayanan',
+                label:'Jumlah Melayani',
+                sortable: true
+            },            
         ],
         items: [],
+        items1: [],
         tanggal: '',
         total:0,
         config: {
@@ -195,11 +215,8 @@ export default {
             .then((res) => {
                 console.log(res.data, "ini resnya bos")
                 vm.items = res.data[0];
+                vm.items1 = res.data[1]
                 vm.items.forEach((element, index) => {
-                  let tgl = moment(res.data[0][index].createdAt).format("DD-MMMM HH:mm:ss")
-                  let tgl1 = moment(res.data[0][index].waktuPesan).format("DD-MMMM HH:mm:ss")
-                  vm.items[index].waktuPesan = tgl1
-                  vm.items[index].createdAt = tgl
                 vm.total+=vm.items[index].totalHarga
                 });
             })
@@ -220,11 +237,8 @@ export default {
             .then((res) => {
                 console.log(res, "ini resnya bos")
                 vm.items = res.data[0];
+                vm.items1 = res.data[1]
                 vm.items.forEach((element, index) => {
-                  let tgl = moment(res.data[0][index].createdAt).format("DD-MMMM HH:mm:ss")
-                  let tgl1 = moment(res.data[0][index].waktuPesan).format("DD-MMMM HH:mm:ss")
-                  vm.items[index].waktuPesan = tgl1
-                  vm.items[index].createdAt = tgl
                 vm.total+=vm.items[index].totalHarga
                 });
             })
@@ -245,11 +259,8 @@ export default {
             .then((res) => {
                 console.log(res, "ini resnya bos")
                 vm.items = res.data[0];
+                vm.items1 = res.data[1]
                 vm.items.forEach((element, index) => {
-                  let tgl = moment(res.data[0][index].createdAt).format("DD-MMMM HH:mm:ss")
-                  let tgl1 = moment(res.data[0][index].waktuPesan).format("DD-MMMM HH:mm:ss")
-                  vm.items[index].waktuPesan = tgl1
-                  vm.items[index].createdAt = tgl
                 vm.total+=vm.items[index].totalHarga
                 });
             })

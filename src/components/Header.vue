@@ -6,30 +6,8 @@
           <b-col cols="9" md="8" lg="8">
             <div class="partone">
               <h4 class="m-t-0 m-b-0">
-                <strong>Soto Sedeep</strong>
+                <strong style="font-size:70px;">Soto Sedeep</strong>
               </h4>
-            </div>
-          </b-col>
-
-          <b-col cols="3" md="4" lg="4">
-            <div class="parttwo">
-              <b-dropdown
-                right
-                variant="link"
-                toggle-class="text-decoration-none"
-                no-caret
-              >
-                <template v-slot:button-content>
-                  <div class="account">
-                    <img src="../assets/user.png" style="height: 6vh" />
-                  </div>
-                </template>
-                <b-dropdown-item v-on:click="signout()"
-                  >Logout</b-dropdown-item
-                >
-                
-              </b-dropdown>
-              
             </div>
           </b-col>
         </b-row>
@@ -46,14 +24,6 @@ export default {
   data() {
     return {};
   },
-  methods:{  
-    signout(){
-      localStorage.setItem('token', '')
-      localStorage.setItem('idKaryawan', '')
-      localStorage.setItem('idMeja', '')
-      this.$router.push({ name: "login"})
-    },
-  }
 };
 </script>
 
@@ -68,6 +38,7 @@ export default {
   align-items: center;
   height: 10vh;
   width: 100%;
+  font-family: 'Pattaya', sans-serif;
 }
 
 #myheader .bgheader .parttwo {

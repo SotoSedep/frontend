@@ -27,24 +27,6 @@
              
                 <center>
                   <router-link
-                    :to="'adminmeja'"
-                    style="text-decoration: none; color: #333"
-                  >
-                  <img
-                    src="../../../assets/soto3.jpeg"
-                    style="height: 100px"
-                  />
-                  </router-link>
-                  <h5 class="m-t-15 m-b-0"><strong>MASTER</strong></h5>
-                  <h6 class="m-t-0 m-b-0"><strong>MEJA</strong></h6>
-                </center>
-              
-            </div>
-
-            <div class="boxmenu" style="margin-top:50px;">
-             
-                <center>
-                  <router-link
                     :to="'adminmenu'"
                     style="text-decoration: none; color: #333"
                   >
@@ -58,6 +40,25 @@
                 </center>
              
             </div>
+
+            <div class="boxmenu" style="margin-top:50px;">
+             
+                <center>
+                  <router-link
+                    :to="'admingrafik'"
+                    style="text-decoration: none; color: #333"
+                  >
+                  <img
+                    src="../../../assets/soto3.jpeg"
+                    style="height: 100px"
+                  />
+                  </router-link>
+                  <h5 class="m-t-15 m-b-0"><strong>GRAFIK</strong></h5>
+                  <h6 class="m-t-0 m-b-0"><strong>PENJUALAN</strong></h6>
+                </center>
+              
+            </div>
+            
           </div>
         </b-col>
       </b-row>

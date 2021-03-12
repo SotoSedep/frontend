@@ -1,10 +1,10 @@
 <template>
   <div id="login">
-    <b-container class="bv-example-row">
-      <b-row>
-        <b-col md="6" offset-md="3">
-          <div style="display:flex;height:100vh;background-color:;align-items:center; justify-content:center;">
-            <div style="width:100%; align-items:center; justify-content:center; height:400px; background-color:; padding:30px; background-color:rgba(0,0,0,0.7);border-radius:6px;color:#fff">
+    
+    <b-container>
+      <b-row style="display:flex; align-items:center; height:100vh; justify-content:center;">
+        <b-col md="6">
+            <div style="width:100%; height:400px; background-color:; padding:30px; background-color:rgba(0,0,0,0.7);border-radius:6px;color:#fff">
               <h2 class="text-center">LOGIN</h2>
               <hr/>
             
@@ -32,7 +32,6 @@
               
               
             </div>
-          </div>
         </b-col>
       </b-row>
     </b-container>
@@ -42,8 +41,10 @@
 <script>
 import axios from 'axios';
 import { ipBackend } from "@/config.js";
+
 export default {
     name: "login",
+
     data (){
         return{
         username: '',
@@ -90,6 +91,13 @@ export default {
 }
 </script>
 
-<style>
-
+<style scoped>
+    #login {
+      background: url("../assets/soto3.jpeg") no-repeat center center fixed; 
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+    height:100vh
+    }
 </style>

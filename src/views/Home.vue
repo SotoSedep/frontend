@@ -8,10 +8,7 @@
                 <button style=" background-color: Transparent; color:rgb(248, 166, 48); top:0px; right:100px; border: none; font-size:50px;">Login</button>
               </router-link>
           </b-col>
-          <b-col md="12" xs="12"> 
-            <img src="../assets/soto3.jpeg" width="100%">
-            
-          </b-col>
+          
         </b-row>
       </b-container>
   </div>
@@ -32,8 +29,11 @@ export default {
 
 <style scoped>
   #home {
-  
-  background-color: #282828;
-
+  background: url("../assets/soto3.jpeg") no-repeat center center fixed; 
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+    height: 100vh;
 }
 </style>

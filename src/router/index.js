@@ -8,8 +8,9 @@ import AdminKaryawan from '../views/login/admin/AdminKaryawan.vue'
 import AdminMeja from '../views/login/admin/AdminMeja.vue'
 import AdminMenu from '../views/login/admin/AdminMenu.vue'
 import AdminRekap from '../views/login/admin/AdminRekap.vue'
+import AdminRekapShift from '../views/login/admin/AdminRekapShift.vue'
+import AdminGrafik from '../views/login/admin/AdminGrafik.vue'
 import DashboardWaitress from '../views/login/waitress/DashboardWaitress.vue'
-import MejaWaitress from '../views/login/waitress/MejaWaitress.vue'
 import MenuWaitress from '../views/login/waitress/MenuWaitress.vue'
 import DashboardKasir from '../views/login/kasir/DashboardKasir.vue'
 import DetailKasir from '../views/login/kasir/DetailKasir.vue'
@@ -94,6 +95,15 @@ const routes = [
     }
   },
   {
+    path: '/adminshift',
+    name: 'adminshift',
+    component: AdminRekapShift,
+    meta: {
+      requiresAuth: true,
+      role : 'admin'
+    }
+  },
+  {
     path: '/dashboardwaitress',
     name: 'dashboardwaitress',
     component: DashboardWaitress,
@@ -112,10 +122,13 @@ const routes = [
     }
   },
   {
-    path: '/mejawaitress',
-    name: 'mejawaitress',
-    component: MejaWaitress,
-    
+    path: '/admingrafik',
+    name: 'admingrafik',
+    component: AdminGrafik,
+    meta: {
+      requiresAuth: true,
+      role : 'admin'
+    }
   },
   {
     path: '/dashboardkasir',

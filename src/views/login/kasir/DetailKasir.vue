@@ -32,7 +32,14 @@
                 </b-breadcrumb>
               </b-col>
             </b-row>
-
+            <b-row>
+              <b-col>
+                <div style="display:flex">
+                  <h4>Nama Pelanggan :</h4>
+                  <h4 style="padding-left:10px">{{items[0].atasNama}}</h4>
+                </div>
+              </b-col>
+            </b-row>
             <b-table
               show-empty
               borderless

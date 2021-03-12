@@ -41,7 +41,7 @@
               style="width:100%;"
             >
               <template v-slot:cell(actions)="roww">
-                <b-input-group style="width:100px">
+                <b-input-group style="width:105px">
                         <b-input-group-prepend>
                         <b-btn variant="outline-info" @click="roww.item.jumlah--">-</b-btn>
                         </b-input-group-prepend>

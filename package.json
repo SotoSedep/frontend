@@ -5,7 +5,8 @@
   "scripts": {
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
-    "lint": "vue-cli-service lint"
+    "lint": "vue-cli-service lint",
+    "start": "vue-cli-service serve --open"
   },
   "dependencies": {
     "argon": "^2.0.21",
@@ -14,6 +15,9 @@
     "bootstrap": "^4.5.3",
     "bootstrap-vue": "^2.21.1",
     "core-js": "^3.6.5",
+    "mdb-vue-ui-kit": "^1.0.0-alpha2",
+    "mdbvue": "^6.7.2",
+    "moment": "^2.29.1",
     "vue": "^2.6.12",
     "vue-confirm-dialog": "^1.0.2",
     "vue-dynamic-dropdown": "^1.0.12",
@@ -34,6 +38,7 @@
     "eslint-plugin-vue": "^6.2.2",
     "sass": "^1.32.0",
     "sass-loader": "^10.1.0",
+    "vue-cli-plugin-mdb5": "~1.0.0",
     "vue-template-compiler": "^2.6.11"
   },
   "eslintConfig": {

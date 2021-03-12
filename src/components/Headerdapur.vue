@@ -6,7 +6,7 @@
           <b-col cols="9" md="8" lg="8">
             <div class="partone">
               <h4 class="m-t-0 m-b-0">
-                <strong>Soto Sedeep</strong>
+                <strong style="font-size:70px;">Soto Sedeep</strong>
               </h4>
             </div>
           </b-col>
@@ -38,6 +38,7 @@ export default {
   align-items: center;
   height: 10vh;
   width: 100%;
+  font-family: 'Qwigley', cursive;
 }
 
 #headerdapur .bgheader .parttwo {

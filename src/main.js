@@ -1,3 +1,4 @@
+
 import Vue from 'vue'
 import App from './App.vue'
 import router from "./router";
@@ -9,9 +10,14 @@ import 'bootstrap-vue/dist/bootstrap-vue.css';
 import VueSocketIO from 'vue-socket.io'
 import VueConfirmDialog from 'vue-confirm-dialog'
 import VueSweetalert2 from 'vue-sweetalert2';
-import VueDropdown from 'vue-dynamic-dropdown'
+import VueDropdown from 'vue-dynamic-dropdown';
+import { BSkeleton } from 'bootstrap-vue'
+import { SkeletonPlugin } from 'bootstrap-vue'
+
 
 import 'sweetalert2/dist/sweetalert2.min.css';
+
+
 
 Vue.config.productionTip = false
 Vue.use(new VueSocketIO({
@@ -27,6 +33,7 @@ Vue.use(new VueSocketIO({
 Vue.use(BootstrapVue)
 Vue.use(IconsPlugin)
 Vue.use(ImagePlugin)
+Vue.use(SkeletonPlugin)
 Vue.use(VueHtmlToPaper);
 Vue.use(VueConfirmDialog)
 Vue.use(VueSweetalert2);
@@ -34,7 +41,7 @@ Vue.use(VueSweetalert2);
 
 Vue.component('vue-confirm-dialog', VueConfirmDialog.default)
 Vue.component('vue-dropdown', VueDropdown);
-
+Vue.component('b-skeleton', BSkeleton)
 
 new Vue({
   router,

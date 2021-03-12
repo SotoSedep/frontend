@@ -89,7 +89,7 @@
                     </div>
                 </b-col>
             </b-row>
-            <b-row>
+            <b-row v-if="items.length">
                 <b-col>
                     <b-table
                     show-empty
@@ -135,15 +135,15 @@ export default {
                 key: 'namaMenu',
                 label:'Nama Menu',
                 sortable: true
-            },
+            },           
             {
-                key: 'totalHarga',
-                label:'Total Harga',
+                key: 'totalPenjualan',
+                label:'Jumlah',
                 sortable: true
             },
             {
-                key: 'jumlah',
-                label:'Jumlah',
+                key: 'totalPendapatan',
+                label:'Total Harga',
                 sortable: true
             },
             
@@ -169,15 +169,17 @@ export default {
         }
         })
       .then((res) => {
+        
           console.log(res, "ini resnya bos")
         vm.items = res.data.respon;
         vm.items.forEach((element, index) => {
-          vm.total+=vm.items[index].totalHarga
+          vm.total+=(+vm.items[index].totalPendapatan)
         });
       })
       .catch((err) => {
         console.log(err);
       });
+      vm.total=0
       }
      
     }

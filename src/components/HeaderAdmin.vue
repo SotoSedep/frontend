@@ -6,7 +6,7 @@
           <b-col cols="9" md="8" lg="8">
             <div class="partone">
               <h4 class="m-t-0 m-b-0">
-                <strong>Soto Sedeep</strong>
+                <strong style="font-size:70px;">Soto Sedeep</strong>
               </h4>
             </div>
           </b-col>
@@ -29,6 +29,9 @@
                 >
                 <b-dropdown-item v-on:click="rekap()"
                   >Lihat Rekap</b-dropdown-item
+                >
+                <b-dropdown-item v-on:click="rekapShift()"
+                  >Lihat Rekap per Shift</b-dropdown-item
                 >
               </b-dropdown>
               
@@ -59,6 +62,10 @@ export default {
       
       this.$router.push({ name: "adminrekap"})
     },
+    rekapShift(){
+      
+      this.$router.push({ name: "adminshift"})
+    },
   }
 };
 </script>
@@ -74,6 +81,8 @@ export default {
   align-items: center;
   height: 10vh;
   width: 100%;
+  font-family: 'Qwigley', cursive;
+  
 }
 
 #headeradmin .bgheader .parttwo {

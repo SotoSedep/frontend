@@ -33,6 +33,14 @@
                       class="mr-1"
                     >
                       Done
+                    </b-button>
+                    <b-button
+                      size="lg"
+                      variant="danger"
+                      @click="handleClick(row.item, row.index, $event.target)"
+                      class="mr-1"
+                    >
+                      Cancel
                     </b-button>                
                   </template>
                 </b-table>
@@ -132,7 +140,48 @@ export default {
           .catch(err => {
               console.log(err)
           })
-      }
+      },
+      deleteItem(a,b) {
+        let menu = a
+        let vm = this
+              axios.post(ipBackend + "/temporary/delete/" + menu.id, {
+                mejaId:vm.items[b].mejaId, 
+              },
+              {
+                  headers: {
+                    accesstoken: localStorage.getItem("token"),
+                  },
+              })
+                .then((res) => {
+                  console.log(res.data);
+                  vm.$swal("berhasil");
+                  vm.items.splice(b, 1);
+                  this.$socket.emit('refresh') 
+                })
+                .catch(function (error) {
+                  console.log(error);
+                });
+    },
+    handleClick(a,b){
+                this.$confirm(
+                    {
+                    message: `Yakin ingin menghapus?`,
+                    button: {
+                        no: 'Tidak',
+                        yes: 'Ya'
+                    },
+                    /**
+                     * Callback Function
+                     * @param {Boolean} confirm 
+                     */
+                    callback: confirm => {
+                        if (confirm) {
+                        this.deleteItem(a,b)
+                        }
+                    }
+                    }
+                )
+            }
     }
 }
 </script>

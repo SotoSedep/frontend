@@ -26,6 +26,7 @@
                     v-model="password"
                     required
                     placeholder="Enter Password"
+                    v-on:keyup.enter="signin()"
                   ></b-form-input>
                 </b-form-group>
                 <button  @click="signin()" style=" background-color: Transparent; color:white; font-size:20px;">Login</button>

@@ -151,11 +151,7 @@ export default {
                 label:'Jumlah',
                 sortable: true
             },
-            {
-                key: 'createdAt',
-                label:'Jam Pembayaran',
-                sortable: true
-            },
+            
             
         ],
         fields1: [

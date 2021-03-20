@@ -75,6 +75,11 @@ export default {
                     label:'Nomor Meja',
 
                 },
+                {
+                    key: 'atasNama',
+                    label:'Nama Pemesan',
+
+                },
                 { key: "actions", label: "Actions" },
             ],
             abang:'abang',
@@ -106,7 +111,8 @@ export default {
       })
       .then((res) => {       
         console.log(res, "ini resnyaa")
-        this.itemsData = res.data.respon;
+        this.itemsData = res.data
+        console.log(this.itemsData, "ini itemnyaaaaaaaaaaaaaaa")
       })
       .catch((err) => {
         console.log(err);

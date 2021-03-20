@@ -8,7 +8,7 @@
             <b-row>
               <b-col md="12">
                 <h3 class="text-center m-t-0 m-b-0">
-                  <strong>PESANAN SOTO SEDEEP</strong>
+                  <strong>PESANAN SOTO</strong>
                 </h3>
               </b-col>
             </b-row>

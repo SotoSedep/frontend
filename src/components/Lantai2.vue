@@ -12,7 +12,7 @@
             <b-avatar button @click="onClick(213)" square size="80px" class="avatar1" :class="[(items[37][213].flagging == 1 ? kuning : ''),(items[37][213].flagging == 2 ? abang : '')]">213</b-avatar>
             <b-avatar button @click="onClick(215)" square size="80px" class="avatar1" :class="[(items[39][215].flagging == 1 ? kuning : ''),(items[39][215].flagging == 2 ? abang : '')]">215</b-avatar>
             <b-avatar button @click="onClick(217)" square size="80px" class="avatar1" :class="[(items[41][217].flagging == 1 ? kuning : ''),(items[41][217].flagging == 2 ? abang : '')]">217</b-avatar>
-            <b-avatar button @click="onClick(219)" square size="80px" class="avatar1" :class="[(items[43][219].flagging == 1 ? kuning : ''),(items[43][219].flagging == 2 ? abang : '')]">218</b-avatar>
+            <b-avatar button @click="onClick(219)" square size="80px" class="avatar1" :class="[(items[43][219].flagging == 1 ? kuning : ''),(items[43][219].flagging == 2 ? abang : '')]">219</b-avatar>
         </b-col>
         <b-col style="display:flex;flex-direction:column;justify-content:space-evenly;align-items:center;" md="6">
             <b-avatar button @click="onClick(202)" square size="80px" class="avatar1" :class="[(items[26][202].flagging == 1 ? kuning : ''),(items[26][202].flagging == 2 ? abang : '')]">202</b-avatar>

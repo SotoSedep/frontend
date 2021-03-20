@@ -19,6 +19,8 @@ import DapurSoto from '../views/login/dapur/Soto.vue'
 import DapurMakanan from '../views/login/dapur/Makanan.vue'
 import DapurMinuman from '../views/login/dapur/Minuman.vue'
 import SotoView from '../views/login/dapur/SotoView.vue'
+import MakananView from '../views/login/dapur/MakananView.vue'
+import MinumanView from '../views/login/dapur/MinumanView.vue'
 
 
 Vue.use(VueRouter)
@@ -185,6 +187,22 @@ const routes = [
     path: '/sotoview',
     name: 'sotoview',
     component: SotoView,
+    meta: {
+      guest: true,
+    }
+  },
+  {
+    path: '/makananview',
+    name: 'makananview',
+    component: MakananView,
+    meta: {
+      guest: true,
+    }
+  },
+  {
+    path: '/minumanview',
+    name: 'minumanview',
+    component: MinumanView,
     meta: {
       guest: true,
     }

@@ -1,1 +1,1 @@
-export const ipBackend = 'http://192.168.1.3:3006'
+export const ipBackend = 'http://192.168.100.253:3006'

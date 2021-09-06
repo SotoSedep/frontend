@@ -67,7 +67,7 @@ export default {
                 localStorage.setItem('role',res.data[2].role)
                 localStorage.setItem('idKaryawan',res.data[1].id)
                 if(res.data[2].role == "admin"){
-                  vm.$router.push({ path: "/dashboardadmin" });
+                  vm.$router.push({ path: "/adminview" });
                 }
                 else if(res.data[2].role == "waitress"){
                   vm.$router.push({ path: "/dashboardwaitress" });

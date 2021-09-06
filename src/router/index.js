@@ -1,11 +1,12 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-import Home from '../views/Home.vue'
+// import Home from '../views/Home.vue'
 import Login from '../views/Login.vue'
 import Register from '../views/Register.vue'
 import DashboardAdmin from '../views/login/admin/DashboardAdmin.vue'
 import AdminKaryawan from '../views/login/admin/AdminKaryawan.vue'
 import AdminMeja from '../views/login/admin/AdminMeja.vue'
+import AdminView from '../views/login/admin/AdminView.vue'
 import AdminMenu from '../views/login/admin/AdminMenu.vue'
 import AdminRekap from '../views/login/admin/AdminRekap.vue'
 import AdminRekapShift from '../views/login/admin/AdminRekapShift.vue'
@@ -17,10 +18,11 @@ import DetailKasir from '../views/login/kasir/DetailKasir.vue'
 import RekapKasir from '../views/login/kasir/RekapKasir.vue'
 import DapurSoto from '../views/login/dapur/Soto.vue'
 import DapurMakanan from '../views/login/dapur/Makanan.vue'
-import DapurMinuman from '../views/login/dapur/Minuman.vue'
-import SotoView from '../views/login/dapur/SotoView.vue'
+import DapurMinuman from '../views/login/dapur/DapurMinuman.vue'
+import SotoView from '../views/login/dapur/DapurMakananView.vue'
 import MakananView from '../views/login/dapur/MakananView.vue'
-import MinumanView from '../views/login/dapur/MinumanView.vue'
+import MinumanView from '../views/login/dapur/DapurMinumanView.vue'
+import Dapur from '../views/login/dapur/DapurMakanan.vue'
 
 
 Vue.use(VueRouter)
@@ -28,19 +30,73 @@ Vue.use(VueRouter)
 const routes = [
   {
     path: '/',
-    name: 'Home',
-    component: Home,
-    meta: {
-      guest: true,
-    }
-  },
-  {
-    path: '/login',
     name: 'login',
     component: Login,
     meta: {
       guest: true,
     }
+  },
+  {
+    path: '/adminview',
+    name: 'adminview',
+    component: AdminView,
+    children: [
+      {
+        path: '/adminKaryawan',
+        name: 'adminKaryawan',
+        component: () => import(/* webpackChunkName: "MasterBarangAdmin" */ '../views/login/admin/AdminKaryawan')
+      },
+      {
+        path: '/adminMenu',
+        name: 'adminMenu',
+        component: () => import(/* webpackChunkName: "adminmenu" */ '../views/login/admin/AdminMenu')
+      },
+      {
+        path: '/adminGrafik',
+        name: 'adminGrafik',
+        component: () => import(/* webpackChunkName: "admingrafik" */ '../views/login/admin/AdminGrafik')
+      },
+      {
+        path: '/adminRekap',
+        name: 'adminRekap',
+        component: () => import(/* webpackChunkName: "admingrafik" */ '../views/login/admin/AdminRekap')
+      },
+      {
+        path: '/rekapKaryawan',
+        name: 'rekapKaryawan',
+        component: () => import(/* webpackChunkName: "rekapkaryawan" */ '../views/login/admin/RekapKaryawan')
+      },
+      {
+        path: '/rekapPembelian',
+        name: 'rekapPembelian',
+        component: () => import(/* webpackChunkName: "rekappembelian" */ '../views/login/admin/RekapPembelian')
+      },
+      {
+        path: '/pembelian',
+        name: 'pembelian',
+        component: () => import(/* webpackChunkName: "pembelian" */ '../views/login/admin/Pembelian')
+      },
+      {
+        path: '/setoran',
+        name: 'setoran',
+        component: () => import(/* webpackChunkName: "MasterWilayah" */ '../views/login/admin/RekapSetoran')
+      },
+      {
+        path: '/absenbulan',
+        name: 'absenbulan',
+        component: () => import(/* webpackChunkName: "MasterWilayah" */ '../views/login/admin/AbsenBulan')
+      },
+      {
+        path: '/gajibulan',
+        name: 'gajibulan',
+        component: () => import(/* webpackChunkName: "MasterWilayah" */ '../views/login/admin/RekapGajiBulanan')
+      },
+      {
+        path: '/gaji',
+        name: 'gaji',
+        component: () => import(/* webpackChunkName: "MasterWilayah" */ '../views/login/admin/GajiKaryawan')
+      },
+    ],
   },
   {
     path: '/register',
@@ -124,7 +180,7 @@ const routes = [
     }
   },
   {
-    path: '/admingrafik',
+    path: '/admingrafiks',
     name: 'admingrafik',
     component: AdminGrafik,
     meta: {
@@ -200,6 +256,14 @@ const routes = [
     }
   },
   {
+    path: '/dapur',
+    name: 'dapur',
+    component: Dapur,
+    meta: {
+      guest: true,
+    }
+  },
+  {
     path: '/minumanview',
     name: 'minumanview',
     component: MinumanView,
@@ -223,7 +287,7 @@ router.beforeEach(async (to, from, next) => {
     console.log( to.meta.role, 'aaa')
       if (!localStorage.getItem('token') || localStorage.getItem('token')  == "undefined" || localStorage.getItem('token') == '' ) {
           next({
-              path: '/login',
+              path: '/',
               query: { redirect: to.fullPath }
           })
       } else {
@@ -231,7 +295,7 @@ router.beforeEach(async (to, from, next) => {
           next()
         }else{
           next({
-            path: '/login',
+            path: '/',
             query: { redirect: to.fullPath }
         })
         }

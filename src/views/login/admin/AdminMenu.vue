@@ -1,6 +1,5 @@
 <template>
   <div id="adminmenu">
-    <headeradmin></headeradmin>
     <b-container>
       <b-row>
         <b-col md="12" style="margin-top: 60px; margin-bottom: 60px">
@@ -13,28 +12,7 @@
               </b-col>
             </b-row>
 
-            <b-row class="m-t-15">
-              <b-col md="12">
-                <b-breadcrumb>
-                  <b-breadcrumb-item>
-                    <router-link :to="'dashboardadmin'">
-                      <b-icon
-                        icon="house-fill"
-                        scale="1.25"
-                        shift-v="1.25"
-                        aria-hidden="true"
-                      ></b-icon>
-                      Dashboard
-                    </router-link>
-                  </b-breadcrumb-item>
-                  <b-breadcrumb-item active
-                    >Data Menu Soto Sedeep</b-breadcrumb-item
-                  >
-                </b-breadcrumb>
-              </b-col>
-            </b-row>
-
-            <b-row class="m-t-30" style="margin-bottom:10px;">
+            <b-row class="m-t-30" style="margin-bottom:10px;margin-top:50px">
               <b-col md="12">
                 <b-button v-b-modal.modal-1 variant="primary">Tambah Data</b-button>
               </b-col>
@@ -150,14 +128,12 @@
 </template>
 
 <script>
-import headeradmin from "../../../components/HeaderAdmin";
+
 import axios from 'axios';
 import { ipBackend } from "@/config.js";
 export default {
     name: "adminmenu",
-    components: {
-    headeradmin,
-  },
+
   data() {
       return {
         namaMenu: '',

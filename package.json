@@ -18,6 +18,7 @@
     "mdb-vue-ui-kit": "^1.0.0-alpha2",
     "mdbvue": "^6.7.2",
     "moment": "^2.29.1",
+    "numeral": "^2.0.6",
     "vue": "^2.6.12",
     "vue-confirm-dialog": "^1.0.2",
     "vue-dynamic-dropdown": "^1.0.12",
@@ -26,6 +27,7 @@
     "vue-router": "^3.4.9",
     "vue-socket.io": "^3.0.10",
     "vue-sweetalert2": "^4.2.0",
+    "vuelidate": "^0.7.6",
     "vuex": "^3.6.0"
   },
   "devDependencies": {

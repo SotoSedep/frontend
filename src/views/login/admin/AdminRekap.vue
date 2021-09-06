@@ -1,6 +1,6 @@
 <template>
   <div id="adminrekap">
-    <headeradmin></headeradmin>
+
     <b-container>
       <b-row>
         <b-col md="12" style="margin-top: 60px; margin-bottom: 60px">
@@ -13,26 +13,7 @@
               </b-col>
             </b-row>
 
-            <b-row class="m-t-15">
-              <b-col md="12">
-                <b-breadcrumb>
-                  <b-breadcrumb-item>
-                    <router-link :to="'dashboardadmin'">
-                      <b-icon
-                        icon="house-fill"
-                        scale="1.25"
-                        shift-v="1.25"
-                        aria-hidden="true"
-                      ></b-icon>
-                      Dashboard
-                    </router-link>
-                  </b-breadcrumb-item>
-                  <b-breadcrumb-item active
-                    >Data Rekap Soto Sedeep</b-breadcrumb-item
-                  >
-                </b-breadcrumb>
-              </b-col>
-            </b-row>
+            
             <b-row>
                 <b-col>
                     <label style="margin-bottom:5px;">Silahkan Pilih Tanggal :</label>
@@ -120,14 +101,12 @@
 </template>
 
 <script>
-import headeradmin from "../../../components/HeaderAdmin";
+
 import axios from 'axios';
 import { ipBackend } from "@/config.js";
 export default {
     name: "adminrekap",
-    components: {
-    headeradmin,
-  },
+
   data() {
       return {
         fields: [

@@ -1,0 +1,105 @@
+<template>
+    <div id="sidebaradmin">
+        <div class="title" style="margin-left:40px;">
+            Admin
+        </div>
+        <div class="menu">
+            <router-link to="/adminKaryawan" active-class="active" exact tag="button" class="sidebtn">
+                <div class="link">
+                    Data Karyawan
+                </div>
+            </router-link>
+            <router-link to="/adminMenu" active-class="active" exact tag="button" class="sidebtn">
+                <div class="link">
+                    Master Menu
+                </div>
+            </router-link>
+            <router-link to="/adminGrafik" active-class="active" exact tag="button" class="sidebtn">
+                <div class="link">
+                    Grafik Penjualan
+                </div>
+            </router-link>
+            <router-link to="/adminRekap" active-class="active" exact tag="button" class="sidebtn">
+                <div class="link">
+                    Rekap Penjualan
+                </div>
+            </router-link>
+            <router-link to="/rekapKaryawan" active-class="active" exact tag="button" class="sidebtn">
+                <div class="link">
+                    Absensi Karyawan
+                </div>
+            </router-link>
+            <router-link to="/absenbulan" active-class="active" exact tag="button" class="sidebtn">
+                <div class="link">
+                    Rekap Absen Bulanan
+                </div>
+            </router-link>
+            <router-link to="/gaji" active-class="active" exact tag="button" class="sidebtn">
+                <div class="link">
+                    Gaji Bulanan
+                </div>
+            </router-link>
+            <router-link to="/gajibulan" active-class="active" exact tag="button" class="sidebtn">
+                <div class="link">
+                    Rekap Gaji Bulanan
+                </div>
+            </router-link>
+            <router-link to="/pembelian" active-class="active" exact tag="button" class="sidebtn">
+                <div class="link">
+                    Tambah Data Pembelian
+                </div>
+            </router-link>
+            <router-link to="/rekappembelian" active-class="active" exact tag="button" class="sidebtn">
+                <div class="link">
+                    Rekap Pembelian
+                </div>
+            </router-link>
+            
+            <router-link to="/setoran" active-class="active" exact tag="button" class="sidebtn">
+                <div class="link">
+                    Rekap Setoran
+                </div>
+            </router-link>
+        </div>
+    </div>
+</template>
+
+<script>
+export default {
+    name:'sidebaradmin',
+}
+</script>
+
+<style scoped>
+    
+    .title {
+        color: white;
+        font-size: 30px;
+        margin-top: 10px;
+    }
+    .menu {
+        display: flex;
+        flex-direction: column;
+        margin-top: 20px;
+        text-align: start;
+    }
+    .menu > * {
+        margin-top: 20px;
+    }
+    .sidebtn:focus {
+        outline: none;
+    }
+    .sidebtn.active {
+        background-color: white;
+        color:teal;
+        font-weight: 500;
+    }
+    .sidebtn {
+        border: none;
+        padding: 10px 0px;
+        background-color: teal;
+        cursor: pointer;
+        font-size: 16px;
+        color: white;
+    }
+</style>

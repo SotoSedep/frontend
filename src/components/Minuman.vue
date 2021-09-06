@@ -55,7 +55,7 @@
 
                 <b-button
                   size="sm"
-                  variant="success"
+                  :variant="[(roww.item.jumlah !== 0 ? 'success' : 'secondary')]"
                   @click="toCart(roww, $event.target)"
                   class="mr-1"
                   style="margin:10px; justify-content:center; align-items:center; display:flex;"
@@ -130,6 +130,7 @@ export default {
         else{
           alert('Jumlah order minimal 1')
         }
+        item.item.jumlah = 0
         // axios.post(ipBackend + "temporary/register", {
         //   menuId:this.item.id,
         //   karyawanId: this.localStorage.getItem("idKaryawan"),

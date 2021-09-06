@@ -1,6 +1,5 @@
 <template>
   <div id="adminkaryawan">
-    <headeradmin></headeradmin>
     <b-container>
       <b-row>
         <b-col md="12" style="margin-top: 60px; margin-bottom: 60px">
@@ -13,28 +12,8 @@
               </b-col>
             </b-row>
 
-            <b-row class="m-t-15">
-              <b-col md="12">
-                <b-breadcrumb>
-                  <b-breadcrumb-item>
-                    <router-link :to="'dashboardadmin'">
-                      <b-icon
-                        icon="house-fill"
-                        scale="1.25"
-                        shift-v="1.25"
-                        aria-hidden="true"
-                      ></b-icon>
-                      Dashboard
-                    </router-link>
-                  </b-breadcrumb-item>
-                  <b-breadcrumb-item active
-                    >Data Karyawan Soto Sedeep</b-breadcrumb-item
-                  >
-                </b-breadcrumb>
-              </b-col>
-            </b-row>
 
-            <b-row class="m-t-30" style="margin-bottom:10px;">
+            <b-row class="m-t-30" style="margin-bottom:10px;margin-top:50px">
               <b-col md="12">
                 <b-button v-b-modal.modal-1 variant="primary"
                   >Tambah Data</b-button
@@ -50,6 +29,7 @@
               :items="items"
               :fields="fields"
               responsive
+              style="text-align:center"
             >
               <template v-slot:cell(actions)="row">
                 <b-button
@@ -171,6 +151,14 @@
         ></b-form-input>
         </b-form-group>
 
+        <b-form-group 
+            label="Gaji Harian" 
+        >
+        <b-form-input
+            v-model="editModals.content.gajiKaryawan"
+            placeholder="Silahkan Isi Alamat"
+        ></b-form-input>
+        </b-form-group>
 
         <b-form-group 
             label="No Handphone" 
@@ -186,20 +174,18 @@
 </template>
 
 <script>
-import headeradmin from "../../../components/HeaderAdmin";
+
 import axios from 'axios';
 import { ipBackend } from "@/config.js";
  export default {
      name: "adminkaryawan",
-        components: {
-          headeradmin,
-        },
     data() {
       return {
         username: '',
         password: '',
         nama: '',
         alamat: '',
+        gajiKaryawan:'',
         role: null,
         roleop: [{ text: 'Silahkan Pilih', value: null }, 'Waitress', 'Kasir'],
         handphone: '',
@@ -216,7 +202,7 @@ import { ipBackend } from "@/config.js";
         },
         fields: [
           {
-          key: "id",
+          key: "nomor",
           label: "No",
           sortable: true,
           sortDirection: "desc",
@@ -251,20 +237,27 @@ import { ipBackend } from "@/config.js";
       }
     },
     mounted() {
-        axios.get(ipBackend + "/karyawan/all", {
-        headers: {
-          accesstoken: localStorage.getItem("token"),
-        },
-      })
-      .then((res) => {
-        this.items = res.data.respon;
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+        this.getKaryawan()
     },
     methods: {
-
+      getKaryawan(){
+          axios.get(ipBackend + "/karyawan/all", {
+          headers: {
+            accesstoken: localStorage.getItem("token"),
+          },
+        })
+        .then((res) => {
+          this.items = res.data.respon;
+          res.data.respon.forEach((element, index) => {
+                    let x = this.items[index]
+                    x.nomor = index +1         
+                });
+                console.log(this.items)
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+      },
       resetModal() {
         this.username = ''
         this.password = ''
@@ -308,6 +301,7 @@ import { ipBackend } from "@/config.js";
             this.alamat = item.alamat;
             this.role = item.role;
             this.handphone = item.handphone;
+            this.gajiKaryawan = item.gajiKaryawan
             this.$root.$emit("bv::show::modal", this.editModals.id, button);
             console.log(this.idEdit);
       },
@@ -318,6 +312,7 @@ import { ipBackend } from "@/config.js";
                   alamat: this.editModals.content.alamat,
                   role: this.editModals.content.role,
                   handphone: this.editModals.content.handphone,
+                  gajiKaryawan: this.editModals.content.gajiKaryawan,
                 },
                 {
                   headers: {

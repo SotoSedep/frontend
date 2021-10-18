@@ -104,6 +104,7 @@
 
 import axios from 'axios';
 import { ipBackend } from "@/config.js";
+import moment from 'moment';
 export default {
     name: "adminrekap",
 
@@ -133,8 +134,16 @@ export default {
         total:0
       }
     },
-
+    mounted(){
+      this.getNow()
+    },
     methods: {
+      getNow(){
+            let vm = this
+            vm.awal = moment(new Date()).startOf('month').format('YYYY-MM-DD')
+            vm.akhir = moment(new Date()).startOf('day').format('YYYY-MM-DD')
+            console.log(vm.tgl, 'ini tgl')
+        },
       lihatRekap(){
         let vm = this
         axios.post(ipBackend + "/rekap/rekapan",{

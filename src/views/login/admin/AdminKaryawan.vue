@@ -68,6 +68,12 @@
         <b-form-group label="Pilih Role :" v-slot="{ ariaDescribedby }">
           <b-form-radio v-model="role" :aria-describedby="ariaDescribedby" name="some-radios" value="waitress">Waitress</b-form-radio>
           <b-form-radio v-model="role" :aria-describedby="ariaDescribedby" name="some-radios" value="kasir">Kasir</b-form-radio>
+          <b-form-radio v-model="role" :aria-describedby="ariaDescribedby" name="some-radios" value="tukangkebun">Tukang Kebun</b-form-radio>
+          <b-form-radio v-model="role" :aria-describedby="ariaDescribedby" name="some-radios" value="dapurbelakang">Dapur Belakang</b-form-radio>
+          <b-form-radio v-model="role" :aria-describedby="ariaDescribedby" name="some-radios" value="koki">Koki</b-form-radio>
+          <b-form-radio v-model="role" :aria-describedby="ariaDescribedby" name="some-radios" value="bar">Bar</b-form-radio>
+          <b-form-radio v-model="role" :aria-describedby="ariaDescribedby" name="some-radios" value="racik">Racik</b-form-radio>
+          <b-form-radio v-model="role" :aria-describedby="ariaDescribedby" name="some-radios" value="gorengan">Gorengan</b-form-radio>
         </b-form-group>
 
         <b-form-group 
@@ -82,14 +88,42 @@
         
         <b-form-group 
         label="Password" 
+        v-if="passwordHidden"
         >
-          <b-form-input
-            type="password"
-            v-model="password"
-            required
-            placeholder="Silahkan Isi Password"
-          ></b-form-input>
+          <b-input-group>
+            <b-form-input
+              type="password"
+              v-model="password"
+              required
+              placeholder="Silahkan Isi Password"
+            ></b-form-input>
+            <b-input-group-append>
+              <b-button @click="showPassword()" title="Lihat Password">
+                <b-icon icon="eye-slash"></b-icon>
+              </b-button>
+            </b-input-group-append>
+          </b-input-group>
         </b-form-group>
+
+        <b-form-group 
+        label="Password" 
+        v-if="!passwordHidden"
+        >
+          <b-input-group>
+            <b-form-input
+              type="text"
+              v-model="password"
+              required
+              placeholder="Silahkan Isi Password"
+            ></b-form-input>
+            <b-input-group-append>
+              <b-button @click="hidePassword()" title="Lihat Password">
+                <b-icon icon="eye-fill"></b-icon>
+              </b-button>
+            </b-input-group-append>
+          </b-input-group>
+        </b-form-group>
+
         <b-form-group 
             label="Nama" 
         >
@@ -131,6 +165,12 @@
         <b-form-group label="Pilih Role :" v-slot="{ ariaDescribedby }">
           <b-form-radio v-model="editModals.content.role" :aria-describedby="ariaDescribedby" name="some-radios" value="waitress">Waitress</b-form-radio>
           <b-form-radio v-model="editModals.content.role" :aria-describedby="ariaDescribedby" name="some-radios" value="kasir">Kasir</b-form-radio>
+          <b-form-radio v-model="editModals.content.role" :aria-describedby="ariaDescribedby" name="some-radios" value="tukangkebun">Tukang Kebun</b-form-radio>
+          <b-form-radio v-model="editModals.content.role" :aria-describedby="ariaDescribedby" name="some-radios" value="dapurbelakang">Dapur Belakang</b-form-radio>
+          <b-form-radio v-model="editModals.content.role" :aria-describedby="ariaDescribedby" name="some-radios" value="koki">Koki</b-form-radio>
+          <b-form-radio v-model="editModals.content.role" :aria-describedby="ariaDescribedby" name="some-radios" value="bar">Bar</b-form-radio>
+          <b-form-radio v-model="editModals.content.role" :aria-describedby="ariaDescribedby" name="some-radios" value="racik">Racik</b-form-radio>
+          <b-form-radio v-model="editModals.content.role" :aria-describedby="ariaDescribedby" name="some-radios" value="gorengan">Gorengan</b-form-radio>
         </b-form-group>
   
         <b-form-group 
@@ -156,7 +196,25 @@
         >
         <b-form-input
             v-model="editModals.content.gajiKaryawan"
-            placeholder="Silahkan Isi Alamat"
+            placeholder="Silahkan Isi Nominal"
+        ></b-form-input>
+        </b-form-group>
+
+        <b-form-group 
+            label="Nama Bank" 
+        >
+        <b-form-input
+            v-model="editModals.content.namaBank"
+            placeholder="Silahkan Isi Nama Bank"
+        ></b-form-input>
+        </b-form-group>
+
+        <b-form-group 
+            label="No. Rekening" 
+        >
+        <b-form-input
+            v-model="editModals.content.norekKaryawan"
+            placeholder="Silahkan Isi Nomor Rekening"
         ></b-form-input>
         </b-form-group>
 
@@ -181,6 +239,10 @@ import { ipBackend } from "@/config.js";
      name: "adminkaryawan",
     data() {
       return {
+        passwordHidden: {
+          default: true,
+          type: Boolean
+        },
         username: '',
         password: '',
         nama: '',
@@ -240,6 +302,12 @@ import { ipBackend } from "@/config.js";
         this.getKaryawan()
     },
     methods: {
+      showPassword() {
+          this.passwordHidden = false;
+      },
+      hidePassword() {
+          this.passwordHidden = true;
+      },
       getKaryawan(){
           axios.get(ipBackend + "/karyawan/all", {
           headers: {
@@ -302,6 +370,8 @@ import { ipBackend } from "@/config.js";
             this.role = item.role;
             this.handphone = item.handphone;
             this.gajiKaryawan = item.gajiKaryawan
+            this.namaBank = item.namaBank
+            this.norekKaryawan = item.norekKaryawan
             this.$root.$emit("bv::show::modal", this.editModals.id, button);
             console.log(this.idEdit);
       },
@@ -313,6 +383,8 @@ import { ipBackend } from "@/config.js";
                   role: this.editModals.content.role,
                   handphone: this.editModals.content.handphone,
                   gajiKaryawan: this.editModals.content.gajiKaryawan,
+                  namaBank: this.editModals.content.namaBank,
+                  norekKaryawan: this.editModals.content.norekKaryawan,
                 },
                 {
                   headers: {

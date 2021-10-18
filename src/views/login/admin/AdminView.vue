@@ -39,7 +39,7 @@ export default {
     }
     .sidebar{
         height: 100%;
-        width: 160px;
+        width: 200px;
         position: fixed;
         z-index: 1;
         top: 0;
@@ -50,7 +50,7 @@ export default {
     }
     .content {
         background-color: white;
-        margin-left: 160px;
+        margin-left: 200px;
         width: 100vw;
     }
 </style>

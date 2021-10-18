@@ -132,6 +132,10 @@
                 <b-icon v-if="item.item.absen == 1" icon="check-circle" scale="2" variant="success"></b-icon>
                 <b-icon  v-else icon="x-circle" scale="2" variant="danger"></b-icon>               
             </template>
+            <template #cell(absenStghHari)="item">
+                <b-icon v-if="item.item.absenStghHari == 1" icon="check-circle" scale="2" variant="success"></b-icon>
+                <b-icon  v-else icon="x-circle" scale="2" variant="danger"></b-icon>               
+            </template>
             </b-table>
         </b-modal>
     </div>
@@ -197,8 +201,18 @@ export default {
                     sortable: true
                 },
                 {
-                    key: 'jumlahMasuk',
+                    key: 'totalAbsen',
                     label: 'Jumlah Masuk',
+                    sortable: true
+                },
+                {
+                    key: 'totalStghHari',
+                    label: 'Stgh Hari',
+                    sortable: true
+                },
+                {
+                    key: 'jumlahMasuk',
+                    label: 'Total Masuk',
                     sortable: true
                 },
                 { key: "actions", label: "Actions" },
@@ -218,7 +232,22 @@ export default {
                 },
                 {
                     key: 'absen',
-                    label:'Kehadiran',
+                    label:'Masuk',
+                    sortable: true
+                },
+                {
+                    key: 'absenStghHari',
+                    label:'Setengah Hari',
+                    sortable: true
+                },
+                {
+                    key: 'gaji',
+                    label:'Gaji Harian',
+                    sortable: true
+                },
+                {
+                    key: 'kasbon',
+                    label:'Kasbon',
                     sortable: true
                 },
             ],
@@ -242,13 +271,24 @@ export default {
     //             this.currentPage = 1
     //         },
     // },
-    
+    mounted(){
+        this.getNow()
+    },
     methods: {
+        getNow(){
+            let vm = this
+            vm.bulan = moment(new Date()).get('month') + 1
+            vm.tahun = moment(new Date()).get('year')
+            console.log(vm.tgl, 'ini tgl')
+        },
         getList(){
             let vm = this
             let bln = vm.bulan
             let thn = vm.tahun
-            axios.get(ipBackend + "/absensi/listByBulan/" + bln + '/' + thn ,{
+            axios.post(ipBackend + "/absensi/rekapKaryawanBulanan" ,{
+                bulan : bln,
+                tahun : thn
+            },{
                 headers: {
                 accesstoken: localStorage.getItem("token"),
                 },
@@ -259,8 +299,10 @@ export default {
                 console.log(this.items, 'ini this item')
                 res.data.data.forEach((element, index) => {
                     let x = this.items[index]
+                    let h = parseInt(x.totalAbsen)
+                    let i = parseInt(x.totalStghHari)
                     x.nomor = index +1 
-                            
+                    x.jumlahMasuk = h + i        
                 });
             })
             .catch((err) => {
@@ -271,7 +313,7 @@ export default {
             let vm = this
             let bln = vm.bulan
             let thn = vm.tahun
-            let karId = item.id
+            let karId = item.karyawanId
             this.details.content = item;
             this.idEdit = item.id;
             vm.namaKaryawan = item.nama

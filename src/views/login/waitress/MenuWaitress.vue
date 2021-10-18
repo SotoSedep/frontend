@@ -73,7 +73,8 @@
                         </template>
                         
                         </b-table>
-                        <b-button @click="goDapur()" variant="primary" class="m-t-15" style="width:100px;">Order</b-button>
+                        <b-button v-if="this.pemesan" @click="goDapur()" variant="primary" class="m-t-15" style="width:100px;">Order</b-button>
+                        <b-button v-else disabled @click="goDapur()" variant="primary" class="m-t-15" style="width:100px;">Order</b-button>
                     </div>
                     <div class="tabs">
                             <b-button variant="primary" style="margin:10px;" :class="isActive === 0? 'is-active': ''" @click="isActive = 0">Soto</b-button>

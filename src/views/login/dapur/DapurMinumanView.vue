@@ -40,7 +40,10 @@
                                     <p v-if="item.item.status == 0">{{item.item.jumlah}}</p>
                                     <p  v-else class="coret">{{item.item.jumlah}}</p>
                                 </template>
-                                   
+                                <template v-slot:cell(keterangan)="item">
+                                    <p v-if="item.item.status == 0">{{item.item.keterangan}}</p>
+                                    <p  v-else class="coret">{{item.item.keterangan}}</p>
+                                </template>   
                                 </b-table>
                             </b-col>
                         </b-row>
@@ -68,7 +71,11 @@ export default {
                     label:'Jumlah',
                     class:'text-center'
                 },
-                
+                {
+                    key: 'keterangan',
+                    label:'Keterangan',
+                    class:'text-center'
+                },
             ],
             items: [],
         }
@@ -92,6 +99,12 @@ export default {
             .then((res) => {
                 console.log(res.data.data);
                 vm.items = res.data.data
+                // res.data.data.forEach((element, index) => {
+                //     let x = this.items[index]
+                //     x.nomor = index 
+                           
+                // });
+                // this.items.sort(function(a, b){return b.nomor - a.nomor})
             })
             .catch((err) => {
                 console.log(err);
@@ -108,8 +121,10 @@ export default {
             mejaId:vm.items[b].mejaId
             })
             .then(res => {
-                console.log(res) 
+                console.log(res)
+                // this.items.sort(function(a, b){return b.nomor - a.nomor}) 
                 this.$socket.emit('refresh') 
+                
             })
             .catch(err => {
                 console.log(err)
@@ -125,6 +140,7 @@ export default {
             })
             .then(res => {
                 console.log(res) 
+                // this.items.sort(function(a, b){return b.nomor - a.nomor})
                 this.$socket.emit('refresh') 
             })
             .catch(err => {

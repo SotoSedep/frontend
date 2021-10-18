@@ -48,14 +48,28 @@
                                     <p v-if="item.item.status == 0">{{item.item.jumlah}}</p>
                                     <p  v-else class="coret">{{item.item.jumlah}}</p>
                                 </template>
-                                    <template v-slot:cell(actions)="row">
+                                <template v-slot:cell(keterangan)="item">
+                                    <p v-if="item.item.status == 0">{{item.item.keterangan}}</p>
+                                    <p  v-else class="coret">{{item.item.keterangan}}</p>
+                                </template>
+                                    <template v-slot:cell(actions)="item">
                                     <b-button
+                                    v-if="item.item.status == 0"
                                         size="sm"
                                         variant="primary"
-                                        @click="done(row.item, row.index, $event.target)"
+                                        @click="done(item.item, item.index, $event.target)"
                                         class="mr-1"
                                     >
                                         Done
+                                    </b-button>
+                                    <b-button
+                                    v-if="item.item.status == 0"
+                                        size="sm"
+                                        variant="danger"
+                                        @click="handleClick(item.item, item.index, $event.target)"
+                                        class="mr-1"
+                                        >
+                                        Cancel
                                     </b-button>               
                                     </template>
                                 </b-table>
@@ -85,6 +99,11 @@ export default {
                     label:'Jumlah',
                     class:'text-center'
                 },
+                {
+                    key: 'keterangan',
+                    label:'Keterangan',
+                    class:'text-center'
+                },
                 { key: "actions", label: "Actions" },
             ],
             items: [],
@@ -109,24 +128,30 @@ export default {
             .then((res) => {
                 console.log(res.data.data);
                 vm.items = res.data.data
+                // res.data.data.forEach((element, index) => {
+                //     let x = this.items[index]
+                //     x.nomor = index 
+                           
+                // });
+                // this.items.sort(function(a, b){return b.nomor - a.nomor})
             })
             .catch((err) => {
                 console.log(err);
             });
             
         },
-        done(a,b){
+        done(a){
             let menu = a
             let vm = this;
             console.log(menu.temporaryId, 'ini menuid')
-            console.log(vm.items[b], 'ini mejaid')
+            console.log(menu.mejaId, 'ini mejaid')
             axios.post(ipBackend + "/temporary/update/" + menu.temporaryId, {
             status:1,
-            mejaId:vm.items[b].mejaId
+            mejaId:menu.mejaId
             })
             .then(res => {
                 console.log(res) 
-                this.$socket.emit('refresh') 
+                vm.$socket.emit('refresh') 
             })
             .catch(err => {
                 console.log(err)
@@ -148,6 +173,47 @@ export default {
                 console.log(err)
             })
         },
+        deleteItem(a,b) {
+            let menu = a
+            let vm = this
+                axios.post(ipBackend + "/temporary/delete/" + menu.temporaryId, {
+                    mejaId:menu.mejaId, 
+                },
+                {
+                    headers: {
+                        accesstoken: localStorage.getItem("token"),
+                    },
+                })
+                .then((res) => {
+                    console.log(res.data);
+                    vm.$swal("berhasil");
+                    vm.items.splice(b, 1);
+                    this.$socket.emit('refresh') 
+                })
+                .catch(function (error) {
+                    console.log(error);
+                });
+        },
+        handleClick(a,b){
+                this.$confirm(
+                    {
+                    message: `Yakin ingin cancel?`,
+                    button: {
+                        no: 'Tidak',
+                        yes: 'Ya'
+                    },
+                    /**
+                     * Callback Function
+                     * @param {Boolean} confirm 
+                     */
+                    callback: confirm => {
+                        if (confirm) {
+                        this.deleteItem(a,b)
+                        }
+                    }
+                    }
+                )
+            },
     },
 }
 </script>

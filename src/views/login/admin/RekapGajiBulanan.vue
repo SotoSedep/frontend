@@ -101,7 +101,7 @@
 
 import axios from 'axios';
 import { ipBackend } from "@/config.js";
-// import moment from 'moment';
+import moment from 'moment';
 export default {
     name:'gajibulan',
     data(){
@@ -152,12 +152,12 @@ export default {
                     sortable: true
                 },
                 {
-                    key: 'gajiHarian',
+                    key: 'totalGaji',
                     label:'Gaji Harian',
                     sortable: true
                 },
                 {
-                    key: 'cashBon',
+                    key: 'totalKasbon',
                     label:'Kasbon',
                     sortable: true
                 },
@@ -189,13 +189,24 @@ export default {
     //             this.currentPage = 1
     //         },
     // },
-    
+    mounted(){
+        this.getNow()
+    },
     methods: {
+        getNow(){
+            let vm = this
+            vm.bulan = moment(new Date()).get('month') + 1
+            vm.tahun = moment(new Date()).get('year')
+            console.log(vm.tgl, 'ini tgl')
+        },
         getList(){
             let vm = this
             let bln = vm.bulan
             let thn = vm.tahun
-            axios.get(ipBackend + "/rekapGaji/listByBulan/" + bln + '/' + thn ,{
+            axios.post(ipBackend + "/absensi/rekapKaryawanBulanan" ,{
+                bulan : bln,
+                tahun : thn
+            },{
                 headers: {
                 accesstoken: localStorage.getItem("token"),
                 },
@@ -206,8 +217,11 @@ export default {
                 console.log(this.items, 'ini this item')
                 res.data.data.forEach((element, index) => {
                     let x = this.items[index]
+                    let h = parseInt(x.totalAbsen)
+                    let i = parseInt(x.totalStghHari)
                     x.nomor = index +1 
-                            
+                    x.jumlahMasuk = h + i
+                    x.gajiBulanan = x.totalGaji - x.totalKasbon        
                 });
             })
             .catch((err) => {

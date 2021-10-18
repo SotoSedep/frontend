@@ -237,8 +237,16 @@ export default {
         }
       }
     },
-
+    mounted(){
+      this.getNow()
+    },
     methods: {
+        getNow(){
+            let vm = this
+            vm.awal = moment(new Date()).startOf('month').format('YYYY-MM-DD')
+            vm.akhir = moment(new Date()).startOf('day').format('YYYY-MM-DD')
+            console.log(vm.tgl, 'ini tgl')
+        },
         setNewSelectedOption(selectedOption) {
             this.config.placeholder = selectedOption.value;
             

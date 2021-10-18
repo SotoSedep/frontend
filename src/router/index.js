@@ -72,9 +72,29 @@ const routes = [
         component: () => import(/* webpackChunkName: "rekappembelian" */ '../views/login/admin/RekapPembelian')
       },
       {
+        path: '/pembelianbanyumanik',
+        name: 'pembelianBanyumanik',
+        component: () => import(/* webpackChunkName: "rekappembelian" */ '../views/login/admin/PembelianBanyumanik')
+      },
+      {
+        path: '/pembeliangarung',
+        name: 'pembelianGarung',
+        component: () => import(/* webpackChunkName: "rekappembelian" */ '../views/login/admin/PembelianGarung')
+      },
+      {
         path: '/pembelian',
-        name: 'pembelian',
-        component: () => import(/* webpackChunkName: "pembelian" */ '../views/login/admin/Pembelian')
+        name: 'masterpembelian',
+        component: () => import(/* webpackChunkName: "pembelian" */ '../views/login/admin/MasterPembelian')
+      },
+      {
+        path: '/pengeluaran',
+        name: 'masterpengeluaran',
+        component: () => import(/* webpackChunkName: "pembelian" */ '../views/login/admin/MasterPengeluaran')
+      },
+      {
+        path: '/addsetoran',
+        name: 'addsetoran',
+        component: () => import(/* webpackChunkName: "MasterWilayah" */ '../views/login/admin/AddRekapSetoran')
       },
       {
         path: '/setoran',
@@ -91,11 +111,11 @@ const routes = [
         name: 'gajibulan',
         component: () => import(/* webpackChunkName: "MasterWilayah" */ '../views/login/admin/RekapGajiBulanan')
       },
-      {
-        path: '/gaji',
-        name: 'gaji',
-        component: () => import(/* webpackChunkName: "MasterWilayah" */ '../views/login/admin/GajiKaryawan')
-      },
+      // {
+      //   path: '/gaji',
+      //   name: 'gaji',
+      //   component: () => import(/* webpackChunkName: "MasterWilayah" */ '../views/login/admin/GajiKaryawan')
+      // },
     ],
   },
   {

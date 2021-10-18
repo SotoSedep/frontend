@@ -34,11 +34,11 @@
                     Rekap Absen Bulanan
                 </div>
             </router-link>
-            <router-link to="/gaji" active-class="active" exact tag="button" class="sidebtn">
+            <!-- <router-link to="/gaji" active-class="active" exact tag="button" class="sidebtn">
                 <div class="link">
                     Gaji Bulanan
                 </div>
-            </router-link>
+            </router-link> -->
             <router-link to="/gajibulan" active-class="active" exact tag="button" class="sidebtn">
                 <div class="link">
                     Rekap Gaji Bulanan
@@ -46,15 +46,36 @@
             </router-link>
             <router-link to="/pembelian" active-class="active" exact tag="button" class="sidebtn">
                 <div class="link">
-                    Tambah Data Pembelian
+                    Master Barang Pembelian
                 </div>
             </router-link>
-            <router-link to="/rekappembelian" active-class="active" exact tag="button" class="sidebtn">
+            <router-link to="/pengeluaran" active-class="active" exact tag="button" class="sidebtn">
+                <div class="link">
+                    Master Data Pengeluaran
+                </div>
+            </router-link>
+            <router-link to="/pembelianbanyumanik" active-class="active" exact tag="button" class="sidebtn">
+                <div class="link">
+                    Pembelian Banyumanik
+                </div>
+            </router-link>
+            <router-link to="/pembeliangarung" active-class="active" exact tag="button" class="sidebtn">
+                <div class="link">
+                    Pembelian Garung
+                </div>
+            </router-link>
+            <!-- <router-link to="/rekappembelian" active-class="active" exact tag="button" class="sidebtn">
                 <div class="link">
                     Rekap Pembelian
                 </div>
-            </router-link>
+            </router-link> -->
             
+            <router-link to="/addsetoran" active-class="active" exact tag="button" class="sidebtn">
+                <div class="link">
+                    Tambah Data Setoran
+                </div>
+            </router-link>
+
             <router-link to="/setoran" active-class="active" exact tag="button" class="sidebtn">
                 <div class="link">
                     Rekap Setoran
@@ -71,7 +92,10 @@ export default {
 </script>
 
 <style scoped>
-    
+    #sidebaradmin {
+        text-align: left;
+        overflow: hidden;
+    }
     .title {
         color: white;
         font-size: 30px;

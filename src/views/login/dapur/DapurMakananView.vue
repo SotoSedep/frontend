@@ -33,12 +33,16 @@
                                     responsive
                                 >
                                 <template v-slot:cell(namaMenu)="item">
-                                    <p v-if="item.item.status == 0">{{item.item.namaMenu}}</p>
-                                    <p  v-else class="coret">{{item.item.namaMenu}}</p>
+                                    <p :class="[(item.item.jenis == 'makanan' ? abang : ''),(item.item.jenis == 'makanan' && item.item.status == 1 ? abangcoret : ''),(item.item.status == 1 ? coret : '')]">{{item.item.namaMenu}}</p>
+                                    
                                 </template>
                                 <template v-slot:cell(jumlah)="item">
-                                    <p v-if="item.item.status == 0">{{item.item.jumlah}}</p>
-                                    <p  v-else class="coret">{{item.item.jumlah}}</p>
+                                    <p :class="[(item.item.jenis == 'makanan' ? abang : ''),(item.item.jenis == 'makanan' && item.item.status == 1 ? abangcoret : ''),(item.item.status == 1 ? coret : '')]">{{item.item.jumlah}} </p>
+                                    
+                                </template>
+                                <template v-slot:cell(keterangan)="item">
+                                    <p :class="[(item.item.jenis == 'makanan' ? abang : ''),(item.item.jenis == 'makanan' && item.item.status == 1 ? abangcoret : ''),(item.item.status == 1 ? coret : '')]">{{item.item.keterangan}}</p>
+                                    
                                 </template>
                                 </b-table>
                             </b-col>
@@ -67,9 +71,17 @@ export default {
                     label:'Jumlah',
                     class:'text-center'
                 },
+                {
+                    key: 'keterangan',
+                    label:'Keterangan',
+                    class:'text-center'
+                },
                 
             ],
             items: [],
+            abang: 'abang',
+            coret: 'coret',
+            abangcoret:'abangcoret'
         }
     },
     mounted() {
@@ -91,6 +103,12 @@ export default {
             .then((res) => {
                 console.log(res.data.data);
                 vm.items = res.data.data
+                // res.data.data.forEach((element, index) => {
+                //     let x = this.items[index]
+                //     x.nomor = index 
+                           
+                // });
+                this.items.pesanan.sort(function(a, b){return a.jenis - b.jenis})
             })
             .catch((err) => {
                 console.log(err);
@@ -108,7 +126,9 @@ export default {
             })
             .then(res => {
                 console.log(res) 
+                
                 this.$socket.emit('refresh') 
+                // this.loadData()
             })
             .catch(err => {
                 console.log(err)
@@ -124,7 +144,9 @@ export default {
             })
             .then(res => {
                 console.log(res) 
+               
                 this.$socket.emit('refresh') 
+                // this.loadData()
             })
             .catch(err => {
                 console.log(err)
@@ -146,5 +168,12 @@ export default {
     }
     .coret {
         text-decoration: line-through;
+    }
+    .abang {
+        color: red;
+    }
+    .abangcoret {
+        text-decoration: line-through;
+        color: red;
     }
 </style>

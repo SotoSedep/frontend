@@ -41,21 +41,33 @@
                                     responsive
                                 >
                                 <template v-slot:cell(namaMenu)="item">
-                                    <p v-if="item.item.status == 0">{{item.item.namaMenu}}</p>
-                                    <p  v-else class="coret">{{item.item.namaMenu}}</p>
+                                    <p :class="[(item.item.jenis == 'makanan' ? abang : ''),(item.item.jenis == 'makanan' && item.item.status == 1 ? abangcoret : ''),(item.item.status == 1 ? coret : '')]">{{item.item.namaMenu}}</p>
                                 </template>
                                 <template v-slot:cell(jumlah)="item">
-                                    <p v-if="item.item.status == 0">{{item.item.jumlah}}</p>
-                                    <p  v-else class="coret">{{item.item.jumlah}}</p>
+                                    <p :class="[(item.item.jenis == 'makanan' ? abang : ''),(item.item.jenis == 'makanan' && item.item.status == 1 ? abangcoret : ''),(item.item.status == 1 ? coret : '')]">{{item.item.jumlah}} </p>
                                 </template>
-                                    <template v-slot:cell(actions)="row">
+                                <template v-slot:cell(keterangan)="item">
+                                    <p :class="[(item.item.jenis == 'makanan' ? abang : ''),(item.item.jenis == 'makanan' && item.item.status == 1 ? abangcoret : ''),(item.item.status == 1 ? coret : '')]">{{item.item.keterangan}}</p>
+                                    
+                                </template>
+                                    <template v-slot:cell(actions)="item">
                                     <b-button
+                                    v-if="item.item.status == 0"
                                         size="sm"
                                         variant="primary"
-                                        @click="done(row.item, row.index, $event.target)"
+                                        @click="done(item.item, item.index, $event.target)"
                                         class="mr-1"
                                     >
                                         Done
+                                    </b-button>
+                                    <b-button
+                                    v-if="item.item.status == 0"
+                                        size="sm"
+                                        variant="danger"
+                                        @click="handleClick(item.item, item.index, $event.target)"
+                                        class="mr-1"
+                                        >
+                                        Cancel
                                     </b-button>               
                                     </template>
                                 </b-table>
@@ -85,9 +97,17 @@ export default {
                     label:'Jumlah',
                     class:'text-center'
                 },
+                {
+                    key: 'keterangan',
+                    label:'Keterangan',
+                    class:'text-center'
+                },
                 { key: "actions", label: "Actions" },
             ],
             items: [],
+            abang:'abang',
+            abangcoret:'abangcoret',
+            coret:'coret'
         }
     },
     mounted() {
@@ -109,24 +129,39 @@ export default {
             .then((res) => {
                 console.log(res.data.data);
                 vm.items = res.data.data
+                // this.items.sort(function(a, b){return b.temporaryId - a.temporaryId})
+                res.data.data.forEach((element, index) => {
+                    let x = this.items[index]
+                    x.pesanan.forEach((element) => {
+                        if(element.jenis == 'soto'){
+                            element.kode = 1
+                        }else if(element.jenis == 'makanan'){
+                            element.kode = 2
+                        }
+                    })
+                    x.pesanan.sort(function(a, b){return a.kode - b.kode})
+                           
+                });
+                // this.items.sort(function(a, b){return a.nomor - b.nomor})
             })
             .catch((err) => {
                 console.log(err);
             });
             
         },
-        done(a,b){
+        done(a){
             let menu = a
             let vm = this;
-            console.log(menu.temporaryId, 'ini menuid')
-            console.log(vm.items[b], 'ini mejaid')
+            console.log(menu, 'ini menuid')
+            console.log(menu.mejaId, 'ini mejaid')
             axios.post(ipBackend + "/temporary/update/" + menu.temporaryId, {
             status:1,
-            mejaId:vm.items[b].mejaId
+            mejaId:menu.mejaId
             })
             .then(res => {
                 console.log(res) 
-                this.$socket.emit('refresh') 
+                vm.$socket.emit('refresh')
+                // this.loadData()
             })
             .catch(err => {
                 console.log(err)
@@ -143,11 +178,53 @@ export default {
             .then(res => {
                 console.log(res) 
                 this.$socket.emit('refresh') 
+                // this.loadData()
             })
             .catch(err => {
                 console.log(err)
             })
         },
+        deleteItem(a,b) {
+            let menu = a
+            let vm = this
+                axios.post(ipBackend + "/temporary/delete/" + menu.temporaryId, {
+                    mejaId:menu.mejaId, 
+                },
+                {
+                    headers: {
+                        accesstoken: localStorage.getItem("token"),
+                    },
+                })
+                .then((res) => {
+                    console.log(res.data);
+                    vm.$swal("berhasil");
+                    vm.items.splice(b, 1);
+                    this.$socket.emit('refresh') 
+                })
+                .catch(function (error) {
+                    console.log(error);
+                });
+        },
+        handleClick(a,b){
+                this.$confirm(
+                    {
+                    message: `Yakin ingin cancel?`,
+                    button: {
+                        no: 'Tidak',
+                        yes: 'Ya'
+                    },
+                    /**
+                     * Callback Function
+                     * @param {Boolean} confirm 
+                     */
+                    callback: confirm => {
+                        if (confirm) {
+                        this.deleteItem(a,b)
+                        }
+                    }
+                    }
+                )
+            },
     },
 }
 </script>
@@ -164,5 +241,12 @@ export default {
     }
     .coret {
         text-decoration: line-through;
+    }
+    .abang {
+        color: red;
+    }
+    .abangcoret {
+        text-decoration: line-through;
+        color: red;
     }
 </style>

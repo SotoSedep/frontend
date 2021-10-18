@@ -10,13 +10,6 @@
                             </h3>
                         </b-col>
                     </b-row>
-                    <b-row class="m-t-30" style="margin-top:20px;margin-right:20px position: absolute; right:0">
-                    <b-col md="12">
-                        <b-button v-b-modal.modal-1 variant="primary"
-                        >Tambah Data</b-button
-                        >
-                    </b-col>
-                    </b-row>
                 <div style="margin-top:30px">
                         
                         <b-row style="margin-top:20px">
@@ -93,6 +86,36 @@
                         responsive
                         style="text-align:center"
                         >
+                        <template v-slot:cell(action)="row">
+                            <b-button
+                                size="sm"
+                                variant="warning"
+                                @click="detailPemasukan(row.item, row.index, $event.target)"
+                                class="mr-1"
+                                style="align-item:center;justify-content:center;margin-bottom:5px "
+                                >
+                                Detail Pendapatan
+                            </b-button>
+                            <b-button
+                                size="sm"
+                                variant="warning"
+                                @click="detailPengeluaran(row.item, row.index, $event.target)"
+                                class="mr-1"
+                                style="align-item:center;justify-content:center;margin-bottom:5px"
+                                >
+                                Detail Pengeluaran
+                            </b-button>
+                            <b-button
+                                size="sm"
+                                variant="warning"
+                                @click="detailPembelian(row.item, row.index, $event.target)"
+                                class="mr-1"
+                                style="align-item:center;justify-content:center;"
+                                >
+                                Detail Pembelian
+                            </b-button>
+                            
+                        </template>
                         </b-table>
                        
                     </b-card>   
@@ -101,89 +124,67 @@
             </b-row>
         </b-container>
         <!-- MODAL -->
-    <!-- insert -->
+    <!-- DETAIL PEMASUKAN -->
     <b-modal
-      id="modal-1"
+      :id="detailsPemasukan.id"
       ref="modal"
-      title="Daftar Karyawan"
+      title="Tambah Barang"
       hide-footer
       hide-header
     >
-    <h2 class="text-center" style="margin-bottom:10px;">Tambah Data</h2>
-
-         <b-form-group label="Pilih Shift :" >
-          <b-form-radio v-model="shift" aria-describedby="input-shift-feedback" name="some-radios" value='1'>Shift 1</b-form-radio>
-          <b-form-radio v-model="shift" aria-describedby="input-shift-feedback" name="some-radios" value='2'>Shift 2</b-form-radio>
-          <b-form-invalid-feedback id="input-shift-feedback">Silahkan isi dahulu.</b-form-invalid-feedback>
-        </b-form-group>
-
-        <b-form-group
-            label="Tanggal"
-            label-for="tanggal"
-            >
-            <b-input-group>
-                <b-input-group-append>
-                    <b-form-datepicker
-                    v-model="$v.form.tanggal.$model"
-                    button-only
-                    left
-                    locale="en-US"
-                    aria-controls="tanggal"
-                    style="margin-bottom:10px"
-                    ></b-form-datepicker>
-                </b-input-group-append>
-                <b-form-input
-                    id="tanggal"
-                    v-model="$v.form.tanggal.$model"
-                    type="text"
-                    placeholder="YYYY-MM-DD"
-                    autocomplete="off"
-                    aria-describedby="input-tanggal-feedback"
-                ></b-form-input>
-            </b-input-group>
-            <b-form-invalid-feedback id="input-tanggal-feedback">Silahkan isi dahulu.</b-form-invalid-feedback>
-        </b-form-group>
-        
-        <b-form-group 
-            label="Pendapatan" 
+    <h2 class="text-center" style="margin-bottom:10px;">Detail Pendapatan</h2>
+        <b-table
+        hover
+        ref="table"
+        :items="itemsDetailPemasukan"
+        :fields="fieldsDetailPemasukan"
+        responsive
+        style="text-align:center"
         >
-            <b-form-input
-                v-model="$v.form.pendapatan.$model"
-                required
-                placeholder="Silahkan Isi Pendapatan"
-                :state="validateState('pendapatan')"
-                aria-describedby="input-pendapatan-feedback"
-            ></b-form-input>
-            <b-form-invalid-feedback id="input-pendapatan-feedback">Silahkan isi dahulu dan harus angka.</b-form-invalid-feedback>
-        </b-form-group>
 
-        <b-form-group 
-            label="Pengeluaran" 
+        </b-table>
+    </b-modal>
+
+    <!-- DETAIL PENGELUARAN -->
+    <b-modal
+      :id="detailsPengeluaran.id"
+      ref="modal"
+      title="Tambah Barang"
+      hide-footer
+      hide-header
+    >
+    <h2 class="text-center" style="margin-bottom:10px;">Detail Pengeluaran</h2>
+        <b-table
+        hover
+        ref="table"
+        :items="itemsDetailPengeluaran"
+        :fields="fieldsDetailPengeluaran"
+        responsive
+        style="text-align:center"
         >
-            <b-form-input
-                v-model="$v.form.pengeluaran.$model"
-                required
-                placeholder="Silahkan Isi Pengeluaran"
-                :state="validateState('pengeluaran')"
-                aria-describedby="input-pengeluaran-feedback"
-            ></b-form-input>
-            <b-form-invalid-feedback id="input-pengeluaran-feedback">Silahkan isi dahulu dan harus angka.</b-form-invalid-feedback>
-        </b-form-group>
 
-        <b-form-group 
-            label="Beras" 
+        </b-table>
+    </b-modal>
+
+    <!-- DETAIL PEMBELIAN -->
+    <b-modal
+      :id="detailsPembelian.id"
+      ref="modal"
+      title="Tambah Barang"
+      hide-footer
+      hide-header
+    >
+    <h2 class="text-center" style="margin-bottom:10px;">Detail Pembelian</h2>
+        <b-table
+        hover
+        ref="table"
+        :items="itemsDetailPembelian"
+        :fields="fieldsDetailPembelian"
+        responsive
+        style="text-align:center"
         >
-            <b-form-input
-                v-model="$v.form.beras.$model"
-                required
-                placeholder="Silahkan Isi Beras"
-                :state="validateState('beras')"
-                aria-describedby="input-beras-feedback"
-            ></b-form-input>
-            <b-form-invalid-feedback id="input-beras-feedback">Silahkan isi dahulu dan harus angka.</b-form-invalid-feedback>
-        </b-form-group>
 
-        <b-button @click="validasi()" variant="primary" class="m-t-15">Register</b-button>
+        </b-table>
     </b-modal>
     </div>
 </template>
@@ -252,12 +253,22 @@ export default {
                     sortable: true
                 },
                 {
-                    key: 'pendapatan',
+                    key: 'namaKasir',
+                    label:'Nama Kasir',
+                    sortable: true
+                },
+                {
+                    key: 'totalPemasukan',
                     label: 'Pendapatan',
                     sortable: true
                 },
                 {
-                    key: 'pengeluaran',
+                    key: 'totalPembelian',
+                    label: 'Pembelian',
+                    sortable: true
+                },
+                {
+                    key: 'totalPengeluaran',
                     label: 'Pengeluaran',
                     sortable: true
                 },
@@ -267,27 +278,81 @@ export default {
                     sortable: true
                 },
                 {
-                    key: 'beras',
-                    label: 'Beras',
-                    sortable: true
+                    key: 'action',
+                    label: 'Action',
                 },
             ],
-            itemsDetail:[],
-            details: {
-                id: "detail",
+            detailsPemasukan: {
+                id: "detailPemasukan",
                 title: "",
                 content: "",
             },
-            fieldsDetail: [
-                
+            itemsDetailPemasukan: [],
+            fieldsDetailPemasukan: [
                 {
-                    key: 'tgl',
-                    label:'Tanggal',
+                    key: 'namaPemasukan',
+                    label:'Nama Pemasukan',
                     sortable: true
                 },
                 {
-                    key: 'absen',
-                    label:'Kehadiran',
+                    key: 'hargaPemasukan',
+                    label:'Total Pemasukan',
+                    sortable: true
+                },
+            ],
+            detailsPengeluaran: {
+                id: "detailPengeluaran",
+                title: "",
+                content: "",
+            },
+            itemsDetailPengeluaran: [],
+            fieldsDetailPengeluaran: [
+                {
+                    key: 'namaPengeluaran',
+                    label:'Nama Pengeluaran',
+                    sortable: true
+                },
+                {
+                    key: 'jumlahPengeluaran',
+                    label:'Jumlah',
+                    sortable: true
+                },
+                {
+                    key: 'hargaDetailPengeluaran',
+                    label:'Harga',
+                    sortable: true
+                },
+                {
+                    key: 'hargaPengeluaran',
+                    label:'Total Pengeluaran',
+                    sortable: true
+                },
+            ],
+            detailsPembelian: {
+                id: "detailPembelian",
+                title: "",
+                content: "",
+            },
+            itemsDetailPembelian: [],
+            fieldsDetailPembelian: [
+                {
+                    key: 'namaPembelian',
+                    label:'Nama Pembelian',
+                    sortable: true
+                },
+                {
+                    key: 'jumlahPembelian',
+                    label:'Jumlah',
+                    sortable: true
+                },
+                {
+                    key: 'hargaDetailPembelian',
+                    label:'Total Pembelian',
+                    sortable: true
+                },
+                {
+                    key: 'hargaPembelian',
+                    label:'Total Pembelian',
                     sortable: true
                 },
             ],
@@ -337,7 +402,9 @@ export default {
     //             this.currentPage = 1
     //         },
     // },
-    
+    mounted(){
+        this.getNow()
+    },
     methods: {
         validateState(name) {
             const { $dirty, $error } = this.$v.form[name];
@@ -353,7 +420,83 @@ export default {
 
             this.$nextTick(() => {
                 this.$v.$reset();
+                this.getNow()
             });
+        },
+        detailPemasukan(item, index, button){
+            let vm = this
+            let idSetor = item.id
+            axios.get(ipBackend + "/poolPemasukan/listBySetoranId/" + idSetor , {
+                headers: {
+                accesstoken: localStorage.getItem("token"),
+                },
+            })
+            .then((res) => {
+                vm.itemsDetailPemasukan = res.data.data
+                console.log(vm.itemsDetailPemasukan, 'ini detail pemasukan')
+                vm.detailsPemasukan.content = item;
+                this.$root.$emit("bv::show::modal", vm.detailsPemasukan.id, button);
+                
+            })
+            .catch((err) => {
+                console.log(err);
+            });
+            // this.$root.$emit("bv::show::modal", this.detailsPemasukan.id, button);
+            // console.log(this.idEdit);
+        },
+        detailPengeluaran(item, index, button){
+            let vm = this
+            let idSetor = item.id
+            axios.get(ipBackend + "/poolPengeluaran/listBySetoranId/" + idSetor , {
+                headers: {
+                accesstoken: localStorage.getItem("token"),
+                },
+            })
+            .then((res) => {
+                vm.itemsDetailPengeluaran = res.data.data
+                console.log(vm.itemsDetailPengeluaran, 'ini detail Pengeluaran')
+                vm.itemsDetailPengeluaran.forEach((element, index) => {
+                    let x = vm.itemsDetailPengeluaran[index]
+                    x.hargaDetailPengeluaran = vm.itemsDetailPengeluaran[index].hargaPengeluaran / vm.itemsDetailPengeluaran[index].jumlahPengeluaran
+                })
+                vm.detailsPengeluaran.content = item;
+                this.$root.$emit("bv::show::modal", vm.detailsPengeluaran.id, button);
+            })
+            .catch((err) => {
+                console.log(err);
+            });
+            // this.$root.$emit("bv::show::modal", this.detailsPengeluaran.id, button);
+            // console.log(this.idEdit);
+        },
+        detailPembelian(item, index, button){
+            let vm = this
+            let idSetor = item.id
+            axios.get(ipBackend + "/poolPembelian/listBySetoranId/" + idSetor , {
+                headers: {
+                accesstoken: localStorage.getItem("token"),
+                },
+            })
+            .then((res) => {
+                vm.itemsDetailPembelian = res.data.data
+                console.log(vm.itemsDetailPembelian, 'ini detail Pembelian')
+                vm.itemsDetailPembelian.forEach((element, index) => {
+                    let x = vm.itemsDetailPembelian[index]
+                    x.hargaDetailPembelian = vm.itemsDetailPembelian[index].hargaPembelian / vm.itemsDetailPembelian[index].jumlahPembelian
+                })
+                vm.detailsPembelian.content = item;
+                this.$root.$emit("bv::show::modal", vm.detailsPembelian.id, button);
+            })
+            .catch((err) => {
+                console.log(err);
+            });
+            // this.$root.$emit("bv::show::modal", this.detailsPembelian.id, button);
+            // console.log(this.idEdit);
+        },
+        getNow(){
+            let vm = this
+            vm.bulan = moment(new Date()).get('month') + 1
+            vm.tahun = moment(new Date()).get('year')
+
         },
         getList(){
             let vm = this
@@ -371,7 +514,8 @@ export default {
                 res.data.data.forEach((element, index) => {
                     let x = this.items[index]
                     x.nomor = index +1 
-                    x.tgl = moment(vm.items[index].tanggal).format('DD-MM-YYYY')        
+                    x.tgl = moment(vm.items[index].tanggal).format('DD-MM-YYYY')
+                    x.setor = vm.items[index].totalPemasukan - vm.items[index].totalPengeluaran - vm.items[index].totalPembelian       
                 });
                 this.items.sort(function(a, b){return a.tgl - b.tgl})
             })

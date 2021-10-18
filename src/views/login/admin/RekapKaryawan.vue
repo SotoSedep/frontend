@@ -62,10 +62,32 @@
                                 v-model="item.item.status"
                                 name="checkbox-1"
                                 @change="itikiwir(item)"
-                                value="1"
-                                unchecked-value="0"
+                                value= 1
+                                unchecked-value= 0
                             >
                             </b-form-checkbox>               
+                        </template>
+                        <template #cell(stgh)="item">
+                            <b-form-checkbox
+                                v-model="item.item.stgh"
+                                name="checkbox-1"
+                                @change="itikiwir(item)"
+                                value= 1
+                                unchecked-value= 0
+                            >
+                            </b-form-checkbox>               
+                        </template>
+                        <template #cell(gajiKaryawan)="item">
+                            <b-form-input
+                                v-model="item.item.gajiKaryawan"
+                                placeholder="Silahkan Isi Nominal"
+                            ></b-form-input>             
+                        </template>
+                        <template #cell(kasbon)="item">
+                            <b-form-input
+                                v-model="item.item.kasbon"
+                                placeholder="Silahkan Isi Nominal"
+                            ></b-form-input>             
                         </template>
                         </b-table>
                     </b-card> 
@@ -115,15 +137,39 @@ export default {
                     label: 'Check',
                     sortable: true
                 },
+                {
+                    key: 'stgh',
+                    label: 'Setengah Hari',
+                    sortable: true
+                },
+                {
+                    key: 'gajiKaryawan',
+                    label: 'Gaji',
+                    sortable: true
+                },
+                {
+                    key: 'kasbon',
+                    label: 'Kasbon',
+                    sortable: true
+                },
             ],
         }
     },
     mounted() {
         this.getKaryawan()
+        this.getNow()
     },
     methods: {
         itikiwir(x){
             console.log(x)
+        },
+        getNow(){
+            let vm = this
+            vm.tgl = moment(new Date()).get('date')
+            vm.bulan = moment(new Date()).get('month') + 1
+            vm.tahun = moment(new Date()).get('year')
+            vm.tanggal = moment(new Date()).startOf('day').format('YYYY-MM-DD')
+            console.log(vm.tgl, 'ini tgl')
         },
         simpan(){
             let vm = this
@@ -133,6 +179,9 @@ export default {
                 x.absen = vm.items[index].status
                 x.tanggalAbsen = moment(vm.tanggal)
                 x.karyawanId = vm.items[index].id
+                x.absenStghHari = vm.items[index].stgh
+                x.gaji = vm.items[index].gajiKaryawan
+                x.kasbon = vm.items[index].kasbon
                 bulk.push(x)
             })
             // console.log(bulk,'ini bulk')
@@ -171,7 +220,8 @@ export default {
                 res.data.respon.forEach((element, index) => {
                     let x = this.items[index]
                     x.nomor = index +1
-                    x.status = 0           
+                    x.status = 0
+                    x.kasbon = 0           
                 });
             })
             .catch((err) => {

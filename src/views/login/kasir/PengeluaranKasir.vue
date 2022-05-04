@@ -1,12 +1,32 @@
 <template>
-    <div id="setoran">
+    <div id="pengeluaranKasir">
         <b-container>
+            <b-row class="m-t-15">
+              <b-col md="12">
+                <b-breadcrumb>
+                  <b-breadcrumb-item>
+                    <router-link :to="'dashboardkasir'">
+                      <b-icon
+                        icon="house-fill"
+                        scale="1.25"
+                        shift-v="1.25"
+                        aria-hidden="true"
+                      ></b-icon>
+                      Dashboard
+                    </router-link>
+                  </b-breadcrumb-item>
+                  <b-breadcrumb-item active
+                    >Data Pengeluaran Soto Sedeep</b-breadcrumb-item
+                  >
+                </b-breadcrumb>
+              </b-col>
+            </b-row>
             <b-row>
                 <b-col md="12">
                     <b-row>
                         <b-col md="12" style="margin-top : 30px; margin-bottom: 30px">
                             <h3 class="text-center m-t-0 m-b-0">
-                            <strong>TAMBAH DATA REKAP SETORAN</strong>
+                            <strong>TAMBAH DATA PENGELUARAN</strong>
                             </h3>
                         </b-col>
                     </b-row>
@@ -102,15 +122,7 @@
                         style="text-align:center"
                         >
                         <template v-slot:cell(tambah)="row">
-                            <b-button
-                                size="sm"
-                                variant="primary"
-                                @click="addPemasukan(row.item, row.index, $event.target)"
-                                class="mr-1"
-                                style="margin-bottom:5px"
-                                >
-                                Tambah Pemasukan
-                            </b-button>
+                            
                             <b-button
                                 size="sm"
                                 variant="primary"
@@ -120,17 +132,10 @@
                                 >
                                 Tambah Pengeluaran
                             </b-button>
+                            
                         </template>
                         <template v-slot:cell(action)="row">
-                            <b-button
-                                size="sm"
-                                variant="warning"
-                                @click="detailPemasukan(row.item, row.index, $event.target)"
-                                class="mr-1"
-                                style="align-item:center;justify-content:center;margin-bottom:5px "
-                                >
-                                Detail Pemasukan
-                            </b-button>
+                            
                             <b-button
                                 size="sm"
                                 variant="warning"
@@ -140,6 +145,7 @@
                                 >
                                 Detail Pengeluaran
                             </b-button>
+                            
                             
                         </template>
                         </b-table>
@@ -208,34 +214,7 @@
         <b-button @click="validasi()" variant="primary" class="m-t-15">Register</b-button>
     </b-modal>
     
-    <!-- PEMASUKAN -->
-
-    <b-modal
-      :id="pemasukan.id"
-      ref="modal"
-      hide-footer
-      hide-header
-    >
-    <h2 class="text-center" style="margin-bottom:10px;">Tambah Data</h2>
-
-        <b-button v-b-modal.modal-4 variant="primary" style="margin-bottom:10px"
-        >Tambah Data</b-button
-        >
-
-        <b-table
-            show-empty
-            bordered
-            hover
-            ref="table"
-            :items="itemsPemasukan"
-            :fields="fieldsPemasukan"
-            responsive
-            style="text-align:center"
-            >
-        </b-table>
-        <b-button @click="validasiPemasukan()" variant="primary" class="m-t-15">Simpan</b-button>
-    </b-modal>
-
+    
     <!-- PENGELUARAN -->
 
     <b-modal
@@ -262,38 +241,6 @@
             >
         </b-table>
         <b-button @click="validasiPengeluaran()" variant="primary" class="m-t-15">Simpan</b-button>
-    </b-modal>
-
-    <!-- MODAL PEMASUKAN -->
-
-    <b-modal
-      id="modal-4"
-      ref="modal"
-      hide-footer
-      hide-header
-    >
-    <h2 class="text-center" style="margin-bottom:10px;">Tambah Data</h2>
-        <b-form-group
-            label="Nama Pemasukan"
-        >
-        <b-form-select 
-            v-model="namaPemasukan" 
-            :options="optionsPemasukan"
-        ></b-form-select>
-        </b-form-group>
-        
-        <b-form-group 
-            label="Nominal" 
-        >
-            <b-form-input
-                v-model="hargaPemasukan"
-                required
-                number
-                placeholder="Silahkan Isi Nominal"
-
-            ></b-form-input>
-        </b-form-group>
-        <b-button @click="addSubPemasukan()" variant="primary" class="m-t-15">Simpan</b-button>
     </b-modal>
 
     <!-- MODAL PENGELUARAN -->
@@ -364,27 +311,6 @@
         <b-button @click="addSubPengeluaran()" variant="primary" class="m-t-15">Simpan</b-button>
     </b-modal>
 
-    <!-- DETAIL PEMASUKAN -->
-    <b-modal
-      :id="detailsPemasukan.id"
-      ref="modal"
-      title="Tambah Barang"
-      hide-footer
-      hide-header
-    >
-    <h2 class="text-center" style="margin-bottom:10px;">Detail Pemasukan</h2>
-        <b-table
-        hover
-        ref="table"
-        :items="itemsDetailPemasukan"
-        :fields="fieldsDetailPemasukan"
-        responsive
-        style="text-align:center"
-        >
-
-        </b-table>
-    </b-modal>
-
     <!-- DETAIL PENGELUARAN -->
     <b-modal
       :id="detailsPengeluaran.id"
@@ -405,6 +331,8 @@
 
         </b-table>
     </b-modal>
+
+   
     </div>
 </template>
 
@@ -416,61 +344,14 @@ import moment from 'moment';
 import { validationMixin } from "vuelidate"
 import { required } from "vuelidate/lib/validators"
 export default {
-    name:'setoran',
+    name:'pengeluaranKasir',
     data(){
         return{
             form: {
                 namakasir:null,
                 tanggal:null
             },
-            detailsPemasukan: {
-                id: "detailPemasukan",
-                title: "",
-                content: "",
-            },
-            itemsDetailPemasukan: [],
-            fieldsDetailPemasukan: [
-                {
-                    key: 'namaPemasukan',
-                    label:'Nama Pemasukan',
-                    sortable: true
-                },
-                {
-                    key: 'hargaPemasukan',
-                    label:'Total Pemasukan',
-                    sortable: true
-                },
-            ],
-            pemasukan: {
-                id: "pemasukan",
-                title: "",
-                content: "",
-            },
-            itemsPemasukan: [],
-            fieldsPemasukan: [
-                
-                {
-                    key: 'namaPemasukan',
-                    label:'Nama Pemasukan',
-                    sortable: true
-                },
-
-                {
-                    key: 'hargaPemasukan',
-                    label:'Total Pemasukan',
-                    sortable: true
-                },
-            ],
-            namaPemasukan:null,
-            optionsPemasukan: [
-                { value: null, text: 'Silahkan Pilih' },
-                { value: 'Pemasukan Soto', text: 'Pemasukan Soto' },
-                { value: 'Pemasukan Snack', text: 'Pemasukan Snack' },
-                { value: 'Pemasukan Beras', text: 'Pemasukan Beras' },
-                { value: 'Pemasukan Butik', text: 'Pemasukan Butik' },
-            ],
-            hargaPemasukan:'',
-            jumlahPemasukan:'',
+           
             detailsPengeluaran: {
                 id: "detailPengeluaran",
                 title: "",
@@ -532,6 +413,7 @@ export default {
                     sortable: true
                 },
             ],
+            
             tgl:null,
             bulan:null,
             options: [
@@ -584,18 +466,8 @@ export default {
                     sortable: true
                 },
                 {
-                    key: 'totalPemasukan',
-                    label: 'Pendapatan',
-                    sortable: true
-                },
-                {
                     key: 'totalPengeluaran',
                     label: 'Pengeluaran',
-                    sortable: true
-                },
-                {
-                    key: 'setor',
-                    label: 'Setoran',
                     sortable: true
                 },
                 {
@@ -644,32 +516,10 @@ export default {
     // },
     mounted(){
         this.getNow()
-        this.getList()
+        // this.getList()
         this.getPengeluaran()
-        this.itungSetor()
     },
     methods: {
-        detailPemasukan(item, index, button){
-            let vm = this
-            let idSetor = item.id
-            axios.get(ipBackend + "/poolPemasukan/listBySetoranId/" + idSetor , {
-                headers: {
-                accesstoken: localStorage.getItem("token"),
-                },
-            })
-            .then((res) => {
-                vm.itemsDetailPemasukan = res.data.data
-                console.log(vm.itemsDetailPemasukan, 'ini detail pemasukan')
-                vm.detailsPemasukan.content = item;
-                this.$root.$emit("bv::show::modal", vm.detailsPemasukan.id, button);
-                
-            })
-            .catch((err) => {
-                console.log(err);
-            });
-            // this.$root.$emit("bv::show::modal", this.detailsPemasukan.id, button);
-            // console.log(this.idEdit);
-        },
         detailPengeluaran(item, index, button){
             let vm = this
             let idSetor = item.id
@@ -694,14 +544,6 @@ export default {
             // this.$root.$emit("bv::show::modal", this.detailsPengeluaran.id, button);
             // console.log(this.idEdit);
         },
-        itungSetor(){
-            let vm = this
-            vm.items.forEach((element, index) => {
-                let x = vm.items[index]
-                x.setor = vm.items[index].totalPemasukan - vm.items[index].totalPengeluaran - vm.items[index].totalPembelian
-            })
-            console.log(vm.items, 'iiiwiwiiwiw')
-        },
         itikiwir(x){
             let vm = this
             vm.dataPengeluaran.forEach((element, index) => {
@@ -716,27 +558,9 @@ export default {
                 }
             })
         },
-        itikiwir2(x){
-            let vm = this
-            vm.dataPembelian.forEach((element, index) => {
-                if(x == vm.dataPembelian[index].namaBarangPembelian){
-                    vm.hargaPembelian = vm.dataPembelian[index].hargaBarangPembelian
-                    vm.totalHargaPembelian = vm.hargaPembelian * vm.jumlahPembelian
-                }
-            })
-            vm.optionsPembelian.forEach((element, index) => {
-                if(vm.inputPembelian == vm.optionsPembelian[index].text){
-                    vm.namaPembelian = vm.optionsPembelian[index].value
-                }
-            })
-        },
         totalPengeluaran(x){
             let vm = this
             vm.totalHargaPengeluaran = vm.hargaPengeluaran * x
-        },
-        totalPembelian(x){
-            let vm = this
-            vm.totalHargaPembelian = vm.hargaPembelian * x
         },
         validateState(name) {
             const { $dirty, $error } = this.$v.form[name];
@@ -751,16 +575,12 @@ export default {
                 this.getNow()
             });
         },
-        kosongPemasukan(){
-            this.namaPemasukan = null
-            this.jumlahPemasukan =''
-            this.hargaPemasukan = ''
-        },
         kosongPengeluaran(){
             this.namaPengeluaran = null
             this.jumlahPengeluaran =''
             this.hargaPengeluaran = ''
         },
+
         getNow(){
             let vm = this
             // vm.tgl = moment(new Date()).get('date')
@@ -788,7 +608,6 @@ export default {
                     let x = this.items[index]
                     x.nomor = index +1 
                     x.tgl = moment(vm.items[index].tanggal).format('DD-MM-YYYY')
-                    x.setor = vm.items[index].totalPemasukan - vm.items[index].totalPengeluaran - vm.items[index].totalPembelian        
                 });
             })
             .catch((err) => {
@@ -803,7 +622,7 @@ export default {
                 },
             })
             .then((res) => {
-                console.log(res)
+                console.log(res,'ini pengeluaran')
                 vm.dataPengeluaran = res.data.respon
                 console.log(this.items, 'ini this item')
                 vm.dataPengeluaran.forEach((element, index) => {
@@ -850,31 +669,11 @@ export default {
                 }
             
         },
-        addPemasukan(item, index, button){
-            this.pemasukan.content = item;
-            this.idSetoran = item.id;
-            this.$root.$emit("bv::show::modal", this.pemasukan.id, button);
-            console.log(this.idSetoran);
-        },
         addPengeluaran(item, index, button){
             this.pengeluaran.content = item;
             this.idSetoran = item.id;
             this.$root.$emit("bv::show::modal", this.pengeluaran.id, button);
             console.log(this.idSetoran);
-        },
-        addSubPemasukan(){
-            let vm = this
-            let x = {}
-            x.setoranId = vm.idSetoran
-            x.namaPemasukan = vm.namaPemasukan
-            x.hargaPemasukan = vm.hargaPemasukan
-            x.jumlahPemasukan = vm.jumlahPemasukan
-            vm.itemsPemasukan.push(x)
-            x = {}
-            this.$nextTick(() => {
-                    this.$bvModal.hide('modal-4')
-                    this.kosongPemasukan()
-                })
         },
         addSubPengeluaran(){
             let vm = this
@@ -889,38 +688,6 @@ export default {
                     this.$bvModal.hide('modal-2')
                     this.kosongPengeluaran()
                 })
-        },
-        simpanPemasukan(){
-            let vm = this
-            let bulk = []
-            let x = {}
-            vm.itemsPemasukan.forEach((element, index) => {
-                x.setoranId = vm.itemsPemasukan[index].setoranId
-                x.namaPemasukan = vm.itemsPemasukan[index].namaPemasukan
-                x.hargaPemasukan = vm.itemsPemasukan[index].hargaPemasukan
-                x.jumlahPemasukan = 0
-                bulk.push(x)
-                x = {}
-            })
-            axios.post(ipBackend + '/poolPemasukan/register', {
-                bulk : bulk
-            },
-            {
-              headers: {
-              accesstoken: localStorage.getItem("token"),
-            }
-            })
-            .then(res => {
-                console.log(res, 'ini resss nyaaaaaaa')
-                vm.$swal("Sukses Input Berhasil");
-                vm.itemsPemasukan = []
-                this.$root.$emit("bv::hide::modal", "pemasukan");
-                this.getList()
-                this.itungSetor()
-            })
-            .catch(err => {
-                console.log(err)
-            })
         },
         simpanPengeluaran(){
             let vm = this
@@ -969,26 +736,6 @@ export default {
                 callback: confirm => {
                     if (confirm) {
                     this.simpan()
-                    }
-                }
-                }
-            )
-        },
-        validasiPemasukan(){
-            this.$confirm(
-                {
-                message: `Apakah yakin sudah benar?`,
-                button: {
-                    no: 'Tidak',
-                    yes: 'Ya'
-                },
-                /**
-                 * Callback Function
-                 * @param {Boolean} confirm 
-                 */
-                callback: confirm => {
-                    if (confirm) {
-                    this.simpanPemasukan()
                     }
                 }
                 }

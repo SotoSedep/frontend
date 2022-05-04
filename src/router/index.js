@@ -16,6 +16,7 @@ import MenuWaitress from '../views/login/waitress/MenuWaitress.vue'
 import DashboardKasir from '../views/login/kasir/DashboardKasir.vue'
 import DetailKasir from '../views/login/kasir/DetailKasir.vue'
 import RekapKasir from '../views/login/kasir/RekapKasir.vue'
+import PengeluaranKasir from '../views/login/kasir/PengeluaranKasir.vue'
 import DapurSoto from '../views/login/dapur/Soto.vue'
 import DapurMakanan from '../views/login/dapur/Makanan.vue'
 import DapurMinuman from '../views/login/dapur/DapurMinuman.vue'
@@ -62,9 +63,14 @@ const routes = [
         component: () => import(/* webpackChunkName: "admingrafik" */ '../views/login/admin/AdminRekap')
       },
       {
-        path: '/rekapKaryawan',
-        name: 'rekapKaryawan',
-        component: () => import(/* webpackChunkName: "rekapkaryawan" */ '../views/login/admin/RekapKaryawan')
+        path: '/rekapKaryawanJambu',
+        name: 'rekapKaryawanJambu',
+        component: () => import(/* webpackChunkName: "rekapkaryawan" */ '../views/login/admin/RekapKaryawanJambu')
+      },
+      {
+        path: '/rekapKaryawanBanyumanik',
+        name: 'rekapKaryawanBanyumanik',
+        component: () => import(/* webpackChunkName: "rekapkaryawan" */ '../views/login/admin/RekapKaryawanBanyumanik')
       },
       {
         path: '/rekapPembelian',
@@ -80,6 +86,11 @@ const routes = [
         path: '/pembeliangarung',
         name: 'pembelianGarung',
         component: () => import(/* webpackChunkName: "rekappembelian" */ '../views/login/admin/PembelianGarung')
+      },
+      {
+        path: '/pembelianjambu',
+        name: 'pembelianJambu',
+        component: () => import(/* webpackChunkName: "rekappembelian" */ '../views/login/admin/PembelianJambu')
       },
       {
         path: '/pembelian',
@@ -107,9 +118,19 @@ const routes = [
         component: () => import(/* webpackChunkName: "MasterWilayah" */ '../views/login/admin/AbsenBulan')
       },
       {
+        path: '/absenbulanBanyumanik',
+        name: 'absenbulanBanyumanik',
+        component: () => import(/* webpackChunkName: "MasterWilayah" */ '../views/login/admin/AbsenBulanBanyumanik')
+      },
+      {
         path: '/gajibulan',
         name: 'gajibulan',
         component: () => import(/* webpackChunkName: "MasterWilayah" */ '../views/login/admin/RekapGajiBulanan')
+      },
+      {
+        path: '/gajibulanBanyumanik',
+        name: 'gajibulanBanyumanik',
+        component: () => import(/* webpackChunkName: "MasterWilayah" */ '../views/login/admin/RekapGajiBulananBanyumanik')
       },
       // {
       //   path: '/gaji',
@@ -236,6 +257,15 @@ const routes = [
     }
   },
   {
+    path: '/pengeluaranKasir',
+    name: 'pengeluaranKasir',
+    component: PengeluaranKasir,
+    meta: {
+      requiresAuth: true,
+      role : 'kasir'
+    }
+  },
+  {
     path: '/dapursoto',
     name: 'dapursoto',
     component: DapurSoto,
@@ -319,9 +349,6 @@ router.beforeEach(async (to, from, next) => {
             query: { redirect: to.fullPath }
         })
         }
-     
-       
-       
       }
   } else if (to.matched.some(record => record.meta.guest)) {
     next()

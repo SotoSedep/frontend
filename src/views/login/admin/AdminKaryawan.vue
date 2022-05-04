@@ -19,6 +19,30 @@
                   >Tambah Data</b-button
                 >
               </b-col>
+              <b-col md="12" class="my-1">
+                <b-form-group
+                label="Search"
+                label-for="filter-input"
+                label-cols-sm="6"
+                label-align-sm="right"
+                label-size="sm"
+                class="mb-0"
+                style="margin-top:10px"
+                >
+                    <b-input-group size="sm">
+                        <b-form-input
+                        id="filter-input"
+                        v-model="filter"
+                        type="search"
+                        placeholder="Type to Search"
+                        ></b-form-input>
+                        <b-input-group-append>
+                        <b-button :disabled="!filter" @click="filter = ''">Clear</b-button>
+                        </b-input-group-append>
+                    </b-input-group>
+                    
+                </b-form-group>
+            </b-col>
             </b-row>
 
             <b-table
@@ -29,6 +53,8 @@
               :items="items"
               :fields="fields"
               responsive
+              :filter="filter"
+              :filter-included-fields="filterOn"
               style="text-align:center"
             >
               <template v-slot:cell(actions)="row">
@@ -43,7 +69,7 @@
                 <b-button
                   size="sm"
                   variant="danger"
-                  @click="handleClick(row.item.id)"
+                  @click="handleClick(row.item, row.index, $event.target)"
                   class="mr-1"
                 >
                   Hapus
@@ -151,6 +177,14 @@
             placeholder="Silahkan Isi No. Handphone"
         ></b-form-input>
         </b-form-group>
+        <b-form-group
+            label="Cabang"
+        >
+        <b-form-select 
+            v-model="cabangKaryawan" 
+            :options="options" 
+        ></b-form-select>
+        </b-form-group>
         <b-button @click="signup()" variant="primary" class="m-t-15">Register</b-button>
     </b-modal>
     <!-- edit -->
@@ -226,6 +260,14 @@
             placeholder="Silahkan Isi No. Handphone"
         ></b-form-input>
         </b-form-group>
+        <b-form-group
+            label="Cabang"
+        >
+        <b-form-select 
+            v-model="editModals.content.cabangKaryawan" 
+            :options="options" 
+        ></b-form-select>
+        </b-form-group>
         <b-button @click="editData()" variant="primary" class="m-t-15">Simpan</b-button>
     </b-modal>
   </div>
@@ -250,6 +292,12 @@ import { ipBackend } from "@/config.js";
         gajiKaryawan:'',
         role: null,
         roleop: [{ text: 'Silahkan Pilih', value: null }, 'Waitress', 'Kasir'],
+        cabangKaryawan : null,
+        options: [
+                { value: null, text: 'Silahkan Pilih' },
+                { value: 'Jambu', text: 'Jambu' },
+                { value: 'Banyumanik', text: 'Banyumanik' },
+            ],
         handphone: '',
         // editnama:'',
         // editalamat:'',
@@ -296,6 +344,8 @@ import { ipBackend } from "@/config.js";
           },
           { key: "actions", label: "Actions" },
           ],
+          filter: null,
+          filterOn: [],
       }
     },
     mounted() {
@@ -344,6 +394,7 @@ import { ipBackend } from "@/config.js";
                 alamat:vm.alamat,
                 role:vm.role,
                 handphone:vm.handphone,
+                cabangKaryawan:vm.cabangKaryawan
             },
             {
               headers: {
@@ -372,6 +423,7 @@ import { ipBackend } from "@/config.js";
             this.gajiKaryawan = item.gajiKaryawan
             this.namaBank = item.namaBank
             this.norekKaryawan = item.norekKaryawan
+            this.cabangKaryawan = item.cabangKaryawan
             this.$root.$emit("bv::show::modal", this.editModals.id, button);
             console.log(this.idEdit);
       },
@@ -385,6 +437,7 @@ import { ipBackend } from "@/config.js";
                   gajiKaryawan: this.editModals.content.gajiKaryawan,
                   namaBank: this.editModals.content.namaBank,
                   norekKaryawan: this.editModals.content.norekKaryawan,
+                  cabangKaryawan: this.editModals.content.cabangKaryawan,
                 },
                 {
                   headers: {
@@ -403,24 +456,29 @@ import { ipBackend } from "@/config.js";
                 console.log(err);
               });
       },
-      deleteItem(idData) {
-              axios.delete(ipBackend + "/karyawan/delete/" + idData, {
+      deleteItem(a,b) {
+        let data = a
+        console.log(data.id)
+        let vm = this
+              axios.post(ipBackend + "/karyawan/delete", {
+                id:data.id, 
+              },
+              {
                   headers: {
                     accesstoken: localStorage.getItem("token"),
                   },
-                })
+              })
                 .then((res) => {
                   console.log(res.data);
-                  this.$swal("berhasil");
-                  let idDelete = this.items.findIndex((o) => o.id === idData);
-                  this.items.splice(idDelete, 1);
-                  this.$root.$emit("bv::hide::modal");
+                  vm.$swal("berhasil");
+                  vm.items.splice(b, 1);
+                  
                 })
                 .catch(function (error) {
                   console.log(error);
                 });
     },
-    handleClick(idData){
+    handleClick(a,b){
                 this.$confirm(
                     {
                     message: `Yakin ingin menghapus?`,
@@ -434,7 +492,7 @@ import { ipBackend } from "@/config.js";
                      */
                     callback: confirm => {
                         if (confirm) {
-                        this.deleteItem(idData)
+                        this.deleteItem(a,b)
                         }
                     }
                     }

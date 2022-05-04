@@ -223,7 +223,7 @@ export default {
                   console.log(error);
                 });
     },
-    handleClick(a,b){
+            handleClick(a,b){
                 this.$confirm(
                     {
                     message: `Yakin ingin menghapus?`,

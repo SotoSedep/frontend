@@ -22,6 +22,7 @@ import 'sweetalert2/dist/sweetalert2.min.css';
 Vue.config.productionTip = false
 Vue.use(new VueSocketIO({
   connection: 'http://192.168.100.253:3006',
+  // connection: 'http://localhost:3006',
   vuex: {
       store,
       actionPrefix: 'SOCKET_',

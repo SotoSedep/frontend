@@ -19,8 +19,8 @@
                     </b-row>
                 <div style="margin-top:30px">
                         
-                    <b-row style="margin-top:20px">
-                        <b-col md="4">
+                        <b-row style="margin-top:20px">
+                            <b-col md="4">
                             <b-form-group
                             label="Tanggal"
                             label-for="tglsearch"
@@ -95,12 +95,6 @@
                             </b-button>
                         </b-col>
                         <b-col md="12" class="my-1">
-                            <table style="font-weight:bold">
-                                <tr>
-                                    <td style="width:150px">Total Pembelian</td>
-                                    <td>: {{total}}</td>
-                                </tr> 
-                            </table>
                             <b-form-group
                             label="Search"
                             label-for="filter-input"
@@ -211,16 +205,6 @@
             responsive
             style="text-align:center"
             >
-            <template v-slot:cell(actions)="row">
-                <b-button
-                  size="sm"
-                  variant="danger"
-                  @click="deleteItem(row.index)"
-                  class="mr-1"
-                >
-                  Hapus
-                </b-button>
-            </template>
         </b-table>
         <b-button @click="validasiPembelian()" variant="primary" class="m-t-15">Simpan</b-button>
     </b-modal>
@@ -253,7 +237,7 @@
             <option v-for="item in optionsPembelian" :key="item.value">{{ item.text }}</option>
         </datalist>
         </b-form-group>
-
+        
         <b-form-group
             label="Tanggal"
             label-for="tanggal"
@@ -261,7 +245,7 @@
             <b-input-group>
                 <b-input-group-append>
                     <b-form-datepicker
-                    v-model="tanggalPerCabang"
+                    v-model="tanggalGarung"
                     button-only
                     left
                     locale="en-US"
@@ -271,7 +255,7 @@
                 </b-input-group-append>
                 <b-form-input
                     id="tanggal"
-                    v-model="tanggalPerCabang"
+                    v-model="tanggalGarung"
                     type="text"
                     placeholder="YYYY-MM-DD"
                     autocomplete="off"
@@ -336,7 +320,7 @@ import axios from 'axios';
 import { ipBackend } from "@/config.js";
 import moment from 'moment';
 export default {
-    name:'pembelianGarung',
+    name:'pembeliangarung',
     data(){
         return{
             namaBarang:'',
@@ -346,16 +330,16 @@ export default {
             inputPembelian:'',
             namaPembelian:null,
             optionsPembelian: [
+                { value: null, text: 'Silahkan Pilih' },
             ],
             hargaPembelian:'',
             jumlahPembelian:'',
             satuanPembelian:'',
             totalHargaPembelian:'',
-            total:null,
             itemsPembelian: [],
             fieldsPembelian: [
                 {
-                    key: 'tanggalPerCabang',
+                    key: 'tanggalGarung',
                     label:'Tanggal',
                     sortable: true
                 },
@@ -379,10 +363,9 @@ export default {
                     label:'Satuan',
                     sortable: true
                 },
-                { key: "actions", label: "Actions" },
             ],
             tanggalsearch: null,
-            tanggalPerCabang: null,
+            tanggalGarung: null,
             items:[],
             fields: [
                 {
@@ -397,22 +380,22 @@ export default {
                     sortable: true
                 },
                 {
-                    key: 'namaBarangPerCabang',
+                    key: 'namaBarangGarung',
                     label:'Nama Barang',
                     sortable: true
                 },
                 {
-                    key: 'hargaPerCabang',
+                    key: 'hargaGarung',
                     label: 'Harga',
                     sortable: true
                 },
                 {
-                    key: 'jumlahPerCabang',
+                    key: 'jumlahGarung',
                     label: 'Jumlah',
                     sortable: true
                 },
                 {
-                    key: 'satuanPerCabang',
+                    key: 'satuanGarung',
                     label: 'Satuan',
                     sortable: true
                 },
@@ -453,7 +436,6 @@ export default {
                 { value: 2026, text: '2026' },
                 
             ],
-            
         }
     },
     
@@ -467,15 +449,8 @@ export default {
     mounted(){
         this.getPembelian()
         this.getNow()
-        this.getListHarian()
     },
     methods: {
-        modal(){
-            this.kosongPembelian()
-            this.$nextTick(() => {
-                this.$bvModal.show('modal-2')
-            }) 
-        },
         itikiwir2(x){
             let vm = this
             vm.dataPembelian.forEach((element, index) => {
@@ -499,17 +474,12 @@ export default {
             this.jumlahPembelian =''
             this.hargaPembelian = ''
             this.satuanPembelian = ''
-            this.inputPembelian = ''
-            this.totalHargaPembelian = ''
         },
         getListHarian(){
             let vm = this
             let tgl = moment(vm.tanggalsearch)
-            let nama = 'Garung'
-            vm.total = null
-            axios.post(ipBackend + "/pembelianPerCabang/listByTanggal" , {
-                tanggalPerCabang: tgl,
-                namaCabang: nama
+            axios.post(ipBackend + "/pembelianGarung/listByTanggal" , {
+                tanggalGarung: tgl
             } ,{
                 headers: {
                 accesstoken: localStorage.getItem("token"),
@@ -522,8 +492,7 @@ export default {
                 res.data.forEach((element, index) => {
                     let x = vm.items[index]
                     x.nomor = index +1 
-                    x.tgl = moment(vm.items[index].tanggalPerCabang).format('DD-MM-YYYY')
-                    vm.total+=x.hargaPerCabang
+                    x.tgl = moment(vm.items[index].tanggalGarung).format('DD-MM-YYYY')
                 });
             })
             .catch((err) => {
@@ -534,12 +503,9 @@ export default {
             let vm = this
             let bln = vm.bulan
             let thn = vm.tahun
-            let nama = 'Garung'
-            vm.total = null
-            axios.post(ipBackend + "/pembelianPerCabang/listByBulanTahun" ,{
+            axios.post(ipBackend + "/pembelianGarung/listByBulanTahun" ,{
                 bulan : bln,
-                tahun : thn,
-                namaCabang : nama
+                tahun : thn
             } ,{
                 headers: {
                 accesstoken: localStorage.getItem("token"),
@@ -552,8 +518,7 @@ export default {
                 res.data.data.forEach((element, index) => {
                     let x = this.items[index]
                     x.nomor = index +1 
-                    x.tgl = moment(vm.items[index].tanggalPerCabang).format('DD-MM-YYYY')
-                    vm.total+=x.hargaPerCabang
+                    x.tgl = moment(vm.items[index].tanggalGarung).format('DD-MM-YYYY')
                 });
             })
             .catch((err) => {
@@ -566,7 +531,7 @@ export default {
             vm.bulan = moment(new Date()).get('month') + 1
             vm.tahun = moment(new Date()).get('year')
             vm.tanggalsearch = moment(new Date()).startOf('day').format('YYYY-MM-DD')
-            vm.tanggalPerCabang = moment(new Date()).startOf('day').format('YYYY-MM-DD')
+            vm.tanggalGarung = moment(new Date()).startOf('day').format('YYYY-MM-DD')
             console.log(vm.tgl, 'ini tgl')
         },
         getPembelian(){
@@ -598,7 +563,7 @@ export default {
             x.totalHargaPembelian = vm.totalHargaPembelian
             x.jumlahPembelian = vm.jumlahPembelian
             x.satuan = vm.satuanPembelian
-            x.tanggalPerCabang = vm.tanggalPerCabang
+            x.tanggalGarung = vm.tanggalGarung
             vm.itemsPembelian.push(x)
             x = {}
             this.$nextTick(() => {
@@ -608,24 +573,19 @@ export default {
         },
         simpanPembelian(){
             let vm = this
-            let nama = 'Garung'
             let bulk = []
-            let tgl = moment(vm.tanggalPerCabang)
             let x = {}
             vm.itemsPembelian.forEach((element, index) => {
-                x.tanggalPerCabang = moment(vm.itemsPembelian[index].tanggalPerCabang)
-                x.namaBarangPerCabang = vm.itemsPembelian[index].namaPembelian
-                x.hargaPerCabang = vm.itemsPembelian[index].totalHargaPembelian
-                x.jumlahPerCabang = vm.itemsPembelian[index].jumlahPembelian
-                x.satuanPerCabang = vm.itemsPembelian[index].satuan
-                x.namaCabang = nama
+                x.tanggalGarung = moment(vm.itemsPembelian[index].tanggalGarung)
+                x.namaBarangGarung = vm.itemsPembelian[index].namaPembelian
+                x.hargaGarung = vm.itemsPembelian[index].totalHargaPembelian
+                x.jumlahGarung = vm.itemsPembelian[index].jumlahPembelian
+                x.satuanGarung = vm.itemsPembelian[index].satuan
                 bulk.push(x)
                 x = {}
             })
-            axios.post(ipBackend + '/pembelianPerCabang/register', {
-                bulk : bulk,
-                tanggalPerCabang : tgl,
-                namaCabang: nama
+            axios.post(ipBackend + '/pembelianGarung/register', {
+                bulk : bulk
             },
             {
               headers: {
@@ -640,22 +600,15 @@ export default {
                 else{
                     vm.$swal("Sukses Input Berhasil");
                 }
-                
                 vm.$nextTick(() => {
                     vm.$bvModal.hide('modal-1')
                     vm.itemsPembelian = []
                 })
-                this.getListHarian()
+                
             })
             .catch(err => {
                 console.log(err)
             })
-        },
-        deleteItem(index){
-            // console.log(idData, 'id data')
-                
-                // console.log(idDelete, 'id delete')
-                  this.itemsPembelian.splice(index, 1);
         },
         validasiPembelian(){
             this.$confirm(

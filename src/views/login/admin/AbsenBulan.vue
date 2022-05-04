@@ -273,6 +273,7 @@ export default {
     // },
     mounted(){
         this.getNow()
+        this.getList()
     },
     methods: {
         getNow(){
@@ -285,9 +286,11 @@ export default {
             let vm = this
             let bln = vm.bulan
             let thn = vm.tahun
+            let nama = 'Jambu'
             axios.post(ipBackend + "/absensi/rekapKaryawanBulanan" ,{
                 bulan : bln,
-                tahun : thn
+                tahun : thn,
+                cabangKaryawan : nama
             },{
                 headers: {
                 accesstoken: localStorage.getItem("token"),

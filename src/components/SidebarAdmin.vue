@@ -24,26 +24,6 @@
                     Rekap Penjualan
                 </div>
             </router-link>
-            <router-link to="/rekapKaryawan" active-class="active" exact tag="button" class="sidebtn">
-                <div class="link">
-                    Absensi Karyawan
-                </div>
-            </router-link>
-            <router-link to="/absenbulan" active-class="active" exact tag="button" class="sidebtn">
-                <div class="link">
-                    Rekap Absen Bulanan
-                </div>
-            </router-link>
-            <!-- <router-link to="/gaji" active-class="active" exact tag="button" class="sidebtn">
-                <div class="link">
-                    Gaji Bulanan
-                </div>
-            </router-link> -->
-            <router-link to="/gajibulan" active-class="active" exact tag="button" class="sidebtn">
-                <div class="link">
-                    Rekap Gaji Bulanan
-                </div>
-            </router-link>
             <router-link to="/pembelian" active-class="active" exact tag="button" class="sidebtn">
                 <div class="link">
                     Master Barang Pembelian
@@ -54,7 +34,50 @@
                     Master Data Pengeluaran
                 </div>
             </router-link>
-            <router-link to="/pembelianbanyumanik" active-class="active" exact tag="button" class="sidebtn">
+            <router-link to="/rekapKaryawanJambu" active-class="active" exact tag="button" class="sidebtnjb">
+                <div class="link">
+                    Absensi Karyawan Jambu
+                </div>
+            </router-link>
+                        <router-link to="/absenbulan" active-class="active" exact tag="button" class="sidebtnjb">
+                <div class="link">
+                    Rekap Absen Bulanan Jambu
+                </div>
+            </router-link>
+                        <router-link to="/gajibulan" active-class="active" exact tag="button" class="sidebtnjb">
+                <div class="link">
+                    Rekap Gaji Bulanan Jambu
+                </div>
+            </router-link>
+            <router-link to="/rekapKaryawanBanyumanik" active-class="active" exact tag="button" class="sidebtnbm">
+                <div class="link">
+                    Absensi Karyawan Banyumanik
+                </div>
+            </router-link>
+
+            <router-link to="/absenbulanBanyumanik" active-class="active" exact tag="button" class="sidebtnbm"> 
+                <div class="link">
+                    Rekap Absen Bulanan Banyumanik
+                </div>
+            </router-link>
+            <!-- <router-link to="/gaji" active-class="active" exact tag="button" class="sidebtn">
+                <div class="link">
+                    Gaji Bulanan
+                </div>
+            </router-link> -->
+
+            <router-link to="/gajibulanBanyumanik" active-class="active" exact tag="button" class="sidebtnbm">
+                <div class="link">
+                    Rekap Gaji Bulanan Banyumanik
+                </div>
+            </router-link>
+            
+            <router-link to="/pembelianjambu" active-class="active" exact tag="button" class="sidebtnjb">
+                <div class="link">
+                    Pembelian Jambu
+                </div>
+            </router-link>
+            <router-link to="/pembelianbanyumanik" active-class="active" exact tag="button" class="sidebtnbm">
                 <div class="link">
                     Pembelian Banyumanik
                 </div>
@@ -108,12 +131,28 @@ export default {
         text-align: start;
     }
     .menu > * {
-        margin-top: 20px;
+        margin-top: 1px;
     }
     .sidebtn:focus {
         outline: none;
     }
+    .sidebtnjb:focus {
+        outline: none;
+    }
+    .sidebtnbm:focus {
+        outline: none;
+    }
     .sidebtn.active {
+        background-color: white;
+        color:teal;
+        font-weight: 500;
+    }
+    .sidebtnbm.active {
+        background-color: white;
+        color:teal;
+        font-weight: 500;
+    }
+    .sidebtnjb.active {
         background-color: white;
         color:teal;
         font-weight: 500;
@@ -122,6 +161,22 @@ export default {
         border: none;
         padding: 10px 0px;
         background-color: teal;
+        cursor: pointer;
+        font-size: 16px;
+        color: white;
+    }
+    .sidebtnbm {
+        border: none;
+        padding: 10px 0px;
+        background-color: red;
+        cursor: pointer;
+        font-size: 16px;
+        color: white;
+    }
+    .sidebtnjb {
+        border: none;
+        padding: 10px 0px;
+        background-color: green;
         cursor: pointer;
         font-size: 16px;
         color: white;

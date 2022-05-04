@@ -1,12 +1,12 @@
 <template>
-    <div id="gajibulan">
+    <div id="gajibulanBanyumanik">
         <b-container>
             <b-row>
                 <b-col md="12">
                     <b-row>
                         <b-col md="12" style="margin-top : 30px; margin-bottom: 30px">
                             <h3 class="text-center m-t-0 m-b-0">
-                            <strong>DATA REKAP GAJI BULANAN JAMBU</strong>
+                            <strong>DATA REKAP GAJI BULANAN BANYUMANIK</strong>
                             </h3>
                         </b-col>
                     </b-row>
@@ -204,7 +204,7 @@ export default {
             let vm = this
             let bln = vm.bulan
             let thn = vm.tahun
-            let nama = 'Jambu'
+            let nama = 'Banyumanik'
             axios.post(ipBackend + "/absensi/rekapKaryawanBulanan" ,{
                 bulan : bln,
                 tahun : thn,

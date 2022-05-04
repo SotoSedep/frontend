@@ -44,7 +44,30 @@
                                 </b-input-group>
                             </b-form-group>
                         </b-col>
-                        
+                        <b-col md="12" class="my-1">
+                            <b-form-group
+                            label="Search"
+                            label-for="filter-input"
+                            label-cols-sm="6"
+                            label-align-sm="right"
+                            label-size="sm"
+                            class="mb-0"
+                            style="margin-top:10px"
+                            >
+                                <b-input-group size="sm">
+                                    <b-form-input
+                                    id="filter-input"
+                                    v-model="filter"
+                                    type="search"
+                                    placeholder="Type to Search"
+                                    ></b-form-input>
+                                    <b-input-group-append>
+                                    <b-button :disabled="!filter" @click="filter = ''">Clear</b-button>
+                                    </b-input-group-append>
+                                </b-input-group>
+                                
+                            </b-form-group>
+                        </b-col>
                         </b-row>  
                      <b-card bg-variant="light">
                         <b-table
@@ -55,6 +78,8 @@
                         :items="items"
                         :fields="fields"
                         responsive
+                        :filter="filter"
+                        :filter-included-fields="filterOn"
                         style="text-align:center"
                         >
                         <template #cell(status)="item">
@@ -79,8 +104,15 @@
                         </template>
                         <template #cell(gajiKaryawan)="item">
                             <b-form-input
+                                v-if="item.item.status == 1 || item.item.stgh == 1"
                                 v-model="item.item.gajiKaryawan"
                                 placeholder="Silahkan Isi Nominal"
+                            ></b-form-input> 
+                            <b-form-input
+                                v-else
+                                v-model="item.item.gajiKaryawan"
+                                placeholder="Silahkan Isi Nominal"
+                                disabled
                             ></b-form-input>             
                         </template>
                         <template #cell(kasbon)="item">
@@ -153,6 +185,8 @@ export default {
                     sortable: true
                 },
             ],
+            filter: null,
+            filterOn: [],
         }
     },
     mounted() {
@@ -173,20 +207,36 @@ export default {
         },
         simpan(){
             let vm = this
+            let cabang = 'Jambu'
+            let tgl = moment(vm.tanggal)
             let bulk = []
             vm.items.forEach((element,index) => {
                 let x = {}
-                x.absen = vm.items[index].status
-                x.tanggalAbsen = moment(vm.tanggal)
-                x.karyawanId = vm.items[index].id
-                x.absenStghHari = vm.items[index].stgh
-                x.gaji = vm.items[index].gajiKaryawan
-                x.kasbon = vm.items[index].kasbon
-                bulk.push(x)
+                if(vm.items[index].status == 0 && vm.items[index].stgh == 0){
+                    x.absen = vm.items[index].status
+                    x.tanggalAbsen = moment(vm.tanggal)
+                    x.karyawanId = vm.items[index].id
+                    x.absenStghHari = vm.items[index].stgh
+                    x.gaji = 0
+                    x.kasbon = vm.items[index].kasbon
+                    x.cabangAbsensi = cabang
+                    bulk.push(x)
+                }else{
+                    x.absen = vm.items[index].status
+                    x.tanggalAbsen = moment(vm.tanggal)
+                    x.karyawanId = vm.items[index].id
+                    x.absenStghHari = vm.items[index].stgh
+                    x.gaji = vm.items[index].gajiKaryawan
+                    x.kasbon = vm.items[index].kasbon
+                    x.cabangAbsensi = cabang
+                    bulk.push(x)
+                }
             })
             // console.log(bulk,'ini bulk')
             axios.post(ipBackend + "/absensi/register", {
                 bulk : bulk,
+                tanggalAbsen : tgl,
+                cabangAbsensi : cabang,
             },
             {   
                 headers: {
@@ -215,14 +265,21 @@ export default {
             })
             .then((res) => {
                 console.log(res)
-                this.items = res.data.respon
+                // this.items = res.data.respon
                 console.log(this.items, 'ini this item')
                 res.data.respon.forEach((element, index) => {
-                    let x = this.items[index]
-                    x.nomor = index +1
-                    x.status = 0
-                    x.kasbon = 0           
+                    if(res.data.respon[index].cabangKaryawan == 'Jambu'){
+                        let x = res.data.respon[index]
+                        x.status = 0
+                        x.kasbon = 0
+                        x.stgh = 0
+                        this.items.push(x)
+                    }             
                 });
+                this.items.forEach((element, index) => {
+                    let y = this.items[index]
+                    y.nomor = index + 1
+                })
             })
             .catch((err) => {
                 console.log(err);

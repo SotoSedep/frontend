@@ -94,7 +94,14 @@
                                 Lihat Bulanan
                             </b-button>
                         </b-col>
+                        
                         <b-col md="12" class="my-1">
+                            <table style="font-weight:bold">
+                                <tr>
+                                    <td style="width:150px">Total Pembelian</td>
+                                    <td>: {{total}}</td>
+                                </tr> 
+                            </table>
                             <b-form-group
                             label="Search"
                             label-for="filter-input"
@@ -191,7 +198,7 @@
     >
     <h2 class="text-center" style="margin-bottom:10px;">Tambah Data</h2>
 
-        <b-button v-b-modal.modal-2 variant="primary" style="margin-bottom:10px"
+        <b-button @click="modal()" variant="primary" style="margin-bottom:10px"
         >Tambah Data</b-button
         >
 
@@ -205,7 +212,18 @@
             responsive
             style="text-align:center"
             >
+            <template v-slot:cell(actions)="row">
+                <b-button
+                  size="sm"
+                  variant="danger"
+                  @click="deleteItem(row.index)"
+                  class="mr-1"
+                >
+                  Hapus
+                </b-button>
+            </template>
         </b-table>
+        
         <b-button @click="validasiPembelian()" variant="primary" class="m-t-15">Simpan</b-button>
     </b-modal>
 
@@ -219,7 +237,7 @@
     >
     <h2 class="text-center" style="margin-bottom:10px;">Tambah Data</h2>
 
-        <b-form-group
+        <!-- <b-form-group
             label="Nama Pembelian"
         >
         <b-form-select 
@@ -228,6 +246,14 @@
             @change="itikiwir2(namaPembelian)"
             
         ></b-form-select>
+        </b-form-group> -->
+        <b-form-group
+            label="Nama Pembelian"
+        >
+        <b-form-input v-model="inputPembelian" list="my-list-id" @change="itikiwir2(inputPembelian)"></b-form-input>
+        <datalist id="my-list-id" >
+            <option v-for="item in optionsPembelian" :key="item.value">{{ item.text }}</option>
+        </datalist>
         </b-form-group>
 
         <b-form-group
@@ -237,7 +263,7 @@
             <b-input-group>
                 <b-input-group-append>
                     <b-form-datepicker
-                    v-model="tanggalBanyumanik"
+                    v-model="tanggalPerCabang"
                     button-only
                     left
                     locale="en-US"
@@ -247,7 +273,7 @@
                 </b-input-group-append>
                 <b-form-input
                     id="tanggal"
-                    v-model="tanggalBanyumanik"
+                    v-model="tanggalPerCabang"
                     type="text"
                     placeholder="YYYY-MM-DD"
                     autocomplete="off"
@@ -319,18 +345,19 @@ export default {
             harga:'',
             satuan:'',
             dataPembelian:[],
+            inputPembelian:'',
             namaPembelian:null,
             optionsPembelian: [
-                { value: null, text: 'Silahkan Pilih' },
             ],
             hargaPembelian:'',
             jumlahPembelian:'',
             satuanPembelian:'',
             totalHargaPembelian:'',
+            total:null,
             itemsPembelian: [],
             fieldsPembelian: [
                 {
-                    key: 'tanggalBanyumanik',
+                    key: 'tanggalPerCabang',
                     label:'Tanggal',
                     sortable: true
                 },
@@ -354,9 +381,10 @@ export default {
                     label:'Satuan',
                     sortable: true
                 },
+                { key: "actions", label: "Actions" },
             ],
             tanggalsearch: null,
-            tanggalBanyumanik: null,
+            tanggalPerCabang: null,
             items:[],
             fields: [
                 {
@@ -371,22 +399,22 @@ export default {
                     sortable: true
                 },
                 {
-                    key: 'namaBarangBanyumanik',
+                    key: 'namaBarangPerCabang',
                     label:'Nama Barang',
                     sortable: true
                 },
                 {
-                    key: 'hargaBanyumanik',
+                    key: 'hargaPerCabang',
                     label: 'Harga',
                     sortable: true
                 },
                 {
-                    key: 'jumlahBanyumanik',
+                    key: 'jumlahPerCabang',
                     label: 'Jumlah',
                     sortable: true
                 },
                 {
-                    key: 'satuanBanyumanik',
+                    key: 'satuanPerCabang',
                     label: 'Satuan',
                     sortable: true
                 },
@@ -440,14 +468,26 @@ export default {
     mounted(){
         this.getPembelian()
         this.getNow()
+        this.getListHarian()
     },
     methods: {
+        modal(){
+            this.kosongPembelian()
+            this.$nextTick(() => {
+                this.$bvModal.show('modal-2')
+            }) 
+        },
         itikiwir2(x){
             let vm = this
             vm.dataPembelian.forEach((element, index) => {
                 if(x == vm.dataPembelian[index].namaBarangPembelian){
                     vm.hargaPembelian = vm.dataPembelian[index].hargaBarangPembelian
                     vm.totalHargaPembelian = vm.hargaPembelian * vm.jumlahPembelian
+                }
+            })
+            vm.optionsPembelian.forEach((element, index) => {
+                if(vm.inputPembelian == vm.optionsPembelian[index].text){
+                    vm.namaPembelian = vm.optionsPembelian[index].value
                 }
             })
         },
@@ -460,12 +500,17 @@ export default {
             this.jumlahPembelian =''
             this.hargaPembelian = ''
             this.satuanPembelian = ''
+            this.inputPembelian = ''
+            this.totalHargaPembelian = ''
         },
         getListHarian(){
             let vm = this
             let tgl = moment(vm.tanggalsearch)
-            axios.post(ipBackend + "/pembelianBanyumanik/listByTanggal" , {
-                tanggalBanyumanik: tgl
+            let nama = 'Banyumanik'
+            vm.total = null
+            axios.post(ipBackend + "/pembelianPerCabang/listByTanggal" , {
+                tanggalPerCabang: tgl,
+                namaCabang: nama
             } ,{
                 headers: {
                 accesstoken: localStorage.getItem("token"),
@@ -478,7 +523,8 @@ export default {
                 res.data.forEach((element, index) => {
                     let x = vm.items[index]
                     x.nomor = index +1 
-                    x.tgl = moment(vm.items[index].tanggalBanyumanik).format('DD-MM-YYYY')
+                    x.tgl = moment(vm.items[index].tanggalPerCabang).format('DD-MM-YYYY')
+                    vm.total+=x.hargaPerCabang
                 });
             })
             .catch((err) => {
@@ -489,9 +535,12 @@ export default {
             let vm = this
             let bln = vm.bulan
             let thn = vm.tahun
-            axios.post(ipBackend + "/pembelianBanyumanik/listByBulanTahun" ,{
+            let nama = 'Banyumanik'
+            vm.total = null
+            axios.post(ipBackend + "/pembelianPerCabang/listByBulanTahun" ,{
                 bulan : bln,
-                tahun : thn
+                tahun : thn,
+                namaCabang : nama
             } ,{
                 headers: {
                 accesstoken: localStorage.getItem("token"),
@@ -504,7 +553,8 @@ export default {
                 res.data.data.forEach((element, index) => {
                     let x = this.items[index]
                     x.nomor = index +1 
-                    x.tgl = moment(vm.items[index].tanggalBanyumanik).format('DD-MM-YYYY')
+                    x.tgl = moment(vm.items[index].tanggalPerCabang).format('DD-MM-YYYY')
+                    vm.total+=x.hargaPerCabang
                 });
             })
             .catch((err) => {
@@ -517,7 +567,7 @@ export default {
             vm.bulan = moment(new Date()).get('month') + 1
             vm.tahun = moment(new Date()).get('year')
             vm.tanggalsearch = moment(new Date()).startOf('day').format('YYYY-MM-DD')
-            vm.tanggalBanyumanik = moment(new Date()).startOf('day').format('YYYY-MM-DD')
+            vm.tanggalPerCabang = moment(new Date()).startOf('day').format('YYYY-MM-DD')
             console.log(vm.tgl, 'ini tgl')
         },
         getPembelian(){
@@ -549,29 +599,35 @@ export default {
             x.totalHargaPembelian = vm.totalHargaPembelian
             x.jumlahPembelian = vm.jumlahPembelian
             x.satuan = vm.satuanPembelian
-            x.tanggalBanyumanik = vm.tanggalBanyumanik
+            x.tanggalPerCabang = vm.tanggalPerCabang
             vm.itemsPembelian.push(x)
             x = {}
             this.$nextTick(() => {
                     this.$bvModal.hide('modal-2')
                     this.kosongPembelian()
                 })
+            console.log(vm.itemsPembelian, 'pembelian')
         },
         simpanPembelian(){
             let vm = this
+            let nama = 'Banyumanik'
             let bulk = []
+            let tgl = moment(vm.tanggalPerCabang)
             let x = {}
             vm.itemsPembelian.forEach((element, index) => {
-                x.tanggalBanyumanik = moment(vm.itemsPembelian[index].tanggalBanyumanik)
-                x.namaBarangBanyumanik = vm.itemsPembelian[index].namaPembelian
-                x.hargaBanyumanik = vm.itemsPembelian[index].totalHargaPembelian
-                x.jumlahBanyumanik = vm.itemsPembelian[index].jumlahPembelian
-                x.satuanBanyumanik = vm.itemsPembelian[index].satuan
+                x.tanggalPerCabang = moment(vm.itemsPembelian[index].tanggalPerCabang)
+                x.namaBarangPerCabang = vm.itemsPembelian[index].namaPembelian
+                x.hargaPerCabang = vm.itemsPembelian[index].totalHargaPembelian
+                x.jumlahPerCabang = vm.itemsPembelian[index].jumlahPembelian
+                x.satuanPerCabang = vm.itemsPembelian[index].satuan
+                x.namaCabang = nama
                 bulk.push(x)
                 x = {}
             })
-            axios.post(ipBackend + '/pembelianBanyumanik/register', {
-                bulk : bulk
+            axios.post(ipBackend + '/pembelianPerCabang/register', {
+                bulk : bulk,
+                tanggalPerCabang : tgl,
+                namaCabang: nama
             },
             {
               headers: {
@@ -580,16 +636,28 @@ export default {
             })
             .then(res => {
                 console.log(res, 'ini resss nyaaaaaaa')
-                vm.$swal("Sukses Input Berhasil");
+                if(res.data == "data sudah ada"){
+                    vm.$swal("Maaf tanggal ini sudah mengisi");
+                }
+                else{
+                    vm.$swal("Sukses Input Berhasil");
+                }
+                
                 vm.$nextTick(() => {
                     vm.$bvModal.hide('modal-1')
                     vm.itemsPembelian = []
                 })
-                
+                this.getListHarian()
             })
             .catch(err => {
                 console.log(err)
             })
+        },
+        deleteItem(index){
+            // console.log(idData, 'id data')
+                
+                // console.log(idDelete, 'id delete')
+                  this.itemsPembelian.splice(index, 1);
         },
         validasiPembelian(){
             this.$confirm(

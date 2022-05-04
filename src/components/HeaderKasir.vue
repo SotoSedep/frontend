@@ -30,6 +30,9 @@
                 <b-dropdown-item v-on:click="rekap()"
                   >Lihat Rekap</b-dropdown-item
                 >
+                <b-dropdown-item v-on:click="goPengeluaran()"
+                  >Tambah Pengeluaran</b-dropdown-item
+                >
               </b-dropdown>
               
             </div>
@@ -59,6 +62,9 @@ export default {
       
       this.$router.push({ name: "rekapkasir"})
     },
+    goPengeluaran(){
+      this.$router.push({name: 'pengeluaranKasir'})
+    }
   }
 };
 </script>

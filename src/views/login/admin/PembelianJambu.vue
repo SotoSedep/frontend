@@ -1,12 +1,12 @@
 <template>
-    <div id="pembelianGarung">
+    <div id="pembelianJambu">
         <b-container>
             <b-row>
                 <b-col md="12">
                     <b-row>
                         <b-col md="12" style="margin-top : 30px; margin-bottom: 30px">
                             <h3 class="text-center m-t-0 m-b-0">
-                            <strong>DATA PEMBELIAN GARUNG</strong>
+                            <strong>DATA PEMBELIAN JAMBU</strong>
                             </h3>
                         </b-col>
                     </b-row>
@@ -20,7 +20,14 @@
                 <div style="margin-top:30px">
                         
                     <b-row style="margin-top:20px">
+                        
                         <b-col md="4">
+                            <table style="font-weight:bold">
+                                <tr>
+                                    <td style="width:150px">Total Pembelian</td>
+                                    <td>: {{total}}</td>
+                                </tr> 
+                            </table>
                             <b-form-group
                             label="Tanggal"
                             label-for="tglsearch"
@@ -95,12 +102,6 @@
                             </b-button>
                         </b-col>
                         <b-col md="12" class="my-1">
-                            <table style="font-weight:bold">
-                                <tr>
-                                    <td style="width:150px">Total Pembelian</td>
-                                    <td>: {{total}}</td>
-                                </tr> 
-                            </table>
                             <b-form-group
                             label="Search"
                             label-for="filter-input"
@@ -123,7 +124,7 @@
                                 </b-input-group>
                                 
                             </b-form-group>
-                            </b-col>
+                        </b-col>
                         </b-row>
                      <b-card bg-variant="light">
                         <b-table
@@ -336,7 +337,7 @@ import axios from 'axios';
 import { ipBackend } from "@/config.js";
 import moment from 'moment';
 export default {
-    name:'pembelianGarung',
+    name:'pembelianJambu',
     data(){
         return{
             namaBarang:'',
@@ -453,7 +454,6 @@ export default {
                 { value: 2026, text: '2026' },
                 
             ],
-            
         }
     },
     
@@ -505,7 +505,7 @@ export default {
         getListHarian(){
             let vm = this
             let tgl = moment(vm.tanggalsearch)
-            let nama = 'Garung'
+            let nama = 'Jambu'
             vm.total = null
             axios.post(ipBackend + "/pembelianPerCabang/listByTanggal" , {
                 tanggalPerCabang: tgl,
@@ -534,7 +534,7 @@ export default {
             let vm = this
             let bln = vm.bulan
             let thn = vm.tahun
-            let nama = 'Garung'
+            let nama = 'Jambu'
             vm.total = null
             axios.post(ipBackend + "/pembelianPerCabang/listByBulanTahun" ,{
                 bulan : bln,
@@ -608,7 +608,7 @@ export default {
         },
         simpanPembelian(){
             let vm = this
-            let nama = 'Garung'
+            let nama = 'Jambu'
             let bulk = []
             let tgl = moment(vm.tanggalPerCabang)
             let x = {}

@@ -1,12 +1,12 @@
 <template>
-    <div id="gajibulan">
+    <div id="absenbulanBanyumanik">
         <b-container>
             <b-row>
                 <b-col md="12">
                     <b-row>
                         <b-col md="12" style="margin-top : 30px; margin-bottom: 30px">
                             <h3 class="text-center m-t-0 m-b-0">
-                            <strong>DATA REKAP GAJI BULANAN JAMBU</strong>
+                            <strong>DATA REKAP ABSENSI BULANAN BANYUMANIK</strong>
                             </h3>
                         </b-col>
                     </b-row>
@@ -86,6 +86,17 @@
                         responsive
                         style="text-align:center"
                         >
+                        
+                        <template v-slot:cell(actions)="row">
+                            <b-button
+                            size="sm"
+                            variant="primary"
+                            @click="detail(row.item, row.index, $event.target)"
+                            class="mr-1"
+                            >
+                            Detail
+                            </b-button>
+                        </template>
                         </b-table>
                        
                     </b-card>   
@@ -93,7 +104,40 @@
                 </b-col>
             </b-row>
         </b-container>
-       
+        <!-- MODAL -->
+        <!-- Detail -->
+        <b-modal
+        :id="details.id"
+        ref="modal"
+        title="Detail Absensi"
+        hide-footer
+        hide-header
+        >
+        <h2 class="text-center" style="margin-bottom:10px;">Detail Absensi</h2>
+            <table>
+                <tr>
+                    <td style="width:150px">Nama Karyawan</td>
+                    <td>: {{namaKaryawan}}</td>
+                </tr>
+            </table>
+            <b-table
+            hover
+            ref="table"
+            :items="itemsDetail"
+            :fields="fieldsDetail"
+            responsive
+            style="text-align:center"
+            >
+            <template #cell(absen)="item">
+                <b-icon v-if="item.item.absen == 1" icon="check-circle" scale="2" variant="success"></b-icon>
+                <b-icon  v-else icon="x-circle" scale="2" variant="danger"></b-icon>               
+            </template>
+            <template #cell(absenStghHari)="item">
+                <b-icon v-if="item.item.absenStghHari == 1" icon="check-circle" scale="2" variant="success"></b-icon>
+                <b-icon  v-else icon="x-circle" scale="2" variant="danger"></b-icon>               
+            </template>
+            </b-table>
+        </b-modal>
     </div>
 </template>
 
@@ -103,7 +147,7 @@ import axios from 'axios';
 import { ipBackend } from "@/config.js";
 import moment from 'moment';
 export default {
-    name:'gajibulan',
+    name:'absenbulan',
     data(){
         return{
             bulan:null,
@@ -147,28 +191,66 @@ export default {
                     sortable: true
                 },
                 {
-                    key: 'jumlahMasuk',
+                    key: 'role',
+                    label:'Jabatan',
+                    sortable: true
+                },
+                {
+                    key: 'handphone',
+                    label: 'No. Handphone',
+                    sortable: true
+                },
+                {
+                    key: 'totalAbsen',
                     label: 'Jumlah Masuk',
                     sortable: true
                 },
                 {
-                    key: 'totalGaji',
+                    key: 'totalStghHari',
+                    label: 'Stgh Hari',
+                    sortable: true
+                },
+                {
+                    key: 'jumlahMasuk',
+                    label: 'Total Masuk',
+                    sortable: true
+                },
+                { key: "actions", label: "Actions" },
+            ],
+            itemsDetail:[],
+            details: {
+                id: "detail",
+                title: "",
+                content: "",
+            },
+            fieldsDetail: [
+                
+                {
+                    key: 'tgl',
+                    label:'Tanggal',
+                    sortable: true
+                },
+                {
+                    key: 'absen',
+                    label:'Masuk',
+                    sortable: true
+                },
+                {
+                    key: 'absenStghHari',
+                    label:'Setengah Hari',
+                    sortable: true
+                },
+                {
+                    key: 'gaji',
                     label:'Gaji Harian',
                     sortable: true
                 },
                 {
-                    key: 'totalKasbon',
+                    key: 'kasbon',
                     label:'Kasbon',
                     sortable: true
                 },
-                {
-                    key: 'gajiBulanan',
-                    label: 'Total Gaji',
-                    sortable: true
-                },
-                
             ],
-            
             totalRows: 1,
             currentPage: 1,
             perPage: 5,
@@ -204,7 +286,7 @@ export default {
             let vm = this
             let bln = vm.bulan
             let thn = vm.tahun
-            let nama = 'Jambu'
+            let nama = 'Banyumanik'
             axios.post(ipBackend + "/absensi/rekapKaryawanBulanan" ,{
                 bulan : bln,
                 tahun : thn,
@@ -223,8 +305,7 @@ export default {
                     let h = parseInt(x.totalAbsen)
                     let i = parseInt(x.totalStghHari)
                     x.nomor = index +1 
-                    x.jumlahMasuk = h + i
-                    x.gajiBulanan = x.totalGaji - x.totalKasbon        
+                    x.jumlahMasuk = h + i        
                 });
             })
             .catch((err) => {
@@ -235,10 +316,11 @@ export default {
             let vm = this
             let bln = vm.bulan
             let thn = vm.tahun
-            let karId = item.id
-            this.editModals.content = item;
+            let karId = item.karyawanId
+            this.details.content = item;
             this.idEdit = item.id;
-            this.$root.$emit("bv::show::modal", this.editModals.id, button);
+            vm.namaKaryawan = item.nama
+            this.$root.$emit("bv::show::modal", this.details.id, button);
             axios.get(ipBackend + "/absensi/absensiByKaryawanId/" + karId + '/' + bln + '/' + thn ,{
                 headers: {
                 accesstoken: localStorage.getItem("token"),
@@ -247,13 +329,13 @@ export default {
             .then((res) => {
                 console.log(res)
 
-                // vm.items = res.data.data
-                // console.log(this.items, 'ini this item')
-                // res.data.data.forEach((element, index) => {
-                //     let x = this.items[index]
-                //     x.nomor = index +1 
+                vm.itemsDetail = res.data.data
+                console.log(this.itemsDetail, 'ini this item')
+                res.data.data.forEach((element, index) => {
+                    let x = this.itemsDetail[index]
+                    x.tgl = moment(vm.itemsDetail[index].tanggalAbsen).format("DD-MM-YYYY") 
                             
-                // });
+                });
             })
             .catch((err) => {
                 console.log(err);

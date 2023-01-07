@@ -1,136 +1,189 @@
-import Vue from 'vue'
-import VueRouter from 'vue-router'
+import Vue from "vue";
+import VueRouter from "vue-router";
 // import Home from '../views/Home.vue'
-import Login from '../views/Login.vue'
-import Register from '../views/Register.vue'
-import DashboardAdmin from '../views/login/admin/DashboardAdmin.vue'
-import AdminKaryawan from '../views/login/admin/AdminKaryawan.vue'
-import AdminMeja from '../views/login/admin/AdminMeja.vue'
-import AdminView from '../views/login/admin/AdminView.vue'
-import AdminMenu from '../views/login/admin/AdminMenu.vue'
-import AdminRekap from '../views/login/admin/AdminRekap.vue'
-import AdminRekapShift from '../views/login/admin/AdminRekapShift.vue'
-import AdminGrafik from '../views/login/admin/AdminGrafik.vue'
-import DashboardWaitress from '../views/login/waitress/DashboardWaitress.vue'
-import MenuWaitress from '../views/login/waitress/MenuWaitress.vue'
-import DashboardKasir from '../views/login/kasir/DashboardKasir.vue'
-import DetailKasir from '../views/login/kasir/DetailKasir.vue'
-import RekapKasir from '../views/login/kasir/RekapKasir.vue'
-import PengeluaranKasir from '../views/login/kasir/PengeluaranKasir.vue'
-import DapurSoto from '../views/login/dapur/Soto.vue'
-import DapurMakanan from '../views/login/dapur/Makanan.vue'
-import DapurMinuman from '../views/login/dapur/DapurMinuman.vue'
-import SotoView from '../views/login/dapur/DapurMakananView.vue'
-import MakananView from '../views/login/dapur/MakananView.vue'
-import MinumanView from '../views/login/dapur/DapurMinumanView.vue'
-import Dapur from '../views/login/dapur/DapurMakanan.vue'
+import Login from "../views/Login.vue";
+import Register from "../views/Register.vue";
+import DashboardAdmin from "../views/login/admin/DashboardAdmin.vue";
+import AdminKaryawan from "../views/login/admin/AdminKaryawan.vue";
+import AdminMeja from "../views/login/admin/AdminMeja.vue";
+import AdminView from "../views/login/admin/AdminView.vue";
+import AdminMenu from "../views/login/admin/AdminMenu.vue";
+import AdminRekap from "../views/login/admin/AdminRekap.vue";
+import AdminRekapShift from "../views/login/admin/AdminRekapShift.vue";
+import AdminGrafik from "../views/login/admin/AdminGrafik.vue";
+import DashboardWaitress from "../views/login/waitress/DashboardWaitress.vue";
+import MenuWaitress from "../views/login/waitress/MenuWaitress.vue";
+import DashboardKasir from "../views/login/kasir/DashboardKasir.vue";
+import DetailKasir from "../views/login/kasir/DetailKasir.vue";
+import RekapKasir from "../views/login/kasir/RekapKasir.vue";
+import PengeluaranKasir from "../views/login/kasir/PengeluaranKasir.vue";
+import DapurSoto from "../views/login/dapur/Soto.vue";
+import DapurMakanan from "../views/login/dapur/Makanan.vue";
+import DapurMinuman from "../views/login/dapur/DapurMinuman.vue";
+import SotoView from "../views/login/dapur/DapurMakananView.vue";
+import MakananView from "../views/login/dapur/MakananView.vue";
+import MinumanView from "../views/login/dapur/DapurMinumanView.vue";
+import Dapur from "../views/login/dapur/DapurMakanan.vue";
 
-
-Vue.use(VueRouter)
+Vue.use(VueRouter);
 
 const routes = [
   {
-    path: '/',
-    name: 'login',
+    path: "/",
+    name: "login",
     component: Login,
     meta: {
       guest: true,
-    }
+    },
   },
   {
-    path: '/adminview',
-    name: 'adminview',
+    path: "/adminview",
+    name: "adminview",
     component: AdminView,
     children: [
       {
-        path: '/adminKaryawan',
-        name: 'adminKaryawan',
-        component: () => import(/* webpackChunkName: "MasterBarangAdmin" */ '../views/login/admin/AdminKaryawan')
+        path: "/adminKaryawan",
+        name: "adminKaryawan",
+        component: () =>
+          import(
+            /* webpackChunkName: "MasterBarangAdmin" */ "../views/login/admin/AdminKaryawan"
+          ),
       },
       {
-        path: '/adminMenu',
-        name: 'adminMenu',
-        component: () => import(/* webpackChunkName: "adminmenu" */ '../views/login/admin/AdminMenu')
+        path: "/adminMenu",
+        name: "adminMenu",
+        component: () =>
+          import(
+            /* webpackChunkName: "adminmenu" */ "../views/login/admin/AdminMenu"
+          ),
       },
       {
-        path: '/adminGrafik',
-        name: 'adminGrafik',
-        component: () => import(/* webpackChunkName: "admingrafik" */ '../views/login/admin/AdminGrafik')
+        path: "/adminGrafik",
+        name: "adminGrafik",
+        component: () =>
+          import(
+            /* webpackChunkName: "admingrafik" */ "../views/login/admin/AdminGrafik"
+          ),
       },
       {
-        path: '/adminRekap',
-        name: 'adminRekap',
-        component: () => import(/* webpackChunkName: "admingrafik" */ '../views/login/admin/AdminRekap')
+        path: "/adminRekap",
+        name: "adminRekap",
+        component: () =>
+          import(
+            /* webpackChunkName: "admingrafik" */ "../views/login/admin/AdminRekap"
+          ),
       },
       {
-        path: '/rekapKaryawanJambu',
-        name: 'rekapKaryawanJambu',
-        component: () => import(/* webpackChunkName: "rekapkaryawan" */ '../views/login/admin/RekapKaryawanJambu')
+        path: "/rekapKaryawanJambu",
+        name: "rekapKaryawanJambu",
+        component: () =>
+          import(
+            /* webpackChunkName: "rekapkaryawan" */ "../views/login/admin/RekapKaryawanJambu"
+          ),
       },
       {
-        path: '/rekapKaryawanBanyumanik',
-        name: 'rekapKaryawanBanyumanik',
-        component: () => import(/* webpackChunkName: "rekapkaryawan" */ '../views/login/admin/RekapKaryawanBanyumanik')
+        path: "/rekapKaryawanBanyumanik",
+        name: "rekapKaryawanBanyumanik",
+        component: () =>
+          import(
+            /* webpackChunkName: "rekapkaryawan" */ "../views/login/admin/RekapKaryawanBanyumanik"
+          ),
       },
       {
-        path: '/rekapPembelian',
-        name: 'rekapPembelian',
-        component: () => import(/* webpackChunkName: "rekappembelian" */ '../views/login/admin/RekapPembelian')
+        path: "/rekapPembelian",
+        name: "rekapPembelian",
+        component: () =>
+          import(
+            /* webpackChunkName: "rekappembelian" */ "../views/login/admin/RekapPembelian"
+          ),
       },
       {
-        path: '/pembelianbanyumanik',
-        name: 'pembelianBanyumanik',
-        component: () => import(/* webpackChunkName: "rekappembelian" */ '../views/login/admin/PembelianBanyumanik')
+        path: "/pembelianbanyumanik",
+        name: "pembelianBanyumanik",
+        component: () =>
+          import(
+            /* webpackChunkName: "rekappembelian" */ "../views/login/admin/PembelianBanyumanik"
+          ),
       },
       {
-        path: '/pembeliangarung',
-        name: 'pembelianGarung',
-        component: () => import(/* webpackChunkName: "rekappembelian" */ '../views/login/admin/PembelianGarung')
+        path: "/pembeliangarung",
+        name: "pembelianGarung",
+        component: () =>
+          import(
+            /* webpackChunkName: "rekappembelian" */ "../views/login/admin/PembelianGarung"
+          ),
       },
       {
-        path: '/pembelianjambu',
-        name: 'pembelianJambu',
-        component: () => import(/* webpackChunkName: "rekappembelian" */ '../views/login/admin/PembelianJambu')
+        path: "/pembelianjambu",
+        name: "pembelianJambu",
+        component: () =>
+          import(
+            /* webpackChunkName: "rekappembelian" */ "../views/login/admin/PembelianJambu"
+          ),
       },
       {
-        path: '/pembelian',
-        name: 'masterpembelian',
-        component: () => import(/* webpackChunkName: "pembelian" */ '../views/login/admin/MasterPembelian')
+        path: "/pembelian",
+        name: "masterpembelian",
+        component: () =>
+          import(
+            /* webpackChunkName: "pembelian" */ "../views/login/admin/MasterPembelian"
+          ),
       },
       {
-        path: '/pengeluaran',
-        name: 'masterpengeluaran',
-        component: () => import(/* webpackChunkName: "pembelian" */ '../views/login/admin/MasterPengeluaran')
+        path: "/pengeluaran",
+        name: "masterpengeluaran",
+        component: () =>
+          import(
+            /* webpackChunkName: "pembelian" */ "../views/login/admin/MasterPengeluaran"
+          ),
       },
       {
-        path: '/addsetoran',
-        name: 'addsetoran',
-        component: () => import(/* webpackChunkName: "MasterWilayah" */ '../views/login/admin/AddRekapSetoran')
+        path: "/addsetoran",
+        name: "addsetoran",
+        component: () =>
+          import(
+            /* webpackChunkName: "MasterWilayah" */ "../views/login/admin/AddRekapSetoran"
+          ),
       },
       {
-        path: '/setoran',
-        name: 'setoran',
-        component: () => import(/* webpackChunkName: "MasterWilayah" */ '../views/login/admin/RekapSetoran')
+        path: "/setoran",
+        name: "setoran",
+        component: () =>
+          import(
+            /* webpackChunkName: "MasterWilayah" */ "../views/login/admin/RekapSetoran"
+          ),
       },
       {
-        path: '/absenbulan',
-        name: 'absenbulan',
-        component: () => import(/* webpackChunkName: "MasterWilayah" */ '../views/login/admin/AbsenBulan')
+        path: "/absenbulan",
+        name: "absenbulan",
+        component: () =>
+          import(
+            /* webpackChunkName: "MasterWilayah" */ "../views/login/admin/AbsenBulan"
+          ),
       },
       {
-        path: '/absenbulanBanyumanik',
-        name: 'absenbulanBanyumanik',
-        component: () => import(/* webpackChunkName: "MasterWilayah" */ '../views/login/admin/AbsenBulanBanyumanik')
+        path: "/absenbulanBanyumanik",
+        name: "absenbulanBanyumanik",
+        component: () =>
+          import(
+            /* webpackChunkName: "MasterWilayah" */ "../views/login/admin/AbsenBulanBanyumanik"
+          ),
       },
       {
-        path: '/gajibulan',
-        name: 'gajibulan',
-        component: () => import(/* webpackChunkName: "MasterWilayah" */ '../views/login/admin/RekapGajiBulanan')
+        path: "/gajibulan",
+        name: "gajibulan",
+        component: () =>
+          import(
+            /* webpackChunkName: "MasterWilayah" */ "../views/login/admin/RekapGajiBulanan"
+          ),
       },
       {
-        path: '/gajibulanBanyumanik',
-        name: 'gajibulanBanyumanik',
-        component: () => import(/* webpackChunkName: "MasterWilayah" */ '../views/login/admin/RekapGajiBulananBanyumanik')
+        path: "/gajibulanBanyumanik",
+        name: "gajibulanBanyumanik",
+        component: () =>
+          import(
+            /* webpackChunkName: "MasterWilayah" */ "../views/login/admin/RekapGajiBulananBanyumanik"
+          ),
       },
       // {
       //   path: '/gaji',
@@ -140,220 +193,222 @@ const routes = [
     ],
   },
   {
-    path: '/register',
-    name: 'register',
+    path: "/register",
+    name: "register",
     component: Register,
     meta: {
       requiresAuth: true,
-      role : 'admin'
-    }
+      role: "admin",
+    },
   },
   {
-    path: '/dashboardadmin',
-    name: 'dashboardadmin',
+    path: "/dashboardadmin",
+    name: "dashboardadmin",
     component: DashboardAdmin,
     meta: {
       requiresAuth: true,
-      role : 'admin'
-    }
+      role: "admin",
+    },
   },
   {
-    path: '/adminkaryawan',
-    name: 'adminkaryawan',
+    path: "/adminkaryawan",
+    name: "adminkaryawan",
     component: AdminKaryawan,
     meta: {
       requiresAuth: true,
-      role : 'admin'
-    }
+      role: "admin",
+    },
   },
   {
-    path: '/adminmeja',
-    name: 'adminmeja',
+    path: "/adminmeja",
+    name: "adminmeja",
     component: AdminMeja,
     meta: {
       requiresAuth: true,
-      role : 'admin'
-    }
+      role: "admin",
+    },
   },
   {
-    path: '/adminmenu',
-    name: 'adminmenu',
+    path: "/adminmenu",
+    name: "adminmenu",
     component: AdminMenu,
     meta: {
       requiresAuth: true,
-      role : 'admin'
-    }
+      role: "admin",
+    },
   },
   {
-    path: '/adminrekap',
-    name: 'adminrekap',
+    path: "/adminrekap",
+    name: "adminrekap",
     component: AdminRekap,
     meta: {
       requiresAuth: true,
-      role : 'admin'
-    }
+      role: "admin",
+    },
   },
   {
-    path: '/adminshift',
-    name: 'adminshift',
+    path: "/adminshift",
+    name: "adminshift",
     component: AdminRekapShift,
     meta: {
       requiresAuth: true,
-      role : 'admin'
-    }
+      role: "admin",
+    },
   },
   {
-    path: '/dashboardwaitress',
-    name: 'dashboardwaitress',
+    path: "/dashboardwaitress",
+    name: "dashboardwaitress",
     component: DashboardWaitress,
     meta: {
       requiresAuth: true,
-      role: 'waitress'
-    }
+      role: "waitress",
+    },
   },
   {
-    path: '/menuwaitress',
-    name: 'menuwaitress',
+    path: "/menuwaitress",
+    name: "menuwaitress",
     component: MenuWaitress,
     meta: {
       requiresAuth: true,
-      role: 'waitress'
-    }
+      role: "waitress",
+    },
   },
   {
-    path: '/admingrafiks',
-    name: 'admingrafik',
+    path: "/admingrafiks",
+    name: "admingrafik",
     component: AdminGrafik,
     meta: {
       requiresAuth: true,
-      role : 'admin'
-    }
+      role: "admin",
+    },
   },
   {
-    path: '/dashboardkasir',
-    name: 'dashboardkasir',
+    path: "/dashboardkasir",
+    name: "dashboardkasir",
     component: DashboardKasir,
     meta: {
       requiresAuth: true,
-      role: 'kasir'
-    }
+      role: "kasir",
+    },
   },
   {
-    path: '/detailkasir',
-    name: 'detailkasir',
+    path: "/detailkasir",
+    name: "detailkasir",
     component: DetailKasir,
     meta: {
       requiresAuth: true,
-      role: 'kasir'
-    }
+      role: "kasir",
+    },
   },
   {
-    path: '/rekapkasir',
-    name: 'rekapkasir',
+    path: "/rekapkasir",
+    name: "rekapkasir",
     component: RekapKasir,
     meta: {
       requiresAuth: true,
-      role : 'kasir'
-    }
+      role: "kasir",
+    },
   },
   {
-    path: '/pengeluaranKasir',
-    name: 'pengeluaranKasir',
+    path: "/pengeluaranKasir",
+    name: "pengeluaranKasir",
     component: PengeluaranKasir,
     meta: {
       requiresAuth: true,
-      role : 'kasir'
-    }
+      role: "kasir",
+    },
   },
   {
-    path: '/dapursoto',
-    name: 'dapursoto',
+    path: "/dapursoto",
+    name: "dapursoto",
     component: DapurSoto,
     meta: {
       guest: true,
-    }
+    },
   },
   {
-    path: '/dapurmakanan',
-    name: 'dapurmakanan',
+    path: "/dapurmakanan",
+    name: "dapurmakanan",
     component: DapurMakanan,
     meta: {
       guest: true,
-    }
+    },
   },
   {
-    path: '/dapurminuman',
-    name: 'dapurminuman',
+    path: "/dapurminuman",
+    name: "dapurminuman",
     component: DapurMinuman,
     meta: {
       guest: true,
-    }
+    },
   },
   {
-    path: '/sotoview',
-    name: 'sotoview',
+    path: "/sotoview",
+    name: "sotoview",
     component: SotoView,
     meta: {
       guest: true,
-    }
+    },
   },
   {
-    path: '/makananview',
-    name: 'makananview',
+    path: "/makananview",
+    name: "makananview",
     component: MakananView,
     meta: {
       guest: true,
-    }
+    },
   },
   {
-    path: '/dapur',
-    name: 'dapur',
+    path: "/dapur",
+    name: "dapur",
     component: Dapur,
     meta: {
       guest: true,
-    }
+    },
   },
   {
-    path: '/minumanview',
-    name: 'minumanview',
+    path: "/minumanview",
+    name: "minumanview",
     component: MinumanView,
     meta: {
       guest: true,
-    }
+    },
   },
-]
+];
 
 const router = new VueRouter({
   mode: "history",
   base: process.env.BASE_URL,
-  routes
-})
-
+  routes,
+});
 
 router.beforeEach(async (to, from, next) => {
-
-  if(to.matched.some(record => record.meta.requiresAuth)) {
+  if (to.matched.some((record) => record.meta.requiresAuth)) {
     // console.log(localStorage.getItem('token'))
-    console.log( to.meta.role, 'aaa')
-      if (!localStorage.getItem('token') || localStorage.getItem('token')  == "undefined" || localStorage.getItem('token') == '' ) {
-          next({
-              path: '/',
-              query: { redirect: to.fullPath }
-          })
-      } else {
-        if(to.meta.role==localStorage.getItem('role')){
-          next()
-        }else{
-          next({
-            path: '/',
-            query: { redirect: to.fullPath }
-        })
-        }
-      }
-  } else if (to.matched.some(record => record.meta.guest)) {
-    next()
+    console.log(to.meta.role, "aaa");
+    if (
+      !localStorage.getItem("token") ||
+      localStorage.getItem("token") == "undefined" ||
+      localStorage.getItem("token") == ""
+    ) {
+      next({
+        path: "/",
+        query: { redirect: to.fullPath },
+      });
     } else {
-      next()
-    }  
-})
-export default router
+      if (to.meta.role == localStorage.getItem("role")) {
+        next();
+      } else {
+        next({
+          path: "/",
+          query: { redirect: to.fullPath },
+        });
+      }
+    }
+  } else if (to.matched.some((record) => record.meta.guest)) {
+    next();
+  } else {
+    next();
+  }
+});
+export default router;

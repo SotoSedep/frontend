@@ -1,18 +1,32 @@
 <template>
   <div id="dashboardkasir">
-      <headerkasir></headerkasir>
-      <b-container style="display:flex">
-        
+    <headerkasir></headerkasir>
+    <b-container style="display:flex">
       <b-row>
-        <b-col md=12>
-          <div class="tabs" style="display:flex;align-items:center;justify-content:center">
-            <b-button variant="primary" style="margin:10px;" :class="isActive === 0? 'is-active': ''" @click="isActive = 0">Lantai 1</b-button>
-            <b-button variant="primary" style="margin:10px;" :class="isActive === 1? 'is-active': ''" @click="isActive = 1">Lantai 2</b-button>  
+        <b-col md="12">
+          <div
+            class="tabs"
+            style="display:flex;align-items:center;justify-content:center"
+          >
+            <b-button
+              variant="primary"
+              style="margin:10px;"
+              :class="isActive === 0 ? 'is-active' : ''"
+              @click="isActive = 0"
+              >Lantai 1</b-button
+            >
+            <b-button
+              variant="primary"
+              style="margin:10px;"
+              :class="isActive === 1 ? 'is-active' : ''"
+              @click="isActive = 1"
+              >Lantai 2</b-button
+            >
           </div>
           <div class="content">
             <div class="wrapper">
-                <component :is="lantai[isActive]"></component>
-            </div>                      
+              <component :is="lantai[isActive]"></component>
+            </div>
           </div>
         </b-col>
       </b-row>
@@ -47,117 +61,115 @@
                 </b-button>
               </template>
             </b-table>
-          </div> 
+          </div>
         </b-col>
       </b-row>
-      </b-container>
+    </b-container>
   </div>
 </template>
 
 <script>
 import headerkasir from "../../../components/HeaderKasir";
-import lantai1 from "../../../components/Lantai1"
-import lantai2 from "../../../components/Lantai2"
-import axios from 'axios';
+import lantai1 from "../../../components/Lantai1";
+import lantai2 from "../../../components/Lantai2";
+import axios from "axios";
 import { ipBackend } from "@/config.js";
 export default {
-    name: "dashboardkasir",
-    components: {
+  name: "dashboardkasir",
+  components: {
     headerkasir,
-    },
-    data(){
-        return {
-            items:[],
-            itemsData:[],
-            fields:[
-                {
-                    key: 'DISTINCT',
-                    label:'Nomor Meja',
-
-                },
-                {
-                    key: 'atasNama',
-                    label:'Nama Pemesan',
-
-                },
-                { key: "actions", label: "Actions" },
-            ],
-            abang:'abang',
-            kuning:'kuning',
-            lantai: [
-              lantai1,
-              lantai2
-            ],
-            isActive: 0,
-        }
-    },
-    mounted() {
-        this.loadData()
-    },
-  sockets: {
-      connect: function(){
-        console.log('ada yg connect')
-      },
-      refresh: function(){
-        this.loadData()
-      }
-    },
-    methods: {
-      loadData(){
-        axios.get(ipBackend + "/temporary/dashboardkasir", {
-        headers: {
-          accesstoken: localStorage.getItem("token"),
+  },
+  data() {
+    return {
+      items: [],
+      itemsData: [],
+      fields: [
+        {
+          key: "DISTINCT",
+          label: "Nomor Meja",
         },
-      })
-      .then((res) => {       
-        console.log(res, "ini resnyaa")
-        this.itemsData = res.data
-        console.log(this.itemsData, "ini itemnyaaaaaaaaaaaaaaa")
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-      },
-      detailItem(item) {
-            let mejaId = item.DISTINCT;
-            localStorage.setItem('mejaId', mejaId);
-            this.$router.push({ path: "/detailkasir" });
-            console.log(mejaId);
-      },
-    }
-}
+        {
+          key: "atasNama",
+          label: "Nama Pemesan",
+        },
+        { key: "actions", label: "Actions" },
+      ],
+      abang: "abang",
+      kuning: "kuning",
+      lantai: [lantai1, lantai2],
+      isActive: 0,
+    };
+  },
+  mounted() {
+    this.loadData();
+  },
+  sockets: {
+    connect: function() {
+      console.log("ada yg connect");
+    },
+    refresh: function() {
+      this.loadData();
+      console.log("ngrefresh");
+    },
+  },
+  methods: {
+    loadData() {
+      axios
+        .get(ipBackend + "/temporary/dashboardkasir", {
+          headers: {
+            accesstoken: localStorage.getItem("token"),
+          },
+        })
+        .then((res) => {
+          console.log(res, "ini resnyaa");
+          this.itemsData = res.data;
+          console.log(this.itemsData, "ini itemnyaaaaaaaaaaaaaaa");
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    },
+    detailItem(item) {
+      let mejaId = item.DISTINCT;
+      localStorage.setItem("mejaId", mejaId);
+      this.$router.push({ path: "/detailkasir" });
+      console.log(mejaId);
+    },
+  },
+};
 </script>
 
 <style scoped>
-  .avatar1 {
-        margin:20px;
-        font-size:30px;
-        font-weight: bold;
-        background-color:green;
-    }
-    .kuning {
-        margin:20px;
-        font-size:30px;
-        font-weight: bold;
-        color:black;
-        background-color:yellow !important;
-    }
-    .abang {
-        margin:20px;
-        font-size:30px;
-        font-weight: bold;
-        background-color:red;
-    }
-    .avatar2 {
-        margin:20px;
-        font-size:30px;
-        font-weight: bold;
-        background-color:green;
-    }
-    .avatar3 {
-        margin:20px;
-        width:200px;height:60px;
-        font-size:30px;
-        font-weight: bold;
-    }
+.avatar1 {
+  margin: 20px;
+  font-size: 30px;
+  font-weight: bold;
+  background-color: green;
+}
+.kuning {
+  margin: 20px;
+  font-size: 30px;
+  font-weight: bold;
+  color: black;
+  background-color: yellow !important;
+}
+.abang {
+  margin: 20px;
+  font-size: 30px;
+  font-weight: bold;
+  background-color: red;
+}
+.avatar2 {
+  margin: 20px;
+  font-size: 30px;
+  font-weight: bold;
+  background-color: green;
+}
+.avatar3 {
+  margin: 20px;
+  width: 200px;
+  height: 60px;
+  font-size: 30px;
+  font-weight: bold;
+}
 </style>
